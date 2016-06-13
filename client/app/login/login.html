@@ -1,0 +1,32 @@
+<div class="hold-transition login-page">
+<div class="login-box">
+  <div class="login-logo">
+   Login as an existing user
+  </div>
+  <!-- /.login-logo -->
+  <div class="login-box-body">
+
+    <form>
+      <div class="form-group has-feedback">
+        <input type="text" ng-model="loginCtrl.username" class="form-control" placeholder="User">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" ng-model="loginCtrl.password" class="form-control" placeholder="Password">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="row text-center" style="margin-bottom: 10px">
+        <div ng-show="loginCtrl.loginError">
+          Invalid Username/Password
+        </div>
+      </div>
+      <div class="row text-center">
+        <div class="col-xs-12 text-center">
+          <button ng-click="loginCtrl.login()" class="btn btn-primary btn-block btn-flat">Sign In</button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>
+</div>

@@ -1,0 +1,12 @@
+[package]
+name = "payment_processor"
+version = "0.1.0"
+authors = ["Gabe Harms <gabeharms@gmail.com>"]
+
+[dependencies]
+iron = "0.3.0"
+router = "0.1.1"
+rustc-serialize = "0.3.19"
+urlencoded = "0.3.0"
+staticfile = "0.2.0"
+mount = "*"

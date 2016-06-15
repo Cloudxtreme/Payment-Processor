@@ -1,8 +1,15 @@
+#![feature(plugin, custom_derive)]
+#![plugin(diesel_codegen, dotenv_macros)]
+
 extern crate iron;
 extern crate router;
 extern crate rustc_serialize;
 extern crate urlencoded;
+extern crate diesel;
+extern crate chrono;
 extern crate staticfile;
+
+#[macro_use]
 extern crate mount;
 
 use iron::prelude::*;
@@ -14,9 +21,8 @@ use staticfile::Static;
 use mount::Mount;
 use std::path::Path;
 
-pub mod handlers;
-//use handlers;
-
+pub mod handlers; // Module for all controllers
+pub mod models; // Module for all models 
 
 fn main() {
 

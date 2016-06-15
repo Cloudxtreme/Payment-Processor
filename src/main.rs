@@ -1,6 +1,7 @@
 extern crate iron;
 extern crate router;
 extern crate rustc_serialize;
+extern crate urlencoded;
 extern crate staticfile;
 extern crate mount;
 
@@ -13,6 +14,8 @@ use staticfile::Static;
 use mount::Mount;
 use std::path::Path;
 
+pub mod handlers;
+//use handlers;
 
 
 fn main() {
@@ -28,7 +31,7 @@ fn main() {
     let mut router = Router::new();
     router
         .get("/", RedirectHome)
-        .get("/api", HomePage);
+        .get("/api/credits/", handlers::credit::Index);
     //router.get("/api/expenses", Expenses);
 
     let mut mount = Mount::new();

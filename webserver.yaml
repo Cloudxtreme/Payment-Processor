@@ -1,0 +1,8 @@
+tunnels:
+  webserver:
+    proto: http
+    addr: 9000
+  streamserver:
+    proto: tcp
+    addr: 8084
+authtoken: 3aT9NRB8axfgBNxfjheGq_68M2wymgatztYut6xYLaX

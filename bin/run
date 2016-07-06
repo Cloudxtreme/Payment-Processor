@@ -1,0 +1,6 @@
+#! bin/bash
+
+
+#DATABASE_URL=postgres://$ETH0/payment_processor
+
+docker build -f ./Dockerfile .

@@ -1,8 +1,7 @@
 use iron::prelude::*;
 use iron::{headers, status};
 use iron::Handler;
-use rustc_serialize::json::{Json, ToJson};
-use urlencoded::{UrlDecodingError, UrlEncodedQuery};
+use rustc_serialize::json::{ToJson};
 use diesel::types::structs::data_types::PgTimestamp; // Temporary Test
 
 
@@ -20,8 +19,7 @@ impl Handler for Index {
             amount: Some(5),
             paid_date: Some(PgTimestamp(500736408041057)),
             created_date: PgTimestamp(500736408041057)
-        };
-        
+        };  
         let mut response = Response::new().set(((status::Ok), credit1.to_json().to_string()));
         response.headers.set(headers::ContentType::json());
 

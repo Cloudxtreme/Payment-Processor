@@ -75,7 +75,7 @@ impl CreditQueryParams {
 
 /// Grabs all session pages matching the query parameters in `CreditQueryParams`
 pub fn get_from_params(query_params: CreditQueryParams) -> Vec<Credit> {
-    let mut source = credits::table.into_boxed()
+    let source = credits::table.into_boxed()
         .filter(credits::id.eq(query_params.id.unwrap_or(-1)))
         .filter(credits::user_id.eq(query_params.user_id));
 

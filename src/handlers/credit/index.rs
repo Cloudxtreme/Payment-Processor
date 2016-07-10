@@ -18,7 +18,7 @@ impl Handler for Index {
             id: 5,
             user_id: Some(5),
             amount: Some(5),
-            paid_date: PgTimestamp(500736408041057), 
+            paid_date: Some(PgTimestamp(500736408041057)),
             created_date: PgTimestamp(500736408041057)
         };
         

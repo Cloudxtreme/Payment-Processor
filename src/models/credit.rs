@@ -46,7 +46,21 @@ pub struct CreditQueryParams {
 
 
 impl CreditQueryParams {
-    pub fn from_request(uri_params: &URIParams) -> Result<CreditQueryParams> {
+    pub fn from_index_request(uri_params: &URIParams) -> Result<CreditQueryParams> {
+        let user_id = uri_params::parse::<i32>(uri_params, "user_id"); 
+
+        try!(Self::is_missing_params(vec![user_id]));
+
+        Ok(
+            CreditQueryParams {
+                id: None,
+                user_id: user_id,
+                created_date_greater_than: None,
+                created_date_less_than: None
+            }
+          )
+    }
+    pub fn from_show_request(uri_params: &URIParams) -> Result<CreditQueryParams> {
         let id = uri_params::parse::<i32>(uri_params, "id"); 
         let user_id = uri_params::parse::<i32>(uri_params, "user_id"); 
 
@@ -61,7 +75,6 @@ impl CreditQueryParams {
             }
           )
     }
-
     pub fn is_missing_params(required_params: Vec<Option<i32>>) -> Result<()> {
         if required_params.iter().all(|param| param.is_none()) {
             Err(Error::MissingParameter { key: "project_id" })
@@ -75,10 +88,12 @@ impl CreditQueryParams {
 
 /// Grabs all session pages matching the query parameters in `CreditQueryParams`
 pub fn get_from_params(query_params: CreditQueryParams) -> Vec<Credit> {
-    let source = credits::table.into_boxed()
-        .filter(credits::id.eq(query_params.id.unwrap_or(-1)))
+    let mut source = credits::table.into_boxed()
         .filter(credits::user_id.eq(query_params.user_id));
 
+    if let Some(id) = query_params.id {
+        source = source.filter(credits::id.eq(id))
+    }
     // This is a shortcut from using 'match'. Since we want to do nothing in the case that
     // the 'created_date is 'None', we can use this statement to execute what's in the block,
     // only if 'created_date' is 'Some'. It also destructures 'created_date' for us

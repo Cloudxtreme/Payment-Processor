@@ -63,7 +63,6 @@ impl CreditQueryParams {
     pub fn from_show_request(uri_params: &URIParams) -> Result<CreditQueryParams> {
         let id = uri_params::parse::<i32>(uri_params, "id"); 
         let user_id = uri_params::parse::<i32>(uri_params, "user_id"); 
-
         try!(Self::is_missing_params(vec![id, user_id]));
 
         Ok(

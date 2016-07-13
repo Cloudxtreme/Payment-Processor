@@ -41,7 +41,8 @@ fn main() {
     let mut router = Router::new();
     router
         .get("/", RedirectHome)
-        .get("/api/credits/", handlers::credit::Index);
+        .get("/api/credits/", handlers::credit::Index)
+        .get("/api/credits/:id", handlers::credit::Show);
     //router.get("/api/expenses", Expenses);
 
     let mut mount = Mount::new();

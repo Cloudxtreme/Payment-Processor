@@ -74,6 +74,20 @@ impl CreditQueryParams {
             }
           )
     }
+    pub fn from_update_request(uri_params: &URIParams) -> Result<CreditQueryParams> {
+        let id = uri_params::parse::<i32>(uri_params, "id"); 
+        let user_id = uri_params::parse::<i32>(uri_params, "user_id"); 
+        try!(Self::is_missing_params(vec![id, user_id]));
+
+        Ok(
+            CreditQueryParams {
+                id: id,
+                user_id: user_id,
+                created_date_greater_than: None,
+                created_date_less_than: None
+            }
+          )
+    }
     pub fn is_missing_params(required_params: Vec<Option<i32>>) -> Result<()> {
         if required_params.iter().all(|param| param.is_none()) {
             Err(Error::MissingParameter { key: "project_id" })
@@ -97,20 +111,34 @@ pub fn get_from_params(query_params: CreditQueryParams) -> Vec<Credit> {
     // the 'created_date is 'None', we can use this statement to execute what's in the block,
     // only if 'created_date' is 'Some'. It also destructures 'created_date' for us
     /*
-    if let Some(created_date_greater_than) = query_params.created_date_greater_than { 
-        source = source.filter(credits::created_date.ge(created_date_greater_than))
-    }
-    if let Some(created_date_less_than) = query_params.created_date_less_than {
-        source = source.filter(credits::created_date.ge(created_date_less_than))
-    }
-    */
+       if let Some(created_date_greater_than) = query_params.created_date_greater_than { 
+       source = source.filter(credits::created_date.ge(created_date_greater_than))
+       }
+       if let Some(created_date_less_than) = query_params.created_date_less_than {
+       source = source.filter(credits::created_date.ge(created_date_less_than))
+       }
+       */
 
     let conn = establish_connection();
     let result: Vec<Credit> = source.select((credits::id,credits::user_id, credits::amount,
-                                            credits::paid_date, credits::created_date)).load(&conn).unwrap();
+                                             credits::paid_date, credits::created_date)).load(&conn).unwrap();
     result
 }
 
+pub fn update_from_params(query_params: CreditQueryParams) -> Option<Credit> {
+    let mut result = None;
+    let conn = establish_connection();
+    
+    if let Some(id) = query_params.id {
+        result = Some(
+            update(credits::table.find(id))
+            .set(credits::user_id.eq(query_params.user_id.unwrap()))
+            .get_result::<Credit>(&conn)
+            .expect(&format!("Unable to find post {}", id))
+        );
+    };
+    result
+}
 
 /*
    pub fn get_by_id(id: i32) -> Vec<Credit> {

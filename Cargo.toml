@@ -22,6 +22,8 @@ iron = "0.3.0"
 router = "0.1.1"
 rustc-serialize = "0.3.19"
 urlencoded = "0.3.0"
+bodyparser = "*"
+persistent = "*"
 
 [features]
 default = ["nightly"]

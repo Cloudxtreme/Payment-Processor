@@ -8,6 +8,8 @@ extern crate urlencoded;
 extern crate chrono;
 extern crate staticfile;
 extern crate mount;
+extern crate bodyparser;
+extern crate persistent;
 
 #[macro_use]
 extern crate diesel;
@@ -27,8 +29,14 @@ use router::Router;
 use staticfile::Static;
 use mount::Mount;
 use std::path::Path;
+use persistent::Read;
+
+const MAX_BODY_LENGTH: usize = 1024 * 1024 * 10;
 
 fn main() {
+    fn log_body(req: &mut Request) -> IronResult<Response> {
+        Ok(Response::with((iron::status::Ok, "hey")))
+    }
 
     fn HomePage(_: &mut Request) -> IronResult<Response> {
         Ok(Response::with((iron::status::Ok, "yo")))
@@ -42,12 +50,16 @@ fn main() {
     router
         .get("/", RedirectHome)
         .get("/api/credits/", handlers::credit::Index)
-        .get("/api/credits/:id", handlers::credit::Show);
+        .get("/api/credits/:id", handlers::credit::Show)
+        .put("/api/credits/:id", handlers::credit::Update);
     //router.get("/api/expenses", Expenses);
+    
+    let mut chain = Chain::new(router);
+    chain.link_before(Read::<bodyparser::MaxBodyLength>::one(MAX_BODY_LENGTH));
 
     let mut mount = Mount::new();
     mount
-        .mount("/", router)
+        .mount("/", chain)
         .mount("/home",
                Static::new(Path::new("/Users/gabeharms/Desktop/Practice/Payment-Processor/index.html")));
 

@@ -112,6 +112,21 @@ impl CreditQueryParams {
             }
           )
     }
+    pub fn from_delete_request(uri_params: &URIParams) -> Result<CreditQueryParams> {
+        let id = uri_params::parse::<i32>(uri_params, "id"); 
+        let user_id = uri_params::parse::<i32>(uri_params, "user_id"); 
+
+        try!(Self::is_missing_params(vec![id, user_id]));
+
+        Ok(
+            CreditQueryParams {
+                id: id,
+                user_id: user_id,
+                created_date_greater_than: None,
+                created_date_less_than: None
+            }
+          )
+    }
     pub fn is_missing_params(required_params: Vec<Option<i32>>) -> Result<()> {
         if required_params.iter().all(|param| param.is_none()) {
             Err(Error::MissingParameter { key: "project_id" })
@@ -174,6 +189,17 @@ pub fn update_from_params(query_params: CreditQueryParams) -> Option<Credit> {
     result
 }
 
+pub fn delete_from_params(query_params: CreditQueryParams) -> i32 {
+    let conn = establish_connection();
+     
+    let query = credits::table.filter(credits::id.eq(query_params.id.unwrap()))
+        .filter(credits::user_id.eq(query_params.user_id.unwrap()));
+
+    delete(query)
+        .execute(&conn)
+        .expect("Error deleting posts");
+    query_params.id.unwrap()
+}
 /*
    pub fn get_by_id(id: i32) -> Vec<Credit> {
 

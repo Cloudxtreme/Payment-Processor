@@ -1,4 +1,4 @@
-use chrono::NaiveDateTime;
+use chrono::*;
 use rustc_serialize::json::{Json, ToJson};
 use std::collections::BTreeMap;
 use diesel::types::structs::data_types::PgTimestamp;
@@ -18,6 +18,13 @@ pub struct Credit {
     pub amount: Option<i32>,
     pub paid_date: Option<PgTimestamp>,
     pub created_date: PgTimestamp,
+}
+#[insertable_into(credits)]
+pub struct NewCredit {
+    pub user_id: Option<i32>,
+    pub amount: Option<i32>,
+    pub paid_date: Option<PgTimestamp>,
+    pub created_date: PgTimestamp
 }
 
 /// This is an example of us implementing a 'trait' for a specific
@@ -88,6 +95,23 @@ impl CreditQueryParams {
             }
           )
     }
+    pub fn from_create_request(uri_params: &URIParams) -> Result<NewCredit> {
+        let user_id = uri_params::parse::<i32>(uri_params, "user_id"); 
+        let amount = uri_params::parse::<i32>(uri_params, "amount"); 
+        let paid_date = match uri_params::parse::<i64>(uri_params, "paid_date") {
+            Some(timestamp) => Some(PgTimestamp(timestamp)),
+            None => None 
+        };
+
+        Ok(
+            NewCredit {
+                user_id: user_id,
+                amount: amount,
+                paid_date: paid_date,
+                created_date: PgTimestamp(0)
+            }
+          )
+    }
     pub fn is_missing_params(required_params: Vec<Option<i32>>) -> Result<()> {
         if required_params.iter().all(|param| param.is_none()) {
             Err(Error::MissingParameter { key: "project_id" })
@@ -125,17 +149,27 @@ pub fn get_from_params(query_params: CreditQueryParams) -> Vec<Credit> {
     result
 }
 
+pub fn create_from_params(new_credit: &mut NewCredit) -> Credit {
+    let conn = establish_connection();
+
+    new_credit.created_date = PgTimestamp(Local::now().naive_local().timestamp() );
+
+    insert(new_credit).into(credits::table)
+        .get_result::<Credit>(&conn)
+        .expect("Error saving new post")
+}
+
 pub fn update_from_params(query_params: CreditQueryParams) -> Option<Credit> {
     let mut result = None;
     let conn = establish_connection();
-    
+
     if let Some(id) = query_params.id {
         result = Some(
             update(credits::table.find(id))
             .set(credits::user_id.eq(query_params.user_id.unwrap()))
             .get_result::<Credit>(&conn)
             .expect(&format!("Unable to find post {}", id))
-        );
+            );
     };
     result
 }

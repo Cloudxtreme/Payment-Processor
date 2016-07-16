@@ -1,6 +1,6 @@
 -- CREDITS table
 CREATE TABLE IF NOT EXISTS credits (
-  id integer PRIMARY KEY,
+  id serial PRIMARY KEY,
   user_id integer,
   amount integer,
   paid_date timestamp without time zone,

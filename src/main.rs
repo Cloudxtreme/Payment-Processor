@@ -51,7 +51,8 @@ fn main() {
         .get("/", RedirectHome)
         .get("/api/credits/", handlers::credit::Index)
         .get("/api/credits/:id", handlers::credit::Show)
-        .put("/api/credits/:id", handlers::credit::Update);
+        .put("/api/credits/:id", handlers::credit::Update)
+        .post("api/credits/", handlers::credit::Create);
     //router.get("/api/expenses", Expenses);
     
     let mut chain = Chain::new(router);

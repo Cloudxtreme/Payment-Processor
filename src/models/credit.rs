@@ -27,6 +27,19 @@ pub struct NewCredit {
     pub created_date: PgTimestamp
 }
 
+#[insertable_into(credits)]
+pub struct InsertableCredit {
+    pub user_id: Option<i32>,
+    pub amount: Option<i32>,
+    pub paid_date: Option<PgTimestamp>,
+    pub created_date: PgTimestamp
+}
+
+pub struct UpdateableCredit {
+    pub user_id: Option<i32>,
+    pub amount: Option<i32>,
+    //pub paid_date: Option<PgTimestamp>,
+}
 /// This is an example of us implementing a 'trait' for a specific
 /// 'struct'. When you implement a 'trait' for a struct, you must define
 /// all of the functions in that trait. 
@@ -169,6 +182,21 @@ pub fn find(id: i32, user_id: i32) -> Credit {
             credits::created_date
         )
         ).first(&conn).unwrap();
+    result
+}
+
+pub fn alter(id: i32, user_id: i32, obj: UpdateableCredit) -> Credit {
+    let conn = establish_connection();
+
+    // TODO: Make sure credit belongs to current user
+    let result = update(credits::table.find(id))
+        .set(
+            (
+                credits::user_id.eq(obj.user_id.unwrap()),
+                credits::amount.eq(obj.amount)
+            )
+        ).get_result::<Credit>(&conn)
+        .expect(&format!("Unable to find post {}", id));
     result
 }
 

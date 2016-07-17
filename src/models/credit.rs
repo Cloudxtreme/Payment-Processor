@@ -136,9 +136,26 @@ impl CreditQueryParams {
         }
     }
 }
+/// Grabs all credits matching for the given user_id
+pub fn all(user_id: i32) -> Vec<Credit> {
+    let mut source = credits::table.into_boxed().filter(credits::user_id.eq(user_id));
+
+    let conn = establish_connection();
+    let result: Vec<Credit> = source.select(
+        (
+            credits::id,
+            credits::user_id, 
+            credits::amount,
+            credits::paid_date, 
+            credits::created_date
+        )
+    ).load(&conn).unwrap();
+    result
+}
 
 
-/// Grabs all session pages matching the query parameters in `CreditQueryParams`
+
+/// Grabs all credits matching the query parameters in `CreditQueryParams`
 pub fn get_from_params(query_params: CreditQueryParams) -> Vec<Credit> {
     let mut source = credits::table.into_boxed()
         .filter(credits::user_id.eq(query_params.user_id));

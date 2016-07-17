@@ -1,7 +1,7 @@
 use iron::prelude::*;
 use iron::BeforeMiddleware;
-use urlencoded::{UrlDecodingError, UrlEncodedQuery};
-use uri_params::{self, URIParams};
+use urlencoded::{UrlEncodedQuery};
+use uri_params::{self};
 use util::Auth;
 
 pub struct Authentication;
@@ -22,7 +22,7 @@ impl BeforeMiddleware for Authentication {
             //                                      BeforeMiddleware".to_string()), status::BadRequest))
 
     }
-    fn catch(&self, _: &mut Request, err: IronError) -> IronResult<()> { 
+    fn catch(&self, _: &mut Request, _: IronError) -> IronResult<()> { 
         Ok(()) 
     }
 

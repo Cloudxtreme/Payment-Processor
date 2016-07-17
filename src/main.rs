@@ -23,26 +23,19 @@ include!(concat!(env!("OUT_DIR"), "/main.rs"));
 
 use iron::prelude::*;
 use iron::status;
-use iron::BeforeMiddleware;
 use iron::Url;
 use iron::modifiers::Redirect;
-use iron::typemap::Key;
 use router::Router;
 use staticfile::Static;
 use mount::Mount;
 use std::path::Path;
 use persistent::Read;
-use urlencoded::{UrlDecodingError, UrlEncodedQuery};
 
 const MAX_BODY_LENGTH: usize = 1024 * 1024 * 10;
 
 
 
 fn main() {
-    fn log_body(req: &mut Request) -> IronResult<Response> {
-        Ok(Response::with((iron::status::Ok, "hey")))
-    }
-
     fn HomePage(_: &mut Request) -> IronResult<Response> {
         Ok(Response::with((iron::status::Ok, "yo")))
     }

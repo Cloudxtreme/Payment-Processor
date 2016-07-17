@@ -2,7 +2,6 @@ use iron::prelude::*;
 use iron::{headers, status};
 use iron::Handler;
 use rustc_serialize::json::{ToJson};
-use urlencoded::{UrlDecodingError, UrlEncodedQuery};
 use services::get_user_id;
 use models::credit;
 

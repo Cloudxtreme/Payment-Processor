@@ -149,11 +149,28 @@ pub fn all(user_id: i32) -> Vec<Credit> {
             credits::paid_date, 
             credits::created_date
         )
-    ).load(&conn).unwrap();
+        ).load(&conn).unwrap();
     result
 }
 
+pub fn find(id: i32, user_id: i32) -> Credit {
+    let mut source = credits::table.into_boxed()
+        .filter(credits::user_id.eq(user_id))
+        .filter(credits::id.eq(id));
 
+
+    let conn = establish_connection();
+    let result: Credit = source.select(
+        (
+            credits::id,
+            credits::user_id, 
+            credits::amount,
+            credits::paid_date, 
+            credits::created_date
+        )
+        ).first(&conn).unwrap();
+    result
+}
 
 /// Grabs all credits matching the query parameters in `CreditQueryParams`
 pub fn get_from_params(query_params: CreditQueryParams) -> Vec<Credit> {
@@ -208,7 +225,7 @@ pub fn update_from_params(query_params: CreditQueryParams) -> Option<Credit> {
 
 pub fn delete_from_params(query_params: CreditQueryParams) -> i32 {
     let conn = establish_connection();
-     
+
     let query = credits::table.filter(credits::id.eq(query_params.id.unwrap()))
         .filter(credits::user_id.eq(query_params.user_id.unwrap()));
 

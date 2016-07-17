@@ -2,11 +2,10 @@ use iron::prelude::*;
 use iron::{headers, status};
 use iron::Handler;
 use rustc_serialize::json::{ToJson};
-use urlencoded::{UrlDecodingError, UrlEncodedQuery};
-use router::{Router};
-use util::Auth;
-
+use services::get_user_id;
+use services::get_route_id;
 use models::credit;
+
 
 pub struct Show;
 
@@ -14,40 +13,17 @@ impl Handler for Show {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         let params = get_params(req);
         
-        let json = match credit::get_from_params(params).pop() {
-            Some(credit) => credit.to_json().to_string(),
-            None => "{}".to_string() 
-        };
+        let credit = credit::find(params.0, params.1);
 
-        let mut response = Response::new().set(((status::Ok), json));
+        let mut response = Response::new().set(((status::Ok), credit.to_json().to_string()));
         response.headers.set(headers::ContentType::json());
 
         Ok(response)
     }
 }
-fn get_params(req: &mut Request) -> credit::CreditQueryParams {
-    let credit_id = req.extensions.get::<Router>().unwrap().find("id").unwrap_or("").to_string();
-    let user_id = req.extensions.get::<Auth>().unwrap().to_string();
-    let params_result = req.get_mut::<UrlEncodedQuery>();
-    match params_result {
-        Ok(params) => {
-            params.insert("id".to_string(), vec![credit_id]);
-            match credit::CreditQueryParams::from_show_request(params) {
-                Ok(query_params) => query_params,
-                Err(err) => credit::CreditQueryParams { 
-                    id: Some(-1), 
-                    user_id: Some(-1),
-                    created_date_greater_than: None,
-                    created_date_less_than: None
-                }
-            }
-        },
-        Err(err) => credit::CreditQueryParams { 
-            id: Some(-1), 
-            user_id: Some(-1),
-            created_date_greater_than: None,
-            created_date_less_than: None
-        }
-    }
+fn get_params(req: &mut Request) -> (i32, i32) {
+    let credit_id = get_route_id(req);
+    let user_id = get_user_id(req);
+    (credit_id, user_id) 
 }
 

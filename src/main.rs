@@ -23,15 +23,20 @@ include!(concat!(env!("OUT_DIR"), "/main.rs"));
 
 use iron::prelude::*;
 use iron::status;
+use iron::BeforeMiddleware;
 use iron::Url;
 use iron::modifiers::Redirect;
+use iron::typemap::Key;
 use router::Router;
 use staticfile::Static;
 use mount::Mount;
 use std::path::Path;
 use persistent::Read;
+use urlencoded::{UrlDecodingError, UrlEncodedQuery};
 
 const MAX_BODY_LENGTH: usize = 1024 * 1024 * 10;
+
+
 
 fn main() {
     fn log_body(req: &mut Request) -> IronResult<Response> {
@@ -58,6 +63,7 @@ fn main() {
     
     let mut chain = Chain::new(router);
     chain.link_before(Read::<bodyparser::MaxBodyLength>::one(MAX_BODY_LENGTH));
+    chain.link_before(services::Authentication);
 
     let mut mount = Mount::new();
     mount

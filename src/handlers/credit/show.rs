@@ -4,6 +4,7 @@ use iron::Handler;
 use rustc_serialize::json::{ToJson};
 use urlencoded::{UrlDecodingError, UrlEncodedQuery};
 use router::{Router};
+use util::Auth;
 
 use models::credit;
 
@@ -26,6 +27,7 @@ impl Handler for Show {
 }
 fn get_params(req: &mut Request) -> credit::CreditQueryParams {
     let credit_id = req.extensions.get::<Router>().unwrap().find("id").unwrap_or("").to_string();
+    let user_id = req.extensions.get::<Auth>().unwrap().to_string();
     let params_result = req.get_mut::<UrlEncodedQuery>();
     match params_result {
         Ok(params) => {

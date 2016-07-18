@@ -22,6 +22,7 @@ impl Handler for Update {
     }
 }
 fn get_params(req: &mut Request) -> (i32, i32, credit::UpdateableCredit) {
+    // TODO: Make it so that you can update `paid_date` as well
     let credit_id = get_route_id(req);
     let user_id = get_user_id(req);
 

@@ -188,6 +188,7 @@ pub fn alter(id: i32, user_id: i32, obj: UpdateableCredit) -> Credit {
     let conn = establish_connection();
 
     // TODO: Make sure credit belongs to current user
+    // TODO: add ability to save paid date as well
     let result = update(credits::table.find(id))
         .set(
             (

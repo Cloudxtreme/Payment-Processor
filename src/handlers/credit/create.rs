@@ -24,6 +24,7 @@ impl Handler for Create {
     }
 }
 fn build_new_credit(req: &mut Request) -> credit::InsertableCredit {
+    // TODO: Mke it so that you can specify a `paid date` as well
     let user_id = get_user_id(req);
     let amount = get_key_from_body::<i32>(req, "amount");
     let created_date = PgTimestamp(Local::now().naive_local().timestamp() );

@@ -1,14 +1,8 @@
 use iron::prelude::*;
 use iron::{headers, status};
 use iron::Handler;
-use diesel::types::structs::data_types::PgTimestamp;
 use rustc_serialize::json::{ToJson};
-use urlencoded::{UrlDecodingError, UrlEncodedQuery};
-use router::{Router};
-use bodyparser::Json;
 use models::credit;
-use uri_params::{self, URIParams};
-use std::collections::HashMap;
 use services::get_user_id;
 use services::get_route_id;
 

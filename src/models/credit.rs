@@ -218,7 +218,7 @@ pub fn destroy(id: i32, user_id: i32) -> i32 {
     let count = delete(query)
         .execute(&conn)
         .expect("Error deleting posts");
-    if (count > 0) { id } else { -1 }
+    if count > 0 { id } else { -1 }
 }
 
 /// Grabs all credits matching the query parameters in `CreditQueryParams`

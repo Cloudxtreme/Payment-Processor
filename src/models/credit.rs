@@ -29,14 +29,13 @@ pub struct NewCredit {
 
 #[insertable_into(credits)]
 pub struct InsertableCredit {
-    pub user_id: Option<i32>,
+    pub user_id: i32,
     pub amount: Option<i32>,
-    pub paid_date: Option<PgTimestamp>,
+    //pub paid_date: Option<PgTimestamp>,
     pub created_date: PgTimestamp
 }
 
 pub struct UpdateableCredit {
-    pub user_id: Option<i32>,
     pub amount: Option<i32>,
     //pub paid_date: Option<PgTimestamp>,
 }
@@ -192,12 +191,18 @@ pub fn alter(id: i32, user_id: i32, obj: UpdateableCredit) -> Credit {
     let result = update(credits::table.find(id))
         .set(
             (
-                credits::user_id.eq(obj.user_id.unwrap()),
                 credits::amount.eq(obj.amount)
             )
         ).get_result::<Credit>(&conn)
         .expect(&format!("Unable to find post {}", id));
     result
+}
+pub fn create(new_credit: InsertableCredit) -> Credit {
+    let conn = establish_connection();
+
+    insert(&new_credit).into(credits::table)
+        .get_result::<Credit>(&conn)
+        .expect("Error saving new post")
 }
 
 /// Grabs all credits matching the query parameters in `CreditQueryParams`

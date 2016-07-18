@@ -25,10 +25,8 @@ fn get_params(req: &mut Request) -> (i32, i32, credit::UpdateableCredit) {
     let credit_id = get_route_id(req);
     let user_id = get_user_id(req);
 
-    let new_user_id = get_key_from_body::<i32>(req, "user_id");
     let amount = get_key_from_body::<i32>(req, "amount");
     let updated_credit = credit::UpdateableCredit {
-        user_id: new_user_id,
         amount: amount
     };
 

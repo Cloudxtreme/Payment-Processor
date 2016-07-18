@@ -187,9 +187,12 @@ pub fn find(id: i32, user_id: i32) -> Credit {
 pub fn alter(id: i32, user_id: i32, obj: UpdateableCredit) -> Credit {
     let conn = establish_connection();
 
-    // TODO: Make sure credit belongs to current user
+    // Ensures right credit is updated, and only by the correct user
+    let query = credits::table.filter(credits::id.eq(id))
+        .filter(credits::user_id.eq(user_id));
+
     // TODO: add ability to save paid date as well
-    let result = update(credits::table.find(id))
+    let result = update(query)
         .set(
             (
                 credits::amount.eq(obj.amount)
@@ -204,6 +207,18 @@ pub fn create(new_credit: InsertableCredit) -> Credit {
     insert(&new_credit).into(credits::table)
         .get_result::<Credit>(&conn)
         .expect("Error saving new post")
+}
+
+pub fn destroy(id: i32, user_id: i32) -> i32 {
+    let conn = establish_connection();
+
+    let query = credits::table.filter(credits::id.eq(id))
+        .filter(credits::user_id.eq(user_id));
+
+    let count = delete(query)
+        .execute(&conn)
+        .expect("Error deleting posts");
+    if (count > 0) { id } else { -1 }
 }
 
 /// Grabs all credits matching the query parameters in `CreditQueryParams`

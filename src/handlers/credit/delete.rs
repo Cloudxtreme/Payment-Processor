@@ -9,6 +9,8 @@ use bodyparser::Json;
 use models::credit;
 use uri_params::{self, URIParams};
 use std::collections::HashMap;
+use services::get_user_id;
+use services::get_route_id;
 
 pub struct Delete;
 
@@ -16,7 +18,7 @@ impl Handler for Delete {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         let params = get_params(req);
 
-        let id = credit::delete_from_params(params);
+        let id = credit::destroy(params.0, params.1);
 
         let mut response = Response::new().set(((status::Ok), id.to_json().to_string()));
         response.headers.set(headers::ContentType::json());
@@ -24,26 +26,9 @@ impl Handler for Delete {
         Ok(response)
     }
 }
-fn get_params(req: &mut Request) -> credit::CreditQueryParams {
-    let credit_id = req.extensions.get::<Router>().unwrap().find("id").unwrap_or("").to_string();
+fn get_params(req: &mut Request) -> (i32, i32) {
+    let credit_id = get_route_id(req);    
+    let user_id = get_user_id(req);
 
-    let json_body = req.get::<Json>();
-    let mut user_id: Option<i64> = None;
-    match json_body {
-        Ok(Some(json_body)) => user_id = json_body.find("user_id").unwrap().as_i64(),
-        Ok(None) => println!("No body"),
-        Err(err) => println!("Error: {:?}", err)
-    };
-    let mut params = URIParams::new();
-    params.insert("id".to_string(), vec![credit_id]);
-    params.insert("user_id".to_string(), vec![user_id.unwrap().to_string() ]);
-    match credit::CreditQueryParams::from_delete_request(&params) {
-        Ok(query_params) => query_params,
-        Err(err) => credit::CreditQueryParams { 
-            id: Some(-1),
-            user_id: Some(-1),
-            created_date_greater_than: None,
-            created_date_less_than: None
-        }
-    }
+    (credit_id, user_id)
 }

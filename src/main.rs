@@ -36,34 +36,36 @@ const MAX_BODY_LENGTH: usize = 1024 * 1024 * 10;
 
 
 fn main() {
-    fn HomePage(_: &mut Request) -> IronResult<Response> {
-        Ok(Response::with((iron::status::Ok, "yo")))
-    }
-    fn RedirectHome(_: &mut Request) -> IronResult<Response> {
-        Ok(Response::with((status::Found,
-                           Redirect(Url::parse("http://localhost:3000/home").unwrap()))))
-    }
+    let mut router = Router::new(); // Routes
+    let mut chain;                  // Middleware
+    let mut mount = Mount::new();   // Static File Server (for Index page)
 
-    let mut router = Router::new();
     router
-        .get("/", RedirectHome)
+        .get("/", redirect_home)
         .get("/api/credits/", handlers::credit::Index)
         .get("/api/credits/:id", handlers::credit::Show)
         .put("/api/credits/:id", handlers::credit::Update)
         .post("api/credits/", handlers::credit::Create)
         .delete("api/credits/:id", handlers::credit::Delete);
-    //router.get("/api/expenses", Expenses);
-    
-    let mut chain = Chain::new(router);
-    chain.link_before(Read::<bodyparser::MaxBodyLength>::one(MAX_BODY_LENGTH));
-    chain.link_before(services::Authentication);
 
-    let mut mount = Mount::new();
+    chain = Chain::new(router);
+    chain
+        .link_before(Read::<bodyparser::MaxBodyLength>::one(MAX_BODY_LENGTH))
+        .link_before(services::Authentication);
+
     mount
         .mount("/", chain)
-        .mount("/home",
-               Static::new(Path::new("/Users/gabeharms/Desktop/Practice/Payment-Processor/index.html")));
+        .mount("/home", Static::new(get_index_file_path()));
+
 
     Iron::new(mount).http("localhost:3000").unwrap();
 }
 
+fn redirect_home(_: &mut Request) -> IronResult<Response> {
+    Ok(Response::with((status::Found,
+                       Redirect(Url::parse("http://localhost:3000/home").unwrap()))))
+}
+
+fn get_index_file_path<'a>() -> &'a Path {
+    Path::new("/Users/gabeharms/Desktop/Practice/Payment-Processor/index.html")
+}

@@ -32,11 +32,7 @@ pub struct Alterable {
     //pub paid_date: Option<PgTimestamp>,
 }
 
-/// This is an example of us implementing a 'trait' for a specific
-/// 'struct'. When you implement a 'trait' for a struct, you must define
-/// all of the functions in that trait. 
 impl ToJson for Credit {
-    // '&self' is just a reference to a Credit. Couldn't be just 'self' since its an object
     fn to_json(&self) -> Json {         
         let mut tree = BTreeMap::new();
         tree.insert("id".to_owned(), self.id.to_json());

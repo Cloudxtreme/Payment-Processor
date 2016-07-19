@@ -25,6 +25,7 @@ urlencoded = "0.3.0"
 bodyparser = "*"
 persistent = "*"
 rust-crypto = "^0.2"
+jwt = "*"
 
 [features]
 default = ["nightly"]

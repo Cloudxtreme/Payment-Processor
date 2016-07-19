@@ -1,5 +1,6 @@
 use crypto::bcrypt::{bcrypt};
 use util::{AuthToken};
+use services::{build_token};
 
 pub fn hash_password(password: String) -> String {
     let salt = b"salt for you now";  // Must be 16 chars
@@ -19,7 +20,7 @@ pub fn authenticate(password: String, hash: String, user_id: i32) -> AuthToken {
 
     // TODO: Produce a real token based on the user id
     if hash.eq(&generated_hash) {
-        AuthToken { token: "Heyyy".to_string().to_owned() }
+        AuthToken { token: build_token(&user_id.to_string()) }
     }
     else {
         AuthToken { token: "Authentication Failed".to_string().to_owned() }

@@ -11,6 +11,7 @@ extern crate mount;
 extern crate bodyparser;
 extern crate persistent;
 extern crate crypto;
+extern crate jwt;
 
 #[macro_use]
 extern crate diesel;

@@ -48,7 +48,8 @@ fn main() {
         .put("/api/credits/:id", handlers::credit::Update)
         .post("api/credits/", handlers::credit::Create)
         .delete("api/credits/:id", handlers::credit::Delete)
-        .post("api/users/", handlers::user::Create);
+        .post("api/users/", handlers::user::Create)
+        .post("api/login", handlers::session::Login);
 
     chain = Chain::new(router);
     chain

@@ -62,14 +62,15 @@ impl User {
         result
     }
 
-    pub fn find(id: i32) -> Retrievable {
+    pub fn find(id: i32) -> User {
         let source = users::table.into_boxed().filter(users::id.eq(id));
 
         let conn = establish_connection();
-        let result: Retrievable = source.select(
+        let result: User = source.select(
             (
                 users::id,
                 users::admin,
+                users::password_hash,
                 users::created_date
             )
             ).first(&conn).unwrap();

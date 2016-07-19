@@ -48,7 +48,7 @@ impl ToJson for User {
 
 impl User {
     /// Grabs all users, if current user is admin 
-    fn all() -> Vec<Retrievable> {
+    pub fn all() -> Vec<Retrievable> {
         let source = users::table.into_boxed();
 
         let conn = establish_connection();
@@ -62,7 +62,7 @@ impl User {
         result
     }
 
-    fn find(id: i32) -> Retrievable {
+    pub fn find(id: i32) -> Retrievable {
         let source = users::table.into_boxed().filter(users::id.eq(id));
 
         let conn = establish_connection();
@@ -76,7 +76,7 @@ impl User {
         result
     }
 
-    fn alter(id: i32, obj: Alterable) -> User {
+    pub fn alter(id: i32, obj: Alterable) -> User {
         let conn = establish_connection();
 
         let query = users::table.filter(users::id.eq(id));
@@ -93,7 +93,7 @@ impl User {
         result
     }
 
-    fn create(new_user: Createable) -> User {
+    pub fn create(new_user: Createable) -> User {
         let conn = establish_connection();
 
         insert(&new_user).into(users::table)
@@ -101,7 +101,7 @@ impl User {
             .expect("Error saving new post")
     }
 
-    fn destroy(id: i32) -> i32 {
+    pub fn destroy(id: i32) -> i32 {
         let conn = establish_connection();
 
         let query = users::table.filter(users::id.eq(id));

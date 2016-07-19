@@ -25,6 +25,7 @@ fn build_new_user(req: &mut Request) -> Createable {
     let admin = get_key_from_body::<bool>(req, "admin");
     let password_hash = hash_password(get_key_from_body::<String>(req, "password").unwrap());
     let created_date = PgTimestamp(Local::now().naive_local().timestamp() );
+
     Createable {
         admin: admin.unwrap(),
         password_hash: password_hash,

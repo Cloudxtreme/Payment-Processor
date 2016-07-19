@@ -24,6 +24,7 @@ rustc-serialize = "0.3.19"
 urlencoded = "0.3.0"
 bodyparser = "*"
 persistent = "*"
+rust-crypto = "^0.2"
 
 [features]
 default = ["nightly"]

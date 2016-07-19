@@ -1,6 +1,6 @@
 use chrono::*;
 
-
+/// Takes a postgres datetime (i64) and converts it to a unix datetime 
 pub fn from_postgres_to_unix_datetime(pg_timestamp: i64) -> i64 {
     // The Postgres epoch is 2000-01-01, and Diesel converts Postgres timestamps
     // into microseconds, so we need to go from microseconds since 2000-01-01 to

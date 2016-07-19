@@ -12,6 +12,13 @@ pub struct Authentication;
 // This is of course after we add a users table and create login endpoints. There will also
 // have to be some whitelist check to make sure that the login endpoints are accessible without
 // a user id token in the headers. Consider renaming this to 'Authenticated'.
+// Don't forget to blank out whatever is existing in the requests extentions to avoid a
+// vulnerability
+
+/// Middleware that determines if a user is authenticated already or not. If the inbound request
+/// contains a token that can be decoded properly into a user id, then the user has already been
+/// authenticated, and we will insert the user id into the request's extension member for further
+/// use
 impl BeforeMiddleware for Authentication {
     fn before(&self, req: &mut Request) -> IronResult<()> {
         if let Ok(params) = req.get::<UrlEncodedQuery>() {

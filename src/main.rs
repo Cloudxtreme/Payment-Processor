@@ -67,5 +67,6 @@ fn redirect_home(_: &mut Request) -> IronResult<Response> {
 }
 
 fn get_index_file_path<'a>() -> &'a Path {
+    // TODO: Not hardcode file path
     Path::new("/Users/gabeharms/Desktop/Practice/Payment-Processor/index.html")
 }

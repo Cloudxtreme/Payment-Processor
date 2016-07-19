@@ -1,17 +1,16 @@
 use chrono::*;
 use iron::prelude::*;
-use iron::{headers, status};
-use iron::Handler;
+use iron::{Handler, headers, status};
 use diesel::types::structs::data_types::PgTimestamp;
 use rustc_serialize::json::{ToJson};
 use models::credit::{Credit, Createable};
-use services::get_user_id;
-use services::get_key_from_body;
+use services::{get_user_id, get_key_from_body};
 use util::Orm;
 
 
 pub struct Create;
 
+/// Creates a new credit with attributes specified in the body of the request
 impl Handler for Create {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         let new_credit = build_new_credit(req);

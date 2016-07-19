@@ -1,15 +1,14 @@
 use iron::prelude::*;
-use iron::{headers, status};
-use iron::Handler;
+use iron::{Handler, headers, status};
 use rustc_serialize::json::{ToJson};
 use models::credit::{Credit, Alterable};
-use services::get_user_id;
-use services::get_route_id;
-use services::get_key_from_body;
+use services::{get_user_id, get_route_id, get_key_from_body};
 use util::Orm;
 
 pub struct Update;
 
+/// Updates the credit specified by the id in the params with
+/// the attributes found in the body
 impl Handler for Update {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         let params = get_params(req);

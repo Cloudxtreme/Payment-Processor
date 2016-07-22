@@ -1,8 +1,7 @@
 use iron::prelude::*;
 use iron::BeforeMiddleware;
-use urlencoded::{UrlEncodedQuery};
 use util::Auth;
-use services::get_key_from_uri_query;
+use services::{verify_token};
 
 pub struct Authentication;
 
@@ -21,10 +20,11 @@ pub struct Authentication;
 /// use
 impl BeforeMiddleware for Authentication {
     fn before(&self, req: &mut Request) -> IronResult<()> {
-        if let Ok(params) = req.get::<UrlEncodedQuery>() {
-            let user_id = get_key_from_uri_query::<i32>(&params, "user_id"); 
-            req.extensions.insert::<Auth>(user_id.unwrap());
-        }
+        let token =
+            String::from_utf8((*req.headers.get_raw("X-Auth").unwrap())[0].clone()).ok().unwrap();
+        let user_id = verify_token(&token);
+
+        req.extensions.insert::<Auth>(user_id);
         Ok(())  
             //Err(IronError::new(StringError("Error in ErrorProducer
             //                                      BeforeMiddleware".to_string()), status::BadRequest))

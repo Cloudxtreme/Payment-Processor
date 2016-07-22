@@ -26,6 +26,7 @@ bodyparser = "*"
 persistent = "*"
 rust-crypto = "^0.2"
 jwt = "*"
+hyper = "*"
 
 [features]
 default = ["nightly"]

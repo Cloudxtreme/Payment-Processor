@@ -16,6 +16,7 @@ extern crate jwt;
 #[macro_use]
 extern crate diesel;
 extern crate dotenv;
+#[macro_use] extern crate hyper;
 
 #[cfg(feature = "nightly")]
 include!("main.rs.in");

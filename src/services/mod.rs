@@ -1,10 +1,10 @@
-mod authentication;
+mod ensure_authenticated;
 mod bcrypt;
 mod jwt;
 mod param_parser;
 mod datetime_conversion;
 
-pub use self::authentication::Authentication;
+pub use self::ensure_authenticated::EnsureAuthenticated;
 
 pub use self::bcrypt::hash_password;
 pub use self::bcrypt::authenticate;

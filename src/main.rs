@@ -56,7 +56,7 @@ fn main() {
     chain = Chain::new(router);
     chain
         .link_before(Read::<bodyparser::MaxBodyLength>::one(MAX_BODY_LENGTH))
-        .link_before(services::Authentication);
+        .link_before(services::EnsureAuthenticated);
 
     mount
         .mount("/", chain)

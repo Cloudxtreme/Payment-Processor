@@ -40,8 +40,7 @@ impl BeforeMiddleware for EnsureAuthenticated {
 
 
         req.extensions.insert::<Auth>(user_id);
-        println!("{:?}", req.url.path());
-        if user_id == -1 {
+        if user_id == -1 && not_the_index_page(req.url.path[0].clone()) {
             Err(IronError::new(
                     StringError("Error in ErrorProducer BeforeMiddleware".to_string()),
                     status::BadRequest)
@@ -58,3 +57,6 @@ impl BeforeMiddleware for EnsureAuthenticated {
 
 }
 
+fn not_the_index_page(path: String) -> bool {
+    path == "home"
+}

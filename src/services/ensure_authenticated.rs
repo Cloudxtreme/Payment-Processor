@@ -40,6 +40,7 @@ impl BeforeMiddleware for EnsureAuthenticated {
 
 
         req.extensions.insert::<Auth>(user_id);
+        println!("{:?}", req.url.path());
         if user_id == -1 {
             Err(IronError::new(
                     StringError("Error in ErrorProducer BeforeMiddleware".to_string()),

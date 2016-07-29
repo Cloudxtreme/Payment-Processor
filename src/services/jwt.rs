@@ -16,14 +16,13 @@ pub fn build_token(user_id: &str) -> String {
     };
     let token = Token::new(header, claims);
 
-    // TODO: Hide secret key
-    token.signed(dotenv!("DATABASE_URL"), Sha256::new()).ok().unwrap()
+    token.signed(get_secret_key().into_bytes().as_slice(), Sha256::new()).ok().unwrap()
 }
 
 pub fn verify_token(token: &str) -> Result<i32, Error> {
     let token = try!(Token::<Header, Registered>::parse(token));
 
-    if token.verify(b"secret_key", Sha256::new()) {
+    if token.verify(get_secret_key().into_bytes().as_slice(), Sha256::new()) {
         let raw_token = token.claims.sub.unwrap_or("bad token".to_string());
         let parsed_token = try!(raw_token.parse::<i32>());
         Ok(parsed_token)
@@ -31,4 +30,8 @@ pub fn verify_token(token: &str) -> Result<i32, Error> {
     else {
        Err(Error::BadRequest) 
     }
+}
+
+fn get_secret_key() -> String {
+    dotenv!("SECRET_KEY").to_string()
 }

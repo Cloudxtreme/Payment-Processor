@@ -1,10 +1,13 @@
 mod ensure_authenticated;
+mod catch_unauthenticated_request;
 mod bcrypt;
 mod jwt;
 mod param_parser;
 mod datetime_conversion;
 
 pub use self::ensure_authenticated::EnsureAuthenticated;
+
+pub use self::catch_unauthenticated_request::CatchUnauthenticatedRequest;
 
 pub use self::bcrypt::hash_password;
 pub use self::bcrypt::authenticate;

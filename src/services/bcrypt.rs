@@ -18,7 +18,6 @@ pub fn hash_password(password: String) -> String {
 pub fn authenticate(password: String, hash: String, user_id: i32) -> AuthToken {
     let generated_hash = hash_password(password);
 
-    // TODO: Produce a real token based on the user id
     if hash.eq(&generated_hash) {
         AuthToken { token: build_token(&user_id.to_string()) }
     }

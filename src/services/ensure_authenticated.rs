@@ -1,25 +1,13 @@
 use iron::prelude::*;
 use iron::BeforeMiddleware;
 use iron::status;
-use std::error::{Error};
+use std::error;
 use std::fmt::{self, Debug};
-use util::Auth;
+use util::{Auth, Error};
 use services::{verify_token};
 
+
 pub struct EnsureAuthenticated;
-
-#[derive(Debug)]
-struct StringError(String);
-
-impl fmt::Display for StringError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        Debug::fmt(self, f)
-    }
-}
-
-impl Error for StringError {
-    fn description(&self) -> &str { &*self.0 }
-}
 
 /// Middleware that determines if a user is authenticated already or not. If the inbound request
 /// contains a token that can be decoded properly into a user id, then the user has already been
@@ -34,22 +22,9 @@ impl Error for StringError {
 ///
 impl BeforeMiddleware for EnsureAuthenticated {
     fn before(&self, req: &mut Request) -> IronResult<()> {
-        let token =
-            String::from_utf8((*req.headers.get_raw("X-Auth").unwrap())[0].clone()).ok().unwrap();
-        let user_id = verify_token(&token);
-
-
-        req.extensions.insert::<Auth>(user_id);
-        if user_id == -1 && not_the_index_page(req.url.path[0].clone()) {
-            Err(IronError::new(
-                    StringError("Error in ErrorProducer BeforeMiddleware".to_string()),
-                    status::BadRequest)
-               )
-        }
-        else {
-            Ok(())
-        }
-
+        // TODO: Add to the util::Error enum a AuthenticationFailure member
+        itry!(parse_token(req), status::BadRequest);
+        Ok(())
     }
     fn catch(&self, _: &mut Request, _: IronError) -> IronResult<()> { 
         Ok(()) 
@@ -57,6 +32,25 @@ impl BeforeMiddleware for EnsureAuthenticated {
 
 }
 
-fn not_the_index_page(path: String) -> bool {
-    path == "home"
+/// Parses the JWT token from the 'X-Auth' header of the request, if the request is attempting
+/// to hit a protected route. If an invalid / no token is received an Error will be returned
+/// as the result, and the AfterMiddleware will send an error response back.
+fn parse_token(req: &mut Request) -> Result<(), Error> {
+    let ref path = req.url.path;                     // Parsed to determine if token is required
+    let ref x_auth = req.headers.get_raw("X-Auth");  // Pulls raw X-Auth token bytes from request
+    let invalid_token: &[Vec<u8>] = &[Vec::new()];   // Used if there's no X-Auth token the request
+
+    if in_secure_area(path[0].clone(), path[1].clone()) {
+        let token = 
+        try!(String::from_utf8((*x_auth.unwrap_or(invalid_token))[0].clone()));
+        let user_id = try!(verify_token(&token));
+        req.extensions.insert::<Auth>(user_id);
+    }
+
+    Ok(())
+}
+
+/// As of now, are only two open routes are '/home' and 'api/login'
+fn in_secure_area(first: String, second: String) -> bool {
+    first != "home" && second != "login"
 }

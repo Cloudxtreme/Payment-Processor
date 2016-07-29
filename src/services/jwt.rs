@@ -5,11 +5,12 @@ use jwt::{
     Registered,
     Token,
 };
+use util::Error;
 
 pub fn build_token(user_id: &str) -> String {
     let header: Header = Default::default();
     let claims = Registered {
-        iss: Some("mikkyang.com".into()),
+        iss: Some("payment_processor.com".into()),
         sub: Some(user_id.into()),
         ..Default::default()
     };
@@ -19,13 +20,15 @@ pub fn build_token(user_id: &str) -> String {
     token.signed(b"secret_key", Sha256::new()).ok().unwrap()
 }
 
-pub fn verify_token(token: &str) -> i32 {
-    let token = Token::<Header, Registered>::parse(token).unwrap();
+pub fn verify_token(token: &str) -> Result<i32, Error> {
+    let token = try!(Token::<Header, Registered>::parse(token));
 
     if token.verify(b"secret_key", Sha256::new()) {
-        token.claims.sub.unwrap().parse::<i32>().ok().unwrap()
+        let raw_token = token.claims.sub.unwrap_or("bad token".to_string());
+        let parsed_token = try!(raw_token.parse::<i32>());
+        Ok(parsed_token)
     }
     else {
-       -1 
+       Err(Error::BadRequest) 
     }
 }

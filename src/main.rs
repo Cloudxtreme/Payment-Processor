@@ -1,7 +1,7 @@
 #![cfg_attr(feature = "nightly", feature(custom_derive, custom_attribute, plugin))]
 #![cfg_attr(feature = "nightly", plugin(diesel_codegen, dotenv_macros))]
 
-extern crate iron;
+#[macro_use] extern crate iron;
 extern crate router;
 extern crate rustc_serialize;
 extern crate urlencoded;
@@ -56,7 +56,8 @@ fn main() {
     chain = Chain::new(router);
     chain
         .link_before(Read::<bodyparser::MaxBodyLength>::one(MAX_BODY_LENGTH))
-        .link_before(services::EnsureAuthenticated);
+        .link_before(services::EnsureAuthenticated)
+        .link_after(services::CatchUnauthenticatedRequest);
 
     mount
         .mount("/", chain)

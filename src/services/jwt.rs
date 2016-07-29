@@ -17,7 +17,7 @@ pub fn build_token(user_id: &str) -> String {
     let token = Token::new(header, claims);
 
     // TODO: Hide secret key
-    token.signed(b"secret_key", Sha256::new()).ok().unwrap()
+    token.signed(dotenv!("DATABASE_URL"), Sha256::new()).ok().unwrap()
 }
 
 pub fn verify_token(token: &str) -> Result<i32, Error> {

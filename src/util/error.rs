@@ -29,19 +29,19 @@ impl fmt::Display for Error {
 }
 
 impl From<FromUtf8Error> for Error {
-    fn from(err: FromUtf8Error) -> Self {
+    fn from(_: FromUtf8Error) -> Self {
         Error::BadRequest
     }
 }
 
 impl From<jwt::Error> for Error {
-    fn from(err: jwt::Error) -> Self {
+    fn from(_: jwt::Error) -> Self {
         Error::BadRequest
     }
 }
 
 impl From<ParseIntError> for Error {
-    fn from(err: ParseIntError) -> Self {
+    fn from(_: ParseIntError) -> Self {
         Error::BadRequest
     }
 }

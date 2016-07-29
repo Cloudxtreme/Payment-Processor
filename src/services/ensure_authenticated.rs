@@ -1,8 +1,6 @@
 use iron::prelude::*;
 use iron::BeforeMiddleware;
 use iron::status;
-use std::error;
-use std::fmt::{self, Debug};
 use util::{Auth, Error};
 use services::{verify_token};
 

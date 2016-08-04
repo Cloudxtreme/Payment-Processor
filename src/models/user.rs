@@ -6,6 +6,8 @@ use schema::users as users;
 use database::establish_connection;
 use services::from_postgres_to_unix_datetime;
 
+// TODO: Add migrtaion to add username and full name columns
+
 // This is the data structure that models a database 'user',
 // and have to add diesel annotation in order to generate the 
 // correct schema and relationships.

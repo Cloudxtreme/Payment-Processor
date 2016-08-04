@@ -21,6 +21,7 @@ pub struct EnsureAuthenticated;
 impl BeforeMiddleware for EnsureAuthenticated {
     fn before(&self, req: &mut Request) -> IronResult<()> {
         // TODO: Add to the util::Error enum a AuthenticationFailure member
+        println!("{:?}", req.url);
         itry!(parse_token(req), status::BadRequest);
         Ok(())
     }
@@ -50,5 +51,5 @@ fn parse_token(req: &mut Request) -> Result<(), Error> {
 
 /// As of now, are only two open routes are '/home' and 'api/login'
 fn in_secure_area(first: String, second: String) -> bool {
-    first != "home" && second != "login"
+    first != "home" && first != "app" && first != "client" && first != "bower_components" && second != "login"
 }

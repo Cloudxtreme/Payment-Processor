@@ -50,6 +50,7 @@ fn main() {
         .put("/api/credits/:id", handlers::credit::Update)
         .post("api/credits/", handlers::credit::Create)
         .delete("api/credits/:id", handlers::credit::Delete)
+        // TODO: Add GET /api/users/:id route
         .post("api/users/", handlers::user::Create)
         .post("api/login", handlers::session::Login);
 
@@ -61,6 +62,10 @@ fn main() {
 
     mount
         .mount("/", chain)
+        .mount("/app", Static::new(Path::new("/Users/gabeharms/Desktop/Practice/Payment-Processor/dist/client/app")))
+        //.mount("/app", Static::new(Path::new("/Users/gabeharms/Desktop/Practice/Payment-Processor/client/app")))
+        .mount("/components", Static::new(Path::new("/Users/gabeharms/Desktop/Practice/Payment-Processor/client/components")))
+        .mount("/bower_components", Static::new(Path::new("/Users/gabeharms/Desktop/Practice/Payment-Processor/client/bower_components")))
         .mount("/home", Static::new(get_index_file_path()));
 
 
@@ -74,5 +79,5 @@ fn redirect_home(_: &mut Request) -> IronResult<Response> {
 
 fn get_index_file_path<'a>() -> &'a Path {
     // TODO: Not hardcode file path
-    Path::new("/Users/gabeharms/Desktop/Practice/Payment-Processor/index.html")
+    Path::new("/Users/gabeharms/Desktop/Practice/Payment-Processor/dist/client/index.html")
 }

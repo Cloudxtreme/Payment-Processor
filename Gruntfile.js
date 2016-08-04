@@ -203,13 +203,14 @@ module.exports = function (grunt) {
       }
     },
     concat: {
-      yo: {
+      dist: {
         files: [
           {
-            dest: '.tmp/concat/app/app-yo.js',
+            dest: '.tmp/concat/app/app.production.js',
             src: [
               '.tmp/app/**/*.js',
-              '.tmp/components/**/*.js'
+              '.tmp/components/**/*.js',
+              '.tmp/templates.js'
             ]
           }
         ]
@@ -220,11 +221,11 @@ module.exports = function (grunt) {
         report: 'min',
         mangle: false 
       },
-      yo: {
+      dist: {
         files: [
           {
             dest: 'dist/client/app/app.js',
-            src: [ '.tmp/concat/app/app-yo.js' ]
+            src: [ '.tmp/concat/app/app.production.js' ]
           }, {
             dest: 'dist/client/app/vendor.js',
             src: [ '.tmp/concat/app/vendor.js' ]
@@ -248,15 +249,10 @@ module.exports = function (grunt) {
         },
         usemin: 'app/app.js'
       },
-      main: {
+      dist: {
         cwd: '<%= yeoman.client %>',
         src: ['{app,components}/**/*.html'],
-        dest: 'dist/client/app/templates.js'
-      },
-      tmp: {
-        cwd: '.tmp',
-        src: ['{app,components}/**/*.html'],
-        dest: '.tmp/tmp-templates.js'
+        dest: '.tmp/templates.js'
       }
     },
 
@@ -303,21 +299,6 @@ module.exports = function (grunt) {
       pre: [
         'injector:sass',
       ],
-      server: [
-        'newer:babel:client',
-        'sass',
-      ],
-      test: [
-        'newer:babel:client',
-        'sass',
-      ],
-      debug: {
-        tasks: [
-        ],
-        options: {
-          logConcurrentOutput: true
-        }
-      },
       dist: [
         'newer:babel:client',
         'sass',
@@ -428,121 +409,10 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('serve', function (target) {
-    if (target === 'dist') {
-      return grunt.task.run(['build', 'env:all', 'env:prod']);
-    }
-
-    if (target === 'debug') {
-      return grunt.task.run([
-        'env:all',
-        'concurrent:pre',
-        'concurrent:server',
-        'injector',
-        'wiredep:client',
-        'postcss',
-        'concurrent:debug'
-      ]);
-    }
-
-    grunt.task.run([
-      'env:all',
-      'concurrent:pre',
-      'concurrent:server',
-      'injector',
-      'wiredep:client',
-      'postcss',
-      'watch'
-    ]);
+    // TODO: Implement a serve task (will have to create a subtask to build rust app
+    console.log('Not yet implemented');
   });
-
-  grunt.registerTask('server', function () {
-    grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
-    grunt.task.run(['serve']);
-  });
-
-  grunt.registerTask('test', function(target, option) {
-    if (target === 'server') {
-      return grunt.task.run([
-        'env:all',
-        'env:test'
-      ]);
-    }
-
-    else if (target === 'client') {
-      return grunt.task.run([
-        'env:all',
-        'concurrent:pre',
-        'concurrent:test',
-        'injector',
-        'postcss',
-        'wiredep:test',
-        'karma'
-      ]);
-    }
-
-    else if (target === 'e2e') {
-
-      if (option === 'prod') {
-        return grunt.task.run([
-          'build',
-          'env:all',
-          'env:prod',
-          'express:prod',
-          'protractor'
-        ]);
-      }
-
-      else {
-        return grunt.task.run([
-          'env:all',
-          'env:test',
-          'concurrent:pre',
-          'concurrent:test',
-          'injector',
-          'wiredep:client',
-          'postcss',
-          'express:dev',
-          'protractor'
-        ]);
-      }
-    }
-
-    else if (target === 'coverage') {
-
-      if (option === 'unit') {
-        return grunt.task.run([
-          'env:all',
-          'env:test'
-        ]);
-      }
-
-      else if (option === 'integration') {
-        return grunt.task.run([
-          'env:all',
-          'env:test'
-        ]);
-      }
-
-      else if (option === 'check') {
-        return grunt.task.run([
-          'istanbul_check_coverage'
-        ]);
-      }
-
-      else {
-        return grunt.task.run([
-          'env:all',
-          'env:test'
-        ]);
-      }
-
-    }
-
-    else grunt.task.run([
-      'test:client'
-    ]);
-  });
-
+  
   grunt.registerTask('build', [
     'clean:dist',
     'jshint',
@@ -552,21 +422,19 @@ module.exports = function (grunt) {
     'wiredep:client',
     'useminPrepare',
     'postcss',
-    'ngtemplates',
-    'concat:yo',
+    'ngtemplates:dist',
+    'concat:dist',
     'concat:generated',
     'ngAnnotate',
     'copy:dist',
     'cdnify',
     'cssmin',
-    'uglify:yo',
+    'uglify:dist',
     'filerev',
     'usemin'
   ]);
 
   grunt.registerTask('default', [
-    'newer:jshint',
-    'test',
-    'build'
+    'build',
   ]);
 };

@@ -62,10 +62,7 @@ fn main() {
 
     mount
         .mount("/", chain)
-        .mount("/app", Static::new(Path::new("/Users/gabeharms/Desktop/Practice/Payment-Processor/dist/client/app")))
-        //.mount("/app", Static::new(Path::new("/Users/gabeharms/Desktop/Practice/Payment-Processor/client/app")))
-        .mount("/components", Static::new(Path::new("/Users/gabeharms/Desktop/Practice/Payment-Processor/client/components")))
-        .mount("/bower_components", Static::new(Path::new("/Users/gabeharms/Desktop/Practice/Payment-Processor/client/bower_components")))
+        .mount("/app", Static::new(get_client_resources_path())) // TODO: make route 'public/
         .mount("/home", Static::new(get_index_file_path()));
 
 
@@ -81,3 +78,8 @@ fn get_index_file_path<'a>() -> &'a Path {
     // TODO: Not hardcode file path
     Path::new("/Users/gabeharms/Desktop/Practice/Payment-Processor/dist/client/index.html")
 }
+
+
+fn get_client_resources_path<'a>() -> &'a Path {
+    // TODO: Not hardcode file path
+    Path::new("/Users/gabeharms/Desktop/Practice/Payment-Processor/dist/client/app")}

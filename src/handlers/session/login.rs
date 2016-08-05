@@ -21,7 +21,7 @@ impl Handler for Login {
 }
 fn get_params(req: &mut Request) -> (String, User) {
     let email = get_key_from_body::<String>(req, "email").unwrap().replace("\"", "");
-    let password = get_key_from_body::<String>(req, "password").unwrap().unwrap("\"", "");
+    let password = get_key_from_body::<String>(req, "password").unwrap().replace("\"", "");
 
     let user = User::find_by_email(email);
 

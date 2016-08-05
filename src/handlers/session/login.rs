@@ -20,6 +20,7 @@ impl Handler for Login {
     }
 }
 fn get_params(req: &mut Request) -> (String, User) {
+    // TODO: Authenticate via username, not user_id
     let user_id = get_key_from_body::<i32>(req, "user_id").unwrap();
     let password = get_key_from_body::<String>(req, "password").unwrap();
 

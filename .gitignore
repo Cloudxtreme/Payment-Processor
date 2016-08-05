@@ -1,2 +1,11 @@
 target/**
 .env
+node_modules
+public
+.tmp
+.sass-cache
+.idea
+bower_components
+dist
+/server/config/local.env.js
+npm-debug.log

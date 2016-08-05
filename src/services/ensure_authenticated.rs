@@ -50,5 +50,5 @@ fn parse_token(req: &mut Request) -> Result<(), Error> {
 
 /// As of now, are only two open routes are '/home' and 'api/login'
 fn in_secure_area(first: String, second: String) -> bool {
-    first != "home" && second != "login"
+    first != "home" && first != "app" && first != "bower_components" && second != "login"
 }

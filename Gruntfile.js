@@ -218,7 +218,7 @@ module.exports = function (grunt) {
     },
     uglify: {
       options: {
-        mangle: false 
+        mangle: true 
       },
       dist: {
         files: [
@@ -422,9 +422,9 @@ module.exports = function (grunt) {
     'useminPrepare',
     'postcss',
     'ngtemplates:dist',
+    'ngAnnotate',
     'concat:dist',
     'concat:generated',
-    'ngAnnotate',
     'copy:dist',
     'cdnify',
     'cssmin',

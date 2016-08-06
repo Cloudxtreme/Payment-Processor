@@ -39,10 +39,10 @@ function loginManager($q, $http, $state) {
 	function _login(username, password) {
 		var deferred = $q.defer();
 
-		$http.post('api/login', {username: username, password: password})
-			.success(function(token) {
-				service.token = token;
-				deferred.resolve(token);
+		$http.post('api/login', {email: username, password: password})
+			.success(function(data) {
+				service.token = data.token;
+				deferred.resolve(data.token);
 			})
 			.error(function(data, status) {
 				deferred.reject(status);

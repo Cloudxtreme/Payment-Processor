@@ -50,7 +50,7 @@ fn main() {
         .put("/api/credits/:id", handlers::credit::Update)
         .post("api/credits/", handlers::credit::Create)
         .delete("api/credits/:id", handlers::credit::Delete)
-        .get("api/users/:id", handlers::user::Show)
+        .get("api/user", handlers::user::Show)
         .post("api/users/", handlers::user::Create)
         .post("api/login", handlers::session::Login);
 

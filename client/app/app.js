@@ -33,5 +33,12 @@ angular.module('paymentProcessor', [
       templateUrl: 'app/dashboard/summary/summary.html',
       controller: 'SummaryCtrl',
       controllerAs: 'summaryCtrl'
+    })
+    .state('dashboard.credits', {
+      url: '/credits',
+      templateUrl: 'app/dashboard/credits/credits.html',
+      controller: 'CreditsCtrl',
+      controllerAs: 'creditsCtrl'
     });
+
 });

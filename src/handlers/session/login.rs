@@ -9,6 +9,7 @@ pub struct Login;
 /// Creates a new user with attributes specified in the body of the request
 impl Handler for Login {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
+        // TODO: Wrap in result, in scenario where neccessary keys don't exist in the body
         let params = get_params(req);
 
         let token = authenticate(params.0, params.1.password_hash, params.1.id);

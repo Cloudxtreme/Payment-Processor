@@ -1,0 +1,9 @@
+
+<b> Credits </b>
+
+<div ng-repeat="credit in creditsCtrl.credits | orderBy:'paid_date':true">
+  <p>Amount: {{credit.amount}}</p>
+  <p>Paid Date: {{credit.paid_date}}</p>
+</div>
+
+

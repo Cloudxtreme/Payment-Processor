@@ -22,7 +22,7 @@ function loginCtrl($scope, $rootScope, $http, $state, loginManager) {
     function _loginSuccess() {
       viewModel.loginError = false;
       $rootScope.$emit('login');
-      $state.go('dashboard.summary');
+      $state.go('dashboard.credits');
     }
 
     function _loginFailure() {

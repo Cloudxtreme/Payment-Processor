@@ -30,6 +30,7 @@ module.exports = function (grunt) {
         verbose: true,
       },
       build: {},
+      run: {},
     },
     watch: {
       babel: {
@@ -413,11 +414,28 @@ module.exports = function (grunt) {
     },
   });
 
-  grunt.registerTask('serve', function (target) {
-    // TODO: Implement a serve task (will have to create a subtask to build rust app
-    console.log('Not yet implemented');
-  });
-  
+  grunt.registerTask('serve', [
+    'clean:dist',
+    'jshint',
+    'concurrent:pre',
+    'concurrent:dist',
+    'injector',
+    'wiredep:client',
+    'useminPrepare',
+    'postcss',
+    'ngtemplates:dist',
+    'ngAnnotate',
+    'concat:dist',
+    'concat:generated',
+    'copy:dist',
+    'cdnify',
+    'cssmin',
+    'uglify:dist',
+    'filerev',
+    'usemin',
+    'rust:run',
+  ]);
+
   grunt.registerTask('build', [
     'clean:dist',
     'jshint',

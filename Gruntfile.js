@@ -9,12 +9,12 @@ module.exports = function (grunt) {
     cdnify: 'grunt-google-cdn',
     protractor: 'grunt-protractor-runner',
     buildcontrol: 'grunt-build-control',
+    rust: 'tasks/rust.js',
   });
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
-  //grunt.loadTasks("./tasks"); // TODO: Add rust build task
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -24,6 +24,12 @@ module.exports = function (grunt) {
       // configurable paths
       client: require('./bower.json').appPath || 'client',
       dist: 'dist'
+    },
+    rust: {
+      options: {
+        verbose: true,
+      },
+      build: {},
     },
     watch: {
       babel: {
@@ -430,7 +436,8 @@ module.exports = function (grunt) {
     'cssmin',
     'uglify:dist',
     'filerev',
-    'usemin'
+    'usemin',
+    'rust:build',
   ]);
 
   grunt.registerTask('default', [

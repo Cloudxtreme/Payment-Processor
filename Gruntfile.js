@@ -9,7 +9,7 @@ module.exports = function (grunt) {
     cdnify: 'grunt-google-cdn',
     protractor: 'grunt-protractor-runner',
     buildcontrol: 'grunt-build-control',
-    rust: 'tasks/rust.js',
+    rust: 'grunt-rust',
   });
 
   // Time how long tasks take. Can help when optimizing build times

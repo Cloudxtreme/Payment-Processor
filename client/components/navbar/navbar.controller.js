@@ -1,7 +1,6 @@
 'use strict';
 
 function navbarController() {
-  /*jshint validthis: true */
   var viewModel = this;
 
   /** Controller Variables **/

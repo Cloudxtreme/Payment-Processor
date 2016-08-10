@@ -4,7 +4,6 @@ angular.module('paymentProcessor')
   .service('loginManager', loginManager);
 
 function loginManager ($q, $http, $state, User) {
-	/*jshint validthis: true */
 	const service = this;
 
 

@@ -1,8 +1,9 @@
 use iron::prelude::*;
 use iron::{Handler, headers, status};
+use diesel::types::structs::data_types::PgTimestamp;
 use rustc_serialize::json::{ToJson};
 use models::credit::{Credit, Alterable};
-use services::{get_user_id, get_route_id, get_key_from_body};
+use services::{get_user_id, get_route_id, get_key_from_body, from_unix_to_postgres_datetime};
 use util::Orm;
 
 pub struct Update;
@@ -22,13 +23,17 @@ impl Handler for Update {
     }
 }
 fn get_params(req: &mut Request) -> (i32, i32, Alterable) {
-    // TODO: Make it so that you can update `paid_date` as well
     let credit_id = get_route_id(req);
     let user_id = get_user_id(req);
 
     let amount = get_key_from_body::<i32>(req, "amount");
+    let paid_date = from_unix_to_postgres_datetime(
+        get_key_from_body::<i64>(req, "paid_date").unwrap()
+    );
+
     let updated_credit = Alterable {
-        amount: amount
+        amount: amount,
+        paid_date: Some(PgTimestamp(paid_date))
     };
 
     (credit_id, user_id, updated_credit)

@@ -4,7 +4,7 @@ use iron::{Handler, headers, status};
 use diesel::types::structs::data_types::PgTimestamp;
 use rustc_serialize::json::{ToJson};
 use models::credit::{Credit, Createable};
-use services::{get_user_id, get_key_from_body};
+use services::{get_user_id, get_key_from_body, from_unix_to_postgres_datetime};
 use util::Orm;
 
 
@@ -24,14 +24,17 @@ impl Handler for Create {
     }
 }
 fn build_new_credit(req: &mut Request) -> Createable {
-    // TODO: Mke it so that you can specify a `paid date` as well
     let user_id = get_user_id(req);
     let amount = get_key_from_body::<i32>(req, "amount");
+    let paid_date = from_unix_to_postgres_datetime(
+        get_key_from_body::<i64>(req, "paid_date").unwrap()
+    );
     let created_date = PgTimestamp(Local::now().naive_local().timestamp() );
 
     Createable {
         user_id: user_id,
         amount: amount,
+        paid_date: Some(PgTimestamp(paid_date)),
         created_date: created_date
     }
 }

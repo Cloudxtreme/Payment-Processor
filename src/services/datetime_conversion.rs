@@ -11,3 +11,11 @@ pub fn from_postgres_to_unix_datetime(pg_timestamp: i64) -> i64 {
 
     seconds_since_pg_epoch + epoch_difference
 }
+
+/// Takes a unix datetime and converts it to a postgres datetime 
+pub fn from_unix_to_postgres_datetime(unix_timestamp: i64) -> i64 {
+    let epoch_difference = "2000-01-01T00:00:00".parse::<NaiveDateTime>().unwrap().timestamp();
+    let seconds_since_pg_epoch = unix_timestamp - epoch_difference;
+
+    seconds_since_pg_epoch * 1000000
+}

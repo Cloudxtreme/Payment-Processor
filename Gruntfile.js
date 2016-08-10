@@ -80,7 +80,7 @@ module.exports = function (grunt) {
       options: {
         configFile: '.eslint.json',
       },
-      target: ['client/app/**/*.js']
+      target: ['client/app/**/*.js', 'client/components/**/*.js']
     },
     // Empties folders to start fresh
     clean: {

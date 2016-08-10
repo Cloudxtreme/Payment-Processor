@@ -1,12 +1,10 @@
 'use strict';
 
 angular.module('paymentProcessor')
-  .directive('footer', function () {
+  .directive('footer', () => {
     return {
       templateUrl: 'components/footer/footer.html',
       restrict: 'E',
-      link: function(scope, element) {
-        element.addClass('footer');
-      }
+      link: (scope, element) => element.addClass('footer')
     };
   });

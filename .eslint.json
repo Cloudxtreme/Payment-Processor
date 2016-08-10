@@ -138,7 +138,7 @@
     "no-with":"error",
     "array-bracket-spacing":"error",
     "array-callback-return":"error",
-    "arrow-body-style":"error",
+    "arrow-body-style":"off",
     "arrow-parens":"off",
     "arrow-spacing":"error",
     "accessor-pairs":"error",

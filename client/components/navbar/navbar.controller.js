@@ -1,15 +1,33 @@
 'use strict';
 
 function navbarController() {
-  //start-non-standard
-  var menu = [{
-    'title': 'Home',
-    'state': 'main'
-  }];
+  /*jshint validthis: true */
+  var viewModel = this;
 
-  var isCollapsed = true;
-  //end-non-standard
+  /** Controller Variables **/
+  viewModel.isCollapsed = null;
+  viewModel.loginError = [];
 
+  /** Controller Functions **/
+
+
+  _initController();
+  
+  /****** Implementation ******/
+
+  function _initController() {
+    viewModel.isCollapsed = false;
+    viewModel.menu = [{
+      'title': 'Overview',
+      'state': 'dashboard.summary'
+    }, {
+      'title': 'Credits',
+      'state': 'dashboard.credits'
+    }, {
+      'title': 'Debts',
+      'state': 'dashboard.debts'
+    }];
+  }
 }
 
 angular.module('paymentProcessor')

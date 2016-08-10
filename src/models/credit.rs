@@ -23,13 +23,13 @@ pub struct Credit {
 pub struct Createable {
     pub user_id: i32,
     pub amount: Option<i32>,
-    //pub paid_date: Option<PgTimestamp>,
+    pub paid_date: Option<PgTimestamp>,
     pub created_date: PgTimestamp
 }
 
 pub struct Alterable {
     pub amount: Option<i32>,
-    //pub paid_date: Option<PgTimestamp>,
+    pub paid_date: Option<PgTimestamp>,
 }
 
 impl ToJson for Credit {
@@ -88,11 +88,11 @@ impl Orm<Credit, Createable, Alterable> for Credit {
         let query = credits::table.filter(credits::id.eq(id))
             .filter(credits::user_id.eq(user_id));
 
-        // TODO: add ability to save paid date as well
         let result = update(query)
             .set(
                 (
-                    credits::amount.eq(obj.amount)
+                    credits::amount.eq(obj.amount),
+                    credits::paid_date.eq(obj.paid_date)
                 )
                 ).get_result::<Credit>(&conn)
             .expect(&format!("Unable to find post {}", id));

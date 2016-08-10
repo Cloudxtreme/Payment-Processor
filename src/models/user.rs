@@ -53,9 +53,9 @@ impl ToJson for User {
         tree.insert("id".to_owned(), self.id.to_json());
         tree.insert("admin".to_owned(), self.admin.to_json());
         tree.insert("email".to_owned(), self.email.to_json());
-        tree.insert("first_name".to_owned(), self.first_name.to_json());
-        tree.insert("last_name".to_owned(), self.last_name.to_json());
-        tree.insert("created_date".to_owned(), from_postgres_to_unix_datetime(self.created_date.0).to_json());
+        tree.insert("firstName".to_owned(), self.first_name.to_json());
+        tree.insert("lastName".to_owned(), self.last_name.to_json());
+        tree.insert("createdDate".to_owned(), from_postgres_to_unix_datetime(self.created_date.0).to_json());
         Json::Object(tree)
     }
 }

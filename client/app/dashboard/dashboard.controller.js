@@ -4,7 +4,7 @@ angular.module('paymentProcessor')
   .controller('DashboardCtrl', dashboardCtrl);
 
 // TODO: Determine if this intermediary view is necessary for our workflow
-function dashboardCtrl() {
+function dashboardCtrl () {
 
   /** Controller Variables **/
 
@@ -12,10 +12,6 @@ function dashboardCtrl() {
   /** Controller Functions **/
 
 
-  _initController();
-
   /******** Implementation *******/
 
-  function _initController() {
-  }
 }

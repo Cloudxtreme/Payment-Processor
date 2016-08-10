@@ -1,19 +1,11 @@
 'use strict';
 
-angular.module('paymentProcessor', [
-  'ngAnimate',
-  'ngCookies',
-  'ngResource',
-  'ngSanitize',
-  'btford.socket-io',
-  'ui.router',
-  'ui.bootstrap'
-])
-.config(function($urlRouterProvider, $locationProvider, $stateProvider) {
-  $urlRouterProvider
-    .otherwise('/login');
+const DEFAULT_ROUTE = '/login';
+const HTML5_MODE = true;
 
-  $locationProvider.html5Mode(true);
+const initializeConfiguration = ($urlRouterProvider, $locationProvider, $stateProvider) => {
+  $urlRouterProvider.otherwise(DEFAULT_ROUTE);
+  $locationProvider.html5Mode(HTML5_MODE);
 
   $stateProvider
     .state('login', {
@@ -41,4 +33,17 @@ angular.module('paymentProcessor', [
       controllerAs: 'creditsCtrl'
     });
 
-});
+};
+
+angular.module('paymentProcessor', [
+  'ngAnimate',
+  'ngCookies',
+  'ngResource',
+  'ngSanitize',
+  'btford.socket-io',
+  'ui.router',
+  'ui.bootstrap'
+])
+.config(initializeConfiguration);
+
+

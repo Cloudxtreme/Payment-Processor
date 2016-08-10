@@ -3,9 +3,9 @@
 angular.module('paymentProcessor')
   .service('loginManager', loginManager);
 
-function loginManager($q, $http, $state, User) {
+function loginManager ($q, $http, $state, User) {
 	/*jshint validthis: true */
-	var service = this;
+	const service = this;
 
 
 	/** Service Variables **/
@@ -22,57 +22,51 @@ function loginManager($q, $http, $state, User) {
 
 	/****** Implementation ******/
 
-	function _getUser() {
-		var deferred = $q.defer();
+	function _getUser () {
+		const deferred = $q.defer();
 
     if (service._user) {
       deferred.resolve(service._user);
     } else {
-		  $http.get('api/user', {headers: {'X-Auth': service._token}})
-			  .success(function(user) {
+      $http.get('api/user', {headers: {'X-Auth': service._token}})
+        .success(user => {
           service._user = new User(user);
-				  deferred.resolve(service._user);
-			  })
-			  .error(function(data, status) {
-				  deferred.reject(status);
-			  });
+          deferred.resolve(service._user);
+        })
+        .error((data, status) => deferred.reject(status));
     }
 
 		return deferred.promise;
 	}
 
-	function _login(username, password) {
-		var deferred = $q.defer();
+	function _login (username, password) {
+		const deferred = $q.defer();
 
 		$http.post('api/login', {email: username, password: password})
-			.success(function(data) {
+			.success(data => {
 				service._token = data.token;
 				deferred.resolve(data.token);
 			})
-			.error(function(data, status) {
-				deferred.reject(status);
-			});
+			.error((data, status) => deferred.reject(status));
 
 		return deferred.promise;
 	}
 
-	function _logout() {
+	function _logout () {
 		service._token = '';
 	}
 
-	function _getToken() {
+	function _getToken () {
 		return service._token;
 	}
 
-  function _isLoggedIn() {
+  function _isLoggedIn () {
     return service._token !== null && service._token !== '';
   }
 
-  function _redirectIfNotLoggedIn() {
+  function _redirectIfNotLoggedIn () {
     if (!service.isLoggedIn()) {
       $state.go('login');
     }
   }
-
-
 }

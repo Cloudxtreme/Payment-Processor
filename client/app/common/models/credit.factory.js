@@ -2,30 +2,36 @@
 angular.module('paymentProcessor')
   .factory('Credit', credit);
 
-function credit() {
+const MILLISECONDS_IN_MICROSECONDS = 1000;
+const DEFAULT_CREDIT = {
+  id: null,
+  userId: null,
+  amount: 0,
+  paidDate: '',
+  createdDate: new Date()
+};
+
+function credit () {
 
   // Constructor
-  function Credit(creditData) {
-    var model = this;
-    if (creditData) { //Init-Constructor
-      model.id = creditData.id;
-      model.userId = creditData.userId;
-      model.amount = creditData.amount;
-      model.paidDate = (creditData.paidDate) ? new Date(creditData.paidDate * 1000) : '';
-      model.createdDate = new Date(creditData.createdDate * 1000);
-    } else { //Default Constructor
-      model.id = null;
-      model.userId = null;
-      model.amount = 0;
-      model.paidDate = '';
-      model.createdDate = new Date();
-    }
+  function Credit (creditData) {
+    Object.assign(
+      this,
+      DEFAULT_CREDIT,
+      {
+        id: creditData.id,
+        userId: creditData.userId,
+        amount: creditData.amount,
+        paidDate: creditData.paidDate || new Date(creditData.paidDate * MILLISECONDS_IN_MICROSECONDS),
+        createdDate: new Date(creditData.createdDate * MILLISECONDS_IN_MICROSECONDS)
+      }
+    );
   }
 
   // Member Functions
   Credit.prototype = {
     // All Business Logic Functions
-    formatForServer: function() {
+    formatForServer: function () {
       return {
         amount: this.amount,
         paidDate: this.paidDate

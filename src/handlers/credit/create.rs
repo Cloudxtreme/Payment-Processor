@@ -27,7 +27,7 @@ fn build_new_credit(req: &mut Request) -> Createable {
     let user_id = get_user_id(req);
     let amount = get_key_from_body::<i32>(req, "amount");
     let paid_date = from_unix_to_postgres_datetime(
-        get_key_from_body::<i64>(req, "paid_date").unwrap()
+        get_key_from_body::<i64>(req, "paidDate").unwrap()
     );
     let created_date = PgTimestamp(Local::now().naive_local().timestamp() );
 

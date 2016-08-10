@@ -24,8 +24,8 @@ impl Handler for Create {
 fn build_new_user(req: &mut Request) -> Createable {
     let admin = get_key_from_body::<bool>(req, "admin");
     let email = get_key_from_body::<String>(req, "email");
-    let first_name = get_key_from_body::<String>(req, "first_name");
-    let last_name = get_key_from_body::<String>(req, "last_name");
+    let first_name = get_key_from_body::<String>(req, "firstName");
+    let last_name = get_key_from_body::<String>(req, "lastName");
     let password = get_key_from_body::<String>(req,"password").unwrap();
     let created_date = PgTimestamp(Local::now().naive_local().timestamp() );
 

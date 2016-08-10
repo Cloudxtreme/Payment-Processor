@@ -3,13 +3,13 @@
 angular.module('paymentProcessor')
   .service('loginManager', loginManager);
 
-function loginManager($q, $http, $state) {
+function loginManager($q, $http, $state, User) {
 	/*jshint validthis: true */
 	var service = this;
 
 
 	/** Service Variables **/
-	service.token = '';
+	service._token = '';
 
 	/** Service Functions **/
 	service.login = _login;
@@ -25,13 +25,18 @@ function loginManager($q, $http, $state) {
 	function _getUser() {
 		var deferred = $q.defer();
 
-		$http.get('api/user', {headers: {'X-Auth': service.token}})
-			.success(function(user) {
-				deferred.resolve(user);
-			})
-			.error(function(data, status) {
-				deferred.reject(status);
-			});
+    if (service._user) {
+      deferred.resolve(service._user);
+    } else {
+		  $http.get('api/user', {headers: {'X-Auth': service._token}})
+			  .success(function(user) {
+          service._user = new User(user);
+				  deferred.resolve(service._user);
+			  })
+			  .error(function(data, status) {
+				  deferred.reject(status);
+			  });
+    }
 
 		return deferred.promise;
 	}
@@ -41,7 +46,7 @@ function loginManager($q, $http, $state) {
 
 		$http.post('api/login', {email: username, password: password})
 			.success(function(data) {
-				service.token = data.token;
+				service._token = data.token;
 				deferred.resolve(data.token);
 			})
 			.error(function(data, status) {
@@ -52,15 +57,15 @@ function loginManager($q, $http, $state) {
 	}
 
 	function _logout() {
-		service.token = '';
+		service._token = '';
 	}
 
 	function _getToken() {
-		return service.token;
+		return service._token;
 	}
 
   function _isLoggedIn() {
-    return service.token !== null && service.token !== '';
+    return service._token !== null && service._token !== '';
   }
 
   function _redirectIfNotLoggedIn() {

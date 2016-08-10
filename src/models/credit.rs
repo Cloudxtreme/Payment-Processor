@@ -36,10 +36,10 @@ impl ToJson for Credit {
     fn to_json(&self) -> Json {         
         let mut tree = BTreeMap::new();
         tree.insert("id".to_owned(), self.id.to_json());
-        tree.insert("user_id".to_owned(), self.user_id.to_json());
+        tree.insert("userId".to_owned(), self.user_id.to_json());
         tree.insert("amount".to_owned(), self.amount.to_json());
-        tree.insert("paid_date".to_owned(), from_postgres_to_unix_datetime(self.paid_date.unwrap_or(PgTimestamp(0)).0).to_json());
-        tree.insert("created_date".to_owned(), from_postgres_to_unix_datetime(self.created_date.0).to_json());
+        tree.insert("paidDate".to_owned(), from_postgres_to_unix_datetime(self.paid_date.unwrap_or(PgTimestamp(0)).0).to_json());
+        tree.insert("createdDate".to_owned(), from_postgres_to_unix_datetime(self.created_date.0).to_json());
         Json::Object(tree)
     }
 }

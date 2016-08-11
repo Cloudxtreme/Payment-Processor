@@ -48,10 +48,6 @@ module.exports = function (grunt) {
         files: ['<%= yeoman.client %>/{app,components, assets}/**/*.css'],
         tasks: ['injector:css']
       },
-      jsTest: {
-        files: ['<%= yeoman.client %>/{app,components}/**/*.{spec,mock}.js'],
-        tasks: ['newer:jshint:all', 'wiredep:test', 'karma']
-      },
       injectSass: {
         files: ['<%= yeoman.client %>/{app,components}/**/*.{scss,sass}'],
         tasks: ['injector:sass']
@@ -80,15 +76,11 @@ module.exports = function (grunt) {
     },
 
     // Make sure code styles are up to par and there are no obvious mistakes
-    jshint: {
+    eslint: {
       options: {
-        jshintrc: '<%= yeoman.client %>/.jshintrc',
-        reporter: require('jshint-stylish')
+        configFile: '.eslint.json',
       },
-      all: ['<%= yeoman.client %>/{app,components}/**/!(*.spec|*.mock).js'],
-      test: {
-        src: ['<%= yeoman.client %>/{app,components}/**/*.{spec,mock}.js']
-      }
+      target: ['client/app/**/*.js', 'client/components/**/*.js']
     },
     // Empties folders to start fresh
     clean: {
@@ -416,7 +408,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('serve', [
     'clean:dist',
-    'jshint',
+    'eslint',
     'concurrent:pre',
     'concurrent:dist',
     'injector',
@@ -438,7 +430,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'jshint',
+    'eslint',
     'concurrent:pre',
     'concurrent:dist',
     'injector',

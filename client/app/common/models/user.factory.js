@@ -2,34 +2,36 @@
 angular.module('paymentProcessor')
   .factory('User', user);
 
-function user() {
+const MILLISECONDS_IN_MICROSECONDS = 1000;
+const DEFAULT_USER = {
+  id: null,
+  email: '',
+  admin: false,
+  firstName: '',
+  lastName: '',
+  createdDate: new Date()
+};
+
+function user () {
 
   // Constructor
-  function User(userData) {
-    var model = this;
-    if (userData) { //Init-Constructor
-      model.id = userData.id;
-      model.email = userData.email;
-      model.admin = userData.admin;
-      model.firstName = userData.firstName;
-      model.lastName = userData.lastName;
-      model.createdDate = new Date(userData.createdDate * 1000);
-    } else { //Default Constructor
-      model.id = null;
-      model.email = '';
-      model.admin = false;
-      model.firstName = '';
-      model.lastName = '';
-      model.createdDate = new Date();
-    }
+  function User (userData) {
+    Object.assign(
+      this,
+      DEFAULT_USER,
+      {
+        id: userData.id,
+        email: userData.email,
+        admin: userData.admin,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        createdDate: new Date(userData.createdDate * MILLISECONDS_IN_MICROSECONDS)
+      }
+    );
   }
 
   // Member Functions
-  User.prototype = {
-    // All Business Logic Functions
-    someFunctions: function() {
-    }
-  };
+  User.prototype = { };
 
   return User;
 }

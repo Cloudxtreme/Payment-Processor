@@ -1,8 +1,7 @@
 'use strict';
 
-function navbarController() {
-  /*jshint validthis: true */
-  var viewModel = this;
+function navbarController () {
+  const viewModel = this;
 
   /** Controller Variables **/
   viewModel.isCollapsed = null;
@@ -10,12 +9,11 @@ function navbarController() {
 
   /** Controller Functions **/
 
-
   _initController();
-  
+
   /****** Implementation ******/
 
-  function _initController() {
+  function _initController () {
     viewModel.isCollapsed = false;
     viewModel.menu = [{
       'title': 'Overview',

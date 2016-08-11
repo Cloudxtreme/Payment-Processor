@@ -3,13 +3,10 @@
 angular.module('paymentProcessor')
   .service('creditsManager', creditsManager);
 
-function creditsManager($q, $http, loginManager, Credit) {
-	/*jshint validthis: true */
-	var service = this;
-
+function creditsManager ($q, $http, loginManager, Credit) {
+	const service = this;
 
 	/** Service Variables **/
-
 
 	/** Service Functions **/
   service.getAll = _getAll;
@@ -17,19 +14,13 @@ function creditsManager($q, $http, loginManager, Credit) {
 
 	/****** Implementation ******/
 
-  function _getAll() {
-    var deferred = $q.defer();
+  function _getAll () {
+    const deferred = $q.defer();
 
     $http.get('api/credits', {headers: {'X-Auth': loginManager.getToken()}})
-      .success(function(credits) {
-        _.map(credits, (credit) => new Credit(credit));
-        deferred.resolve(credits);
-      })
-      .error(function(status) {
-        deferred.reject(status);
-      });
+      .success(credits => deferred.resolve(_.map(credits, (credit) => new Credit(credit))))
+      .error(status => deferred.reject(status));
 
     return deferred.promise;
   }
-
 }

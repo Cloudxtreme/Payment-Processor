@@ -3,9 +3,8 @@
 angular.module('paymentProcessor')
   .controller('SummaryCtrl', summaryCtrl);
 
-function summaryCtrl() {
-  /*jshint validthis: true */
-  //var viewModel = this;
+// TODO: Implement Summary View
+function summaryCtrl () {
 
   /** Controller Variables **/
 
@@ -13,11 +12,6 @@ function summaryCtrl() {
   /** Controller Functions **/
 
 
-  _initController();
-
   /******** Implementation *******/
-
-  function _initController() {
-  }
 
 }

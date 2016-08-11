@@ -6,7 +6,6 @@ angular.module('paymentProcessor')
 function loginManager ($q, $http, $state, User) {
 	const service = this;
 
-
 	/** Service Variables **/
 	service._token = '';
 

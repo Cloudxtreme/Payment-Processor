@@ -6,9 +6,7 @@ angular.module('paymentProcessor')
 function creditsManager ($q, $http, loginManager, Credit) {
 	const service = this;
 
-
 	/** Service Variables **/
-
 
 	/** Service Functions **/
   service.getAll = _getAll;

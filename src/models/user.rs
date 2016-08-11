@@ -14,6 +14,7 @@ pub struct User {
     pub id: i32,
     pub admin: bool,
     pub email: String,
+    pub company_name: String,
     pub first_name: String,
     pub last_name: String,
     pub password_hash: String,
@@ -25,6 +26,7 @@ pub struct Retrievable {
     pub id: i32,
     pub admin: bool,
     pub email: String,
+    pub company_name: String,
     pub first_name: String,
     pub last_name: String,
     pub created_date: PgTimestamp,
@@ -34,6 +36,7 @@ pub struct Retrievable {
 pub struct Createable {
     pub admin: bool,
     pub email: String,
+    pub company_name: String,
     pub first_name: String,
     pub last_name: String,
     pub password_hash: String,
@@ -42,6 +45,7 @@ pub struct Createable {
 
 pub struct Alterable {
     pub admin: bool,
+    pub company_name: String,
     pub first_name: String,
     pub last_name: String,
     pub password_hash: String
@@ -53,6 +57,7 @@ impl ToJson for User {
         tree.insert("id".to_owned(), self.id.to_json());
         tree.insert("admin".to_owned(), self.admin.to_json());
         tree.insert("email".to_owned(), self.email.to_json());
+        tree.insert("companyName".to_owned(), self.company_name.to_json());
         tree.insert("firstName".to_owned(), self.first_name.to_json());
         tree.insert("lastName".to_owned(), self.last_name.to_json());
         tree.insert("createdDate".to_owned(), from_postgres_to_unix_datetime(self.created_date.0).to_json());
@@ -71,6 +76,7 @@ impl User {
             (
                 users::id,
                 users::admin,
+                users::company_name,
                 users::email,
                 users::first_name,
                 users::last_name,
@@ -89,6 +95,7 @@ impl User {
                 users::id,
                 users::admin,
                 users::email,
+                users::company_name,
                 users::first_name,
                 users::last_name,
                 users::password_hash,
@@ -107,6 +114,7 @@ impl User {
                 users::id,
                 users::admin,
                 users::email,
+                users::company_name,
                 users::first_name,
                 users::last_name,
                 users::password_hash,
@@ -126,6 +134,7 @@ impl User {
             .set(
                 (
                     users::admin.eq(obj.admin),
+                    users::company_name.eq(obj.company_name),
                     users::first_name.eq(obj.first_name),
                     users::last_name.eq(obj.last_name),
                     users::password_hash.eq(obj.password_hash)

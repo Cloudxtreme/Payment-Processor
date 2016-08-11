@@ -7,6 +7,7 @@ const DEFAULT_USER = {
   id: null,
   email: '',
   admin: false,
+  companyName: '',
   firstName: '',
   lastName: '',
   createdDate: new Date()
@@ -23,6 +24,7 @@ function user () {
         id: userData.id,
         email: userData.email,
         admin: userData.admin,
+        companyName: userData.companyName,
         firstName: userData.firstName,
         lastName: userData.lastName,
         createdDate: new Date(userData.createdDate * MILLISECONDS_IN_MICROSECONDS)

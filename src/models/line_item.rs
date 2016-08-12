@@ -6,7 +6,6 @@ use diesel::*;
 use schema::line_items as line_items;
 use database::establish_connection;
 use services::{from_postgres_to_unix_datetime, from_pg_numeric_to_float};
-use util::Orm;
 
 #[derive(Debug, Queryable)]
 pub struct LineItem {
@@ -26,8 +25,6 @@ pub struct Createable {
 }
 
 pub struct Alterable {
-    pub user_id: i32,
-    pub credit_id: i32,
     pub amount: PgNumeric,
 }
 
@@ -43,10 +40,13 @@ impl ToJson for LineItem {
     }
 }
 
-impl Orm<LineItem, Createable, Alterable> for LineItem {
-    /// Grabs all line_items matching for the given user_id
-    fn all(user_id: i32) -> Vec<LineItem> {
-        let source = line_items::table.into_boxed().filter(line_items::user_id.eq(user_id));
+impl LineItem {
+    /// Grabs all line_items matching for the given user_id and credit_id
+    pub fn all(user_id: i32, credit_id: i32) -> Vec<LineItem> {
+        let source = line_items::table
+            .into_boxed()
+            .filter(line_items::user_id.eq(user_id))
+            .filter(line_items::credit_id.eq(credit_id));
 
         let conn = establish_connection();
         let result: Vec<LineItem> = source.select(
@@ -61,9 +61,10 @@ impl Orm<LineItem, Createable, Alterable> for LineItem {
         result
     }
 
-    fn find(id: i32, user_id: i32) -> LineItem {
+    pub fn find(id: i32, user_id: i32, credit_id: i32) -> LineItem {
         let source = line_items::table.into_boxed()
             .filter(line_items::user_id.eq(user_id))
+            .filter(line_items::credit_id.eq(credit_id))
             .filter(line_items::id.eq(id));
 
 
@@ -80,18 +81,17 @@ impl Orm<LineItem, Createable, Alterable> for LineItem {
         result
     }
 
-    fn alter(id: i32, user_id: i32, obj: Alterable) -> LineItem {
+    pub fn alter(id: i32, user_id: i32, credit_id: i32, obj: Alterable) -> LineItem {
         let conn = establish_connection();
 
         // Ensures right line_item is updated, and only by the correct user
         let query = line_items::table.filter(line_items::id.eq(id))
-            .filter(line_items::user_id.eq(user_id));
+            .filter(line_items::user_id.eq(user_id))
+            .filter(line_items::credit_id.eq(credit_id));
 
         let result = update(query)
             .set(
                 (
-                    line_items::user_id.eq(obj.user_id),
-                    line_items::credit_id.eq(obj.credit_id),
                     line_items::amount.eq(obj.amount),
                 )
                 ).get_result::<LineItem>(&conn)
@@ -99,7 +99,7 @@ impl Orm<LineItem, Createable, Alterable> for LineItem {
         result
     }
 
-    fn create(new_line_item: Createable) -> LineItem {
+    pub fn create(new_line_item: Createable) -> LineItem {
         let conn = establish_connection();
 
         insert(&new_line_item).into(line_items::table)
@@ -107,11 +107,12 @@ impl Orm<LineItem, Createable, Alterable> for LineItem {
             .expect("Error saving new post")
     }
 
-    fn destroy(id: i32, user_id: i32) -> i32 {
+    pub fn destroy(id: i32, user_id: i32, credit_id: i32) -> i32 {
         let conn = establish_connection();
 
         let query = line_items::table.filter(line_items::id.eq(id))
-            .filter(line_items::user_id.eq(user_id));
+            .filter(line_items::user_id.eq(user_id))
+            .filter(line_items::credit_id.eq(credit_id));
 
         let count = delete(query)
             .execute(&conn)

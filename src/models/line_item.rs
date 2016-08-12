@@ -1,18 +1,17 @@
 use rustc_serialize::json::{Json, ToJson};
 use std::collections::BTreeMap;
 use diesel::types::structs::data_types::PgTimestamp;
-use diesel::pg::data_types::PgNumeric;
 use diesel::*;
 use schema::line_items as line_items;
 use database::establish_connection;
-use services::{from_postgres_to_unix_datetime, from_pg_numeric_to_float};
+use services::from_postgres_to_unix_datetime;
 
 #[derive(Debug, Queryable)]
 pub struct LineItem {
     pub id: i32,
     pub user_id: i32,
     pub credit_id: i32,
-    pub amount: PgNumeric,
+    pub amount: f64,
     pub created_date: PgTimestamp,
 }
 
@@ -20,12 +19,12 @@ pub struct LineItem {
 pub struct Createable {
     pub user_id: i32,
     pub credit_id: i32,
-    pub amount: PgNumeric,
+    pub amount: f64,
     pub created_date: PgTimestamp,
 }
 
 pub struct Alterable {
-    pub amount: PgNumeric,
+    pub amount: f64,
 }
 
 impl ToJson for LineItem {
@@ -34,7 +33,7 @@ impl ToJson for LineItem {
         tree.insert("id".to_owned(), self.id.to_json());
         tree.insert("userId".to_owned(), self.user_id.to_json());
         tree.insert("creditId".to_owned(), self.credit_id.to_json());
-        tree.insert("amount".to_owned(), from_pg_numeric_to_float((self.amount).clone()).to_json());
+        tree.insert("amount".to_owned(), self.amount.to_json());
         tree.insert("createdDate".to_owned(), from_postgres_to_unix_datetime(self.created_date.0).to_json());
         Json::Object(tree)
     }

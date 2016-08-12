@@ -6,7 +6,7 @@ use services::{
     get_user_id, 
     get_route_id, 
     get_key_from_body, 
-    from_float_to_pg_numeric
+    round_monetary 
 };
 
 pub struct Update;
@@ -30,7 +30,7 @@ fn get_params(req: &mut Request) -> (i32, i32, i32, Alterable) {
     let credit_id = get_route_id(req, "credit_id");
     let user_id = get_user_id(req);
 
-    let amount = from_float_to_pg_numeric(get_key_from_body::<f64>(req, "amount").unwrap());
+    let amount = round_monetary(get_key_from_body::<f64>(req, "amount").unwrap());
 
     let updated_line = Alterable {
         amount: amount

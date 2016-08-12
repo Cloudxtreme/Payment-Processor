@@ -1,5 +1,6 @@
 #![cfg_attr(feature = "nightly", feature(custom_derive, custom_attribute, plugin))]
 #![cfg_attr(feature = "nightly", plugin(diesel_codegen, dotenv_macros))]
+#![feature(try_from)]
 
 #[macro_use] extern crate iron;
 extern crate router;

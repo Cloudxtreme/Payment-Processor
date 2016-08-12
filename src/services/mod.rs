@@ -4,6 +4,7 @@ mod bcrypt;
 mod jwt;
 mod param_parser;
 mod datetime_conversion;
+mod numeric_conversion;
 
 pub use self::ensure_authenticated::EnsureAuthenticated;
 
@@ -21,3 +22,5 @@ pub use self::param_parser::get_key_from_body;
 
 pub use self::datetime_conversion::from_postgres_to_unix_datetime;
 pub use self::datetime_conversion::from_unix_to_postgres_datetime;
+
+pub use self::numeric_conversion::from_pg_numeric_to_float;

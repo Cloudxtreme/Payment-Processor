@@ -10,3 +10,4 @@ CREATE TABLE IF NOT EXISTS credits (
   paid_date timestamp without time zone,
   created_date timestamp without time zone NOT NULL 
   );
+-- TODO: Add foreign key constraint

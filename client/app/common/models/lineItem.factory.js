@@ -11,7 +11,7 @@ const DEFAULT_LINE_ITEM = {
   createdDate: new Date()
 };
 
-function lineItem (nestedAttributeFetcher) {
+function lineItem () {
 
   // Constructor
   function LineItem (lineItemData) {
@@ -30,8 +30,7 @@ function lineItem (nestedAttributeFetcher) {
 
   // Member Functions
   LineItem.prototype = {
-    fetch: function (attribute) {
-     return nestedAttributeFetcher(this, attribute);
+    fetch: function () {
     }
   };
 

@@ -29,6 +29,7 @@ function loginManager ($q, $http, $state, User) {
       $http.get('api/user', {headers: {'X-Auth': service._token}})
         .success(user => {
           service._user = new User(user);
+          service._user.fetch();
           deferred.resolve(service._user);
         })
         .error((data, status) => deferred.reject(status));

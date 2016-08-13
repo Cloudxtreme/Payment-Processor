@@ -190,7 +190,7 @@
     "newline-after-var":"error",
     "newline-before-return":"error",
     "newline-per-chained-call":"error",
-    "object-curly-newline":"error",
+    "object-curly-newline":"off",
     "object-curly-spacing":[
       "error",
     "never"

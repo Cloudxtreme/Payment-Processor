@@ -13,8 +13,8 @@ pub fn get_user_id(req: &mut Request) -> i32 {
 
 /// Finds the id specified in the route of the request. For ex. a request that has a 
 /// route "api/credits/4" will produce an id of 4
-pub fn get_route_id(req: &mut Request) -> i32 {
-    req.extensions.get::<Router>().unwrap().find("id").unwrap_or("-1").parse::<i32>().unwrap()
+pub fn get_route_id(req: &mut Request, key: &str) -> i32 {
+    req.extensions.get::<Router>().unwrap().find(key).unwrap_or("-1").parse::<i32>().unwrap()
 }
 
 /// Finds a particular key in the requests body. If the key does not exist in the 

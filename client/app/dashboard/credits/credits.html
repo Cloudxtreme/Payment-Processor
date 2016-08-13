@@ -2,10 +2,7 @@
 <b> Credits </b>
 
 <div ng-repeat="credit in creditsCtrl.credits | orderBy:'paid_date':true">
-  <p>Project Name: {{credit.projectName}}</p>
-  <p>Payment Number: {{credit.paymentNumber}}</p>
-  <p>Amount: {{credit.amount}}</p>
-  <p>Paid Date: {{credit.paid_date}}</p>
+  <credit-line credit=credit></credit-line>
 </div>
 
 

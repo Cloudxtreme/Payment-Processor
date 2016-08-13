@@ -33,7 +33,11 @@ function user () {
   }
 
   // Member Functions
-  User.prototype = { };
+  User.prototype = {
+    fetch: function () {
+
+    }
+  };
 
   return User;
 }

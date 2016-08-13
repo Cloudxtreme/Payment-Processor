@@ -23,7 +23,7 @@ impl Handler for Update {
     }
 }
 fn get_params(req: &mut Request) -> (i32, i32, Alterable) {
-    let credit_id = get_route_id(req);
+    let credit_id = get_route_id(req, "id");
     let user_id = get_user_id(req);
     let project_name = get_key_from_body::<String>(req, "projectName");
     let payment_number = get_key_from_body::<i32>(req, "paymentNumber");

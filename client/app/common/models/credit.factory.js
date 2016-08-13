@@ -10,10 +10,11 @@ const DEFAULT_CREDIT = {
   paymentNumber: 0,
   amount: 0,
   paidDate: '',
-  createdDate: new Date()
+  createdDate: new Date(),
+  lineItems: []
 };
 
-function credit () {
+function credit (lineItemManager) {
 
   // Constructor
   function Credit (creditData) {
@@ -27,7 +28,8 @@ function credit () {
         paymentNumber: creditData.paymentNumber,
         amount: creditData.amount,
         paidDate: creditData.paidDate || new Date(creditData.paidDate * MILLISECONDS_IN_MICROSECONDS),
-        createdDate: new Date(creditData.createdDate * MILLISECONDS_IN_MICROSECONDS)
+        createdDate: new Date(creditData.createdDate * MILLISECONDS_IN_MICROSECONDS),
+        lineItems: creditData.lineItems
       }
     );
   }
@@ -37,10 +39,19 @@ function credit () {
     // All Business Logic Functions
     formatForServer: function () {
       return {
-
         amount: this.amount,
         paidDate: this.paidDate
       };
+    },
+
+    fetch: function () {
+      const model = this;
+
+      const _setLineItems = (lineItems) => {
+        model.lineItems = lineItems;
+      };
+
+      lineItemManager.getAll(model.id).then(_setLineItems);
     }
   };
 

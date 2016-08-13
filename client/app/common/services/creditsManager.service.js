@@ -18,7 +18,13 @@ function creditsManager ($q, $http, loginManager, Credit) {
     const deferred = $q.defer();
 
     $http.get('api/credits', {headers: {'X-Auth': loginManager.getToken()}})
-      .success(credits => deferred.resolve(_.map(credits, (credit) => new Credit(credit))))
+      .success(credits => deferred.resolve(_.map(credits, (credit) => {
+        const newCredit = new Credit(credit);
+
+        newCredit.fetch();
+
+        return newCredit;
+      })))
       .error(status => deferred.reject(status));
 
     return deferred.promise;

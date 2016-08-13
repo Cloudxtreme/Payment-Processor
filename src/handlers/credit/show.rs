@@ -22,7 +22,7 @@ impl Handler for Show {
     }
 }
 fn get_params(req: &mut Request) -> (i32, i32) {
-    let credit_id = get_route_id(req);
+    let credit_id = get_route_id(req, "id");
     let user_id = get_user_id(req);
     (credit_id, user_id) 
 }

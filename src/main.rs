@@ -50,6 +50,13 @@ fn main() {
         .put("/api/credits/:id", handlers::credit::Update)
         .post("api/credits/", handlers::credit::Create)
         .delete("api/credits/:id", handlers::credit::Delete)
+        
+        .get("/api/credits/:credit_id/line_items/", handlers::line_item::Index)
+        .get("/api/credits/:credit_id/line_items/:id", handlers::line_item::Show)
+        .put("/api/credits/:credit_id/line_items/:id", handlers::line_item::Update)
+        .post("api/credits/:credit_id/line_items/", handlers::line_item::Create)
+        .delete("api/credits/:credit_id/line_items/:id", handlers::line_item::Delete)
+
         .get("api/user", handlers::user::Show)
         .post("api/users/", handlers::user::Create)
         .post("api/login", handlers::session::Login);

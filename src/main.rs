@@ -70,6 +70,8 @@ fn main() {
     mount
         .mount("/", chain)
         .mount("/app", Static::new(get_client_resources_path())) // TODO: make route 'public/
+        .mount("/assets", Static::new(get_client_assets_path())) // TODO: make route 'public/
+        .mount("/bower_components", Static::new(get_bower_components_path())) // TODO: make route 'public/
         .mount("/home", Static::new(get_index_file_path()));
 
 
@@ -89,4 +91,15 @@ fn get_index_file_path<'a>() -> &'a Path {
 
 fn get_client_resources_path<'a>() -> &'a Path {
     // TODO: Not hardcode file path
-    Path::new("/Users/gabeharms/Desktop/Practice/Payment-Processor/dist/client/app")}
+    Path::new("/Users/gabeharms/Desktop/Practice/Payment-Processor/dist/client/app")
+}
+
+fn get_client_assets_path<'a>() -> &'a Path {
+    // TODO: Not hardcode file path
+    Path::new("/Users/gabeharms/Desktop/Practice/Payment-Processor/dist/client/assets")
+}
+
+fn get_bower_components_path<'a>() -> &'a Path {
+    // TODO: Not hardcode file path
+    Path::new("/Users/gabeharms/Desktop/Practice/Payment-Processor/dist/client/bower_components")
+}

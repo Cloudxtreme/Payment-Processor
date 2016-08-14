@@ -3,15 +3,26 @@
 angular.module('paymentProcessor')
   .controller('DashboardCtrl', dashboardCtrl);
 
-// TODO: Determine if this intermediary view is necessary for our workflow
-function dashboardCtrl () {
+
+function dashboardCtrl (loginManager) {
+  const viewModel = this;
 
   /** Controller Variables **/
+  viewModel.username = '';
 
 
   /** Controller Functions **/
 
 
+  _initController();
+
   /******** Implementation *******/
 
+  function _initController () {
+    const _setUserName = user => {
+      viewModel.username = user.firstName;
+    };
+
+    loginManager.getUser().then(_setUserName);
+  }
 }

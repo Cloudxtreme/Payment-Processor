@@ -28,15 +28,18 @@ fn get_params(req: &mut Request) -> (i32, i32, Alterable) {
     let project_name = get_key_from_body::<String>(req, "projectName");
     let payment_number = get_key_from_body::<i32>(req, "paymentNumber");
     let amount = get_key_from_body::<i32>(req, "amount");
-    let paid_date = from_unix_to_postgres_datetime(
-        get_key_from_body::<i64>(req, "paidDate").unwrap()
-    );
+    let paid_date = get_key_from_body::<i64>(req, "paidDate").unwrap_or(-1);
+
+    let parsed_paid_date = match paid_date {
+        -1 => None,
+        _ => Some(PgTimestamp(from_unix_to_postgres_datetime(paid_date)))
+    };
 
     let updated_credit = Alterable {
         project_name: project_name.unwrap().replace("\"", ""),
         payment_number: payment_number.unwrap(),
         amount: amount,
-        paid_date: Some(PgTimestamp(paid_date))
+        paid_date: parsed_paid_date 
     };
 
     (credit_id, user_id, updated_credit)

@@ -3,13 +3,16 @@ angular.module('paymentProcessor')
   .directive('creditTable', creditTableDirective);
 
 
-function creditTableCtrl ($scope, creditsManager) {
+function creditTableCtrl ($scope, creditsManager, loginManager) {
   const viewModel = this;
 
   /** Directive Variables **/
-  viewModel.credits = $scope.credits;
+  viewModel.credits = [];
+  viewModel.user = null;
+
 
   /** Directive Functions **/
+  viewModel.getStatusClass = _getStatusClass;
 
 
   _initController();
@@ -18,6 +21,11 @@ function creditTableCtrl ($scope, creditsManager) {
 
   function _initController () {
     creditsManager.getAll().then(credits => viewModel.credits = credits);
+    loginManager.getUser().then(user => viewModel.user = user);
+  }
+
+  function _getStatusClass (isPaid) {
+    return isPaid ? 'status-received' : 'status-owed';
   }
 }
 

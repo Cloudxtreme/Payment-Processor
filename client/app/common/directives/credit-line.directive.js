@@ -8,9 +8,11 @@ function creditLineCtrl ($scope, $modal) {
 
   /** Directive Variables **/
   viewModel.credit = $scope.credit;
+  viewModel.user = $scope.user;
 
   /** Directive Functions **/
   viewModel.openModal = _openModal;
+
 
   _initController();
 
@@ -33,8 +35,10 @@ function creditLineCtrl ($scope, $modal) {
 function creditLineDirective () {
   return {
     restrict: 'E',
+    replace: true,
     scope: {
-      credit: '=credit'
+      credit: '=credit',
+      user: '=user'
     },
     templateUrl: 'app/common/partials/credit-line.partial.html',
     controller: 'creditLineCtrl',

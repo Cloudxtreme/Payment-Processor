@@ -1,9 +1,8 @@
-<div ng-click="creditLineCtrl.openModal()">
-  <p>Project Name: {{creditLineCtrl.credit.projectName}}</p>
-  <p>Payment Number: {{creditLineCtrl.credit.paymentNumber}}</p>
-  <p>Amount: {{creditLineCtrl.credit.amount}}</p>
-  <p>Paid Date: {{creditLineCtrl.credit.paidDate}}</p>
-  <p>Line Item: {{creditLineCtrl.credit.lineItems}}</p>
-
-  ---
-</div>
+<tr ng-click="creditLineCtrl.openModal()">
+  <td>{{creditLineCtrl.user.companyName}}</td>
+  <td>{{creditLineCtrl.credit.paymentNumber}}</td>
+  <td>{{creditLineCtrl.credit.projectName}}</td>
+  <td>{{creditLineCtrl.credit.createdDate}}</td>
+  <td>{{creditLineCtrl.credit.isPaid()}}</td>
+  <td>{{creditLineCtrl.credit.amount}}</td>
+</tr>

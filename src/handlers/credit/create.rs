@@ -28,17 +28,20 @@ fn build_new_credit(req: &mut Request) -> Createable {
     let project_name = get_key_from_body::<String>(req, "projectName");
     let payment_number = get_key_from_body::<i32>(req, "paymentNumber");
     let amount = get_key_from_body::<i32>(req, "amount");
-    let paid_date = from_unix_to_postgres_datetime(
-        get_key_from_body::<i64>(req, "paidDate").unwrap()
-    );
+    let paid_date = get_key_from_body::<i64>(req, "paidDate").unwrap_or(-1);
     let created_date = PgTimestamp(Local::now().naive_local().timestamp() );
+
+    let parsed_paid_date = match paid_date {
+        -1 => None,
+        _ => Some(PgTimestamp(from_unix_to_postgres_datetime(paid_date)))
+    };
 
     Createable {
         user_id: user_id,
         project_name: project_name.unwrap().replace("\"", ""),
         payment_number: payment_number.unwrap(),
         amount: amount,
-        paid_date: Some(PgTimestamp(paid_date)),
+        paid_date: parsed_paid_date,
         created_date: created_date
     }
 }

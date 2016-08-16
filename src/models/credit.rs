@@ -46,7 +46,11 @@ impl ToJson for Credit {
         tree.insert("projectName".to_owned(), self.project_name.to_json());
         tree.insert("paymentNumber".to_owned(), self.payment_number.to_json());
         tree.insert("amount".to_owned(), self.amount.to_json());
-        tree.insert("paidDate".to_owned(), from_postgres_to_unix_datetime(self.paid_date.unwrap_or(PgTimestamp(0)).0).to_json());
+        
+        if let Some(date) = self.paid_date {
+            tree.insert("paidDate".to_owned(), from_postgres_to_unix_datetime(date.0).to_json());
+        };
+
         tree.insert("createdDate".to_owned(), from_postgres_to_unix_datetime(self.created_date.0).to_json());
         Json::Object(tree)
     }

@@ -138,9 +138,9 @@ module.exports = function (grunt) {
     filerev: {
       dist: {
         src: [
-          '<%= yeoman.dist %>/<%= yeoman.client %>/!(bower_components){,*/}*.{js,css}',
-          '<%= yeoman.dist %>/<%= yeoman.client %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= yeoman.dist %>/<%= yeoman.client %>/assets/fonts/*'
+          '<%= yeoman.dist %>/<%= yeoman.client %>/!(bower_components){,*/}*.{js,css}'
+         //'<%= yeoman.dist %>/<%= yeoman.client %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          //'<%= yeoman.dist %>/<%= yeoman.client %>/assets/fonts/*'
         ]
       }
     },
@@ -195,9 +195,15 @@ module.exports = function (grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '.tmp/app',
-          src: '**/*.js',
+          cwd: '.tmp/app', 
+          src: '**/*.js', 
           dest: '.tmp/app'
+        },
+        {
+          expand: true,
+          cwd: '.tmp/components', 
+          src: '**/*.js', 
+          dest: '.tmp/components'
         }]
       }
     },
@@ -218,8 +224,7 @@ module.exports = function (grunt) {
     uglify: {
       options: {
         mangle: true 
-      },
-      dist: {
+      }, dist: {
         files: [
           {
             dest: 'dist/client/app/app.js',
@@ -270,6 +275,7 @@ module.exports = function (grunt) {
           cwd: '<%= yeoman.client %>',
           dest: '<%= yeoman.dist %>/<%= yeoman.client %>',
           src: [
+            'assets/fonts/**',
             'app/common/modals/*.html',
             '*.{ico,png,txt}',
             '.htaccess',

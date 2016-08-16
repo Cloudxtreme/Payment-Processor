@@ -1,8 +1,12 @@
+<div class="page-content">
+  <div class="page-title">
+    <p> INCOME </p>
+  </div>
 
-<b> Credits </b>
-
-<div ng-repeat="credit in creditsCtrl.credits | orderBy:'paid_date':true">
-  <credit-line credit=credit></credit-line>
+  <div class="inner-box">
+    <div class="credits-container">
+      <credit-table></credit-table>
+    </div>
+  </div>
 </div>
-
 

@@ -109,6 +109,7 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 
 .box-wrapper {
   background: rgb(249, 249, 249);
+  padding-bottom: 60px;
 }
 .outer-box {
   background: rgb(249, 249, 249);
@@ -302,7 +303,8 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 
         .line-description {
           font-size: 21px;
-          font-family: khulu;
+          font-family: khuluLight;
+          font-weight: bolder;
           color: rgb(121, 120, 120);
           letter-spacing: .5px;
         }

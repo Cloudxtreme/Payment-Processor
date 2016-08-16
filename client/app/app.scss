@@ -161,7 +161,8 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
     }
   }
   td {
-    font-family: khulu;
+    font-family: khuluLight;
+    font-weight: bold;
     font-size: 19px;
     letter-spacing: .5px;
     color: rgb(131, 131, 131);
@@ -195,12 +196,13 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
   padding-bottom: 5px;
 }
 .status-container {
-  height: 33px;
+  height: 38px;
   width: 97%;
   margin: 0 auto;
   text-align: center;
-  padding-top: 6px;
+  padding-top: 9px;
   font-family: khuluLight;
+  border-radius: 2px;
 }
 
 .status-owed {

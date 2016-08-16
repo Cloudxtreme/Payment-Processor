@@ -18,7 +18,7 @@
   <div class="view-modal-body">
     <div class="view-modal-line-items">
       <div class="view-modal-line-item" ng-repeat="lineItem in viewCreditCtrl.credit.lineItems">
-        <span class="line-description">General Requirements</span>
+        <span class="line-description">{{lineItem.description}}</span>
         <span class="line-amount">{{lineItem.amount | currency}}<span>
       </div>
     </div>

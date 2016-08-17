@@ -21,7 +21,7 @@ function loginCtrl ($scope, $rootScope, $http, $state, loginManager) {
     const _loginSuccess = () => {
       viewModel.loginError = false;
       $rootScope.$emit('login');
-      $state.go('dashboard.credits');
+      $state.go('dashboard.incomes');
     };
 
     const _loginFailure = () => {

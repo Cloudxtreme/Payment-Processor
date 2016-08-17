@@ -8,7 +8,7 @@ use util::Orm;
 
 pub struct Show;
 
-/// Fetches a jsonified credit with an id specified in the params
+/// Fetches a jsonified transaction with an id specified in the params
 impl Handler for Show {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         let params = get_params(req);

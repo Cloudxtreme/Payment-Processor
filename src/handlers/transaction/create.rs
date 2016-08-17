@@ -10,7 +10,7 @@ use util::Orm;
 
 pub struct Create;
 
-/// Creates a new credit with attributes specified in the body of the request
+/// Creates a new transaction with attributes specified in the body of the request
 impl Handler for Create {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         let new_income = build_new_income(req);

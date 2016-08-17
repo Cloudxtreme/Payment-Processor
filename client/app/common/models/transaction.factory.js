@@ -1,11 +1,11 @@
 'use strict';
 angular.module('paymentProcessor')
-  .factory('Credit', credit);
+  .factory('Transaction', transaction);
 
 const TEN = 10;
 const MILLISECONDS_IN_MICROSECONDS = 1000;
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-const DEFAULT_CREDIT = {
+const DEFAULT_TRANSACTION = {
   id: null,
   userId: null,
   projectName: '',
@@ -16,28 +16,29 @@ const DEFAULT_CREDIT = {
   lineItems: []
 };
 
-function credit (lineItemManager) {
+function transaction (lineItemManager) {
 
   // Constructor
-  function Credit (creditData) {
+  function Transaction (transactionData) {
     Object.assign(
       this,
-      DEFAULT_CREDIT,
+      DEFAULT_TRANSACTION,
       {
-        id: creditData.id,
-        userId: creditData.userId,
-        projectName: creditData.projectName,
-        companyName: creditData.companyName,
-        paymentNumber: creditData.paymentNumber,
-        paidDate: creditData.paidDate && new Date(creditData.paidDate * MILLISECONDS_IN_MICROSECONDS),
-        createdDate: new Date(creditData.createdDate * MILLISECONDS_IN_MICROSECONDS),
-        lineItems: creditData.lineItems
+        id: transactionData.id,
+        creditorId: transactionData.creditorId,
+        debtorId: transactionData.debtorId,
+        projectName: transactionData.projectName,
+        companyName: transactionData.companyName,
+        paymentNumber: transactionData.paymentNumber,
+        paidDate: transactionData.paidDate && new Date(transactionData.paidDate * MILLISECONDS_IN_MICROSECONDS),
+        createdDate: new Date(transactionData.createdDate * MILLISECONDS_IN_MICROSECONDS),
+        lineItems: transactionData.lineItems
       }
     );
   }
 
   // Member Functions
-  Credit.prototype = {
+  Transaction.prototype = {
     // All Business Logic Functions
     formatForServer: function () {
       return {
@@ -84,5 +85,5 @@ function credit (lineItemManager) {
 
   };
 
-  return Credit;
+  return Transaction;
 }

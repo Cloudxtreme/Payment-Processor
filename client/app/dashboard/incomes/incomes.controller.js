@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('paymentProcessor')
-  .controller('CreditsCtrl', creditsCtrl);
+  .controller('IncomesCtrl', incomesCtrl);
 
-function creditsCtrl () {
+function incomesCtrl () {
 
   /** Controller Variables **/
 

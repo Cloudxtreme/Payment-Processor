@@ -7,7 +7,7 @@ use models::line_item::{LineItem};
 
 pub struct Show;
 
-/// Fetches a jsonified line_item with an id specified in the params based off the user and credit
+/// Fetches a jsonified line_item with an id specified in the params based off the user and transaction
 /// ids
 impl Handler for Show {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {

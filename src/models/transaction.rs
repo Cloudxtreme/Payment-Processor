@@ -7,7 +7,7 @@ use database::establish_connection;
 use services::from_postgres_to_unix_datetime;
 use util::Orm;
 
-// This is the data structure that models a database 'credit',
+// This is the data structure that models a database 'transaction',
 // and have to add diesel annotation in order to generate the 
 // correct schema and relationships.
 #[derive(Debug, Queryable)]
@@ -48,7 +48,7 @@ impl ToJson for Transaction {
         let mut tree = BTreeMap::new();
         tree.insert("id".to_owned(), self.id.to_json());
         tree.insert("creditorId".to_owned(), self.creditor_id.to_json());
-        tree.insert("debtorId".to_owned(), self.creditor_id.to_json());
+        tree.insert("debtorId".to_owned(), self.debtor_id.to_json());
         tree.insert("projectName".to_owned(), self.project_name.to_json());
         tree.insert("companyName".to_owned(), self.company_name.to_json());
         tree.insert("paymentNumber".to_owned(), self.payment_number.to_json());
@@ -108,7 +108,7 @@ impl Orm<Transaction, Createable, Alterable> for Transaction {
     fn alter(id: i32, user_id: i32, obj: Alterable) -> Transaction {
         let conn = establish_connection();
 
-        // Ensures right credit is updated, and only by the correct user
+        // Ensures right transaction is updated, and only by the correct user
         let query = transactions::table.filter(transactions::id.eq(id))
             .filter(transactions::creditor_id.eq(user_id).or(transactions::debtor_id.eq(user_id)));
 

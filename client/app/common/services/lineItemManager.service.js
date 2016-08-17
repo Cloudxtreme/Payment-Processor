@@ -14,10 +14,10 @@ function lineItemManager ($q, $http, loginManager, LineItem) {
 
 	/****** Implementation ******/
 
-  function _getAll (creditId) {
+  function _getAll (transactionId) {
     const deferred = $q.defer();
 
-    $http.get(`api/credits/${creditId}/line_items/`, {headers: {'X-Auth': loginManager.getToken()}})
+    $http.get(`api/transactions/${transactionId}/line_items/`, {headers: {'X-Auth': loginManager.getToken()}})
       .success(lineItems => deferred.resolve(_.map(lineItems, (lineItem) => new LineItem(lineItem))))
       .error(status => deferred.reject(status));
 

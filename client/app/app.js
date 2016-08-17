@@ -26,11 +26,11 @@ const initializeConfiguration = ($urlRouterProvider, $locationProvider, $statePr
       controller: 'SummaryCtrl',
       controllerAs: 'summaryCtrl'
     })
-    .state('dashboard.credits', {
-      url: '/credits',
-      templateUrl: 'app/dashboard/credits/credits.html',
-      controller: 'CreditsCtrl',
-      controllerAs: 'creditsCtrl'
+    .state('dashboard.incomes', {
+      url: '/incomes',
+      templateUrl: 'app/dashboard/incomes/incomes.html',
+      controller: 'IncomesCtrl',
+      controllerAs: 'incomesCtrl'
     });
 
 };

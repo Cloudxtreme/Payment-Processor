@@ -6,7 +6,7 @@ use services::{get_user_id, get_route_id};
 
 pub struct Delete;
 
-/// Deletes credit with the id specified in the params
+/// Deletes transaction with the id specified in the params
 impl Handler for Delete {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         let params = get_params(req);

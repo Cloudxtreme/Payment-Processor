@@ -7,7 +7,7 @@ use util::Orm;
 
 pub struct Index;
 
-/// Fetches a json array of credits based on the user id
+/// Fetches a json array of transactions based on the user id
 impl Handler for Index {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         let user_id = get_user_id(req);

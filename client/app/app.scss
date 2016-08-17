@@ -31,8 +31,8 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 
 // Component styles are injected through grunt
 // injector
-@import 'dashboard/credits/credits.scss';
 @import 'dashboard/dashboard.scss';
+@import 'dashboard/incomes/incomes.scss';
 @import 'dashboard/summary/summary.scss';
 @import 'login/login.scss';
 @import '../components/footer/footer.scss';
@@ -136,13 +136,13 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
   }
 }
 
-.credits-container {
+.transactions-container {
   padding-top: 46px;
   width: 95%;
   margin: 0 auto;
 }
 
-.credits-table {
+.transactions-table {
   th {
     font-size: 17px;
     font-family: khuluBold;

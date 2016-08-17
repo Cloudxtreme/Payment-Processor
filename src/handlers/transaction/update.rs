@@ -8,7 +8,7 @@ use util::Orm;
 
 pub struct Update;
 
-/// Updates the credit specified by the id in the params with
+/// Updates the transaction specified by the id in the params with
 /// the attributes found in the body
 impl Handler for Update {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
@@ -36,7 +36,7 @@ fn get_params(req: &mut Request) -> (i32, i32, Alterable) {
         _ => Some(PgTimestamp(from_unix_to_postgres_datetime(paid_date)))
     };
 
-    let updated_credit = Alterable {
+    let updated_transaction = Alterable {
         creditor_id: user_id,
         debtor_id: debtor_id.unwrap(),
         project_name: project_name.unwrap().replace("\"", ""),
@@ -45,6 +45,6 @@ fn get_params(req: &mut Request) -> (i32, i32, Alterable) {
         paid_date: parsed_paid_date 
     };
 
-    (income_id, user_id, updated_credit)
+    (income_id, user_id, updated_transaction)
 }
 

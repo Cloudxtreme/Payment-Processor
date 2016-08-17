@@ -12,6 +12,7 @@ pub struct LineItem {
     pub user_id: i32,
     pub credit_id: i32,
     pub amount: f64,
+    pub description: String,
     pub created_date: PgTimestamp,
 }
 
@@ -20,11 +21,13 @@ pub struct Createable {
     pub user_id: i32,
     pub credit_id: i32,
     pub amount: f64,
+    pub description: String,
     pub created_date: PgTimestamp,
 }
 
 pub struct Alterable {
     pub amount: f64,
+    pub description: String,
 }
 
 impl ToJson for LineItem {
@@ -34,6 +37,7 @@ impl ToJson for LineItem {
         tree.insert("userId".to_owned(), self.user_id.to_json());
         tree.insert("creditId".to_owned(), self.credit_id.to_json());
         tree.insert("amount".to_owned(), self.amount.to_json());
+        tree.insert("description".to_owned(), self.description.to_json());
         tree.insert("createdDate".to_owned(), from_postgres_to_unix_datetime(self.created_date.0).to_json());
         Json::Object(tree)
     }
@@ -54,6 +58,7 @@ impl LineItem {
                 line_items::user_id, 
                 line_items::credit_id,
                 line_items::amount,
+                line_items::description,
                 line_items::created_date
             )
             ).load(&conn).unwrap();
@@ -74,6 +79,7 @@ impl LineItem {
                 line_items::user_id, 
                 line_items::credit_id,
                 line_items::amount,
+                line_items::description,
                 line_items::created_date
             )
             ).first(&conn).unwrap();
@@ -92,6 +98,7 @@ impl LineItem {
             .set(
                 (
                     line_items::amount.eq(obj.amount),
+                    line_items::description.eq(obj.description),
                 )
                 ).get_result::<LineItem>(&conn)
             .expect(&format!("Unable to find post {}", id));

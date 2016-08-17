@@ -5,8 +5,8 @@ CREATE TABLE IF NOT EXISTS credits (
   id serial PRIMARY KEY,
   user_id integer,
   project_name VARCHAR NOT NULL,
+  company_name VARCHAR NOT NULL,
   payment_number INTEGER NOT NULL,
-  amount integer,
   paid_date timestamp without time zone,
   created_date timestamp without time zone NOT NULL 
   );

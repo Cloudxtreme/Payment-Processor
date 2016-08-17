@@ -31,9 +31,11 @@ fn get_params(req: &mut Request) -> (i32, i32, i32, Alterable) {
     let user_id = get_user_id(req);
 
     let amount = round_monetary(get_key_from_body::<f64>(req, "amount").unwrap());
+    let description = get_key_from_body::<String>(req, "description").unwrap();
 
     let updated_line = Alterable {
-        amount: amount
+        amount: amount,
+        description: description.replace("\"", ""),
     };
 
     (line_item_id, user_id, credit_id, updated_line)

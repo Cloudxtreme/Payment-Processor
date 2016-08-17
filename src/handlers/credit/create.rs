@@ -26,8 +26,8 @@ impl Handler for Create {
 fn build_new_credit(req: &mut Request) -> Createable {
     let user_id = get_user_id(req);
     let project_name = get_key_from_body::<String>(req, "projectName");
+    let company_name = get_key_from_body::<String>(req, "companyName");
     let payment_number = get_key_from_body::<i32>(req, "paymentNumber");
-    let amount = get_key_from_body::<i32>(req, "amount");
     let paid_date = get_key_from_body::<i64>(req, "paidDate").unwrap_or(-1);
     let created_date = PgTimestamp(Local::now().naive_local().timestamp() );
 
@@ -39,8 +39,8 @@ fn build_new_credit(req: &mut Request) -> Createable {
     Createable {
         user_id: user_id,
         project_name: project_name.unwrap().replace("\"", ""),
+        company_name: company_name.unwrap().replace("\"", ""),
         payment_number: payment_number.unwrap(),
-        amount: amount,
         paid_date: parsed_paid_date,
         created_date: created_date
     }

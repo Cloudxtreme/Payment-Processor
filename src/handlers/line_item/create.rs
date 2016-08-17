@@ -32,12 +32,15 @@ fn build_new_line_item(req: &mut Request) -> Createable {
     let user_id = get_user_id(req);
 
     let amount = round_monetary(get_key_from_body::<f64>(req, "amount").unwrap());
+    let description = get_key_from_body::<String>(req, "description").unwrap();
+
     let created_date = PgTimestamp(Local::now().naive_local().timestamp() );
 
     Createable {
         user_id: user_id,
         credit_id: credit_id,
         amount: amount,
+        description: description.replace("\"", ""),
         created_date: created_date 
     }
 }

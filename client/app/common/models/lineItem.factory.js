@@ -8,6 +8,7 @@ const DEFAULT_LINE_ITEM = {
   userId: null,
   creditId: null,
   amount: 0,
+  description: '',
   createdDate: new Date()
 };
 
@@ -23,6 +24,7 @@ function lineItem () {
         userId: lineItemData.userId,
         creditId: lineItemData.creditId,
         amount: lineItemData.amount,
+        description: lineItemData.description,
         createdDate: new Date(lineItemData.createdDate * MILLISECONDS_IN_MICROSECONDS)
       }
     );

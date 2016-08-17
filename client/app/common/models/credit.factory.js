@@ -9,8 +9,8 @@ const DEFAULT_CREDIT = {
   id: null,
   userId: null,
   projectName: '',
+  companyName: '',
   paymentNumber: 0,
-  amount: 0,
   paidDate: '',
   createdDate: new Date(),
   lineItems: []
@@ -27,8 +27,8 @@ function credit (lineItemManager) {
         id: creditData.id,
         userId: creditData.userId,
         projectName: creditData.projectName,
+        companyName: creditData.companyName,
         paymentNumber: creditData.paymentNumber,
-        amount: creditData.amount,
         paidDate: creditData.paidDate && new Date(creditData.paidDate * MILLISECONDS_IN_MICROSECONDS),
         createdDate: new Date(creditData.createdDate * MILLISECONDS_IN_MICROSECONDS),
         lineItems: creditData.lineItems
@@ -41,7 +41,8 @@ function credit (lineItemManager) {
     // All Business Logic Functions
     formatForServer: function () {
       return {
-        amount: this.amount,
+        projectName: this.projectName,
+        companyName: this.companyName,
         paidDate: this.paidDate
       };
     },
@@ -55,7 +56,10 @@ function credit (lineItemManager) {
 
       lineItemManager.getAll(model.id).then(_setLineItems);
     },
+    amount: function () {
 
+      return _.map(this.lineItems, (lineItem) => lineItem.amount).reduce((prev, next) => prev + next, 0);
+    },
     isPaid: function () {
 
       return Boolean(this.paidDate);

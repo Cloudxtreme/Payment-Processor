@@ -12,14 +12,14 @@
   </thead>
   <tbody >
     <tr ng-repeat="credit in creditTableCtrl.credits | orderBy:'paid_date':true" ng-click="creditTableCtrl.openModal(credit)">
-      <td>{{creditTableCtrl.user.companyName}}</td>
+      <td>{{credit.companyName}}</td>
       <td>{{credit.formattedPaymentNumber()}}</td>
       <td>{{credit.projectName}}</td>
       <td>{{credit.formattedCreatedDate()}}</td>
       <td class="status-cell">
         <div class="status-container" ng-class="creditTableCtrl.getStatusClass(credit.isPaid())">{{credit.isPaid() ? 'RECEIVED' : 'OWED'}}</div>
       </td>
-      <td class="amount-cell">{{credit.amount | currency}}</td>
+      <td class="amount-cell">{{credit.amount() | currency}}</td>
       <td class="action-button-cell"><i class="fa fa-ellipsis-v"></td>
       <div class="row-border"></div>
     </tr>

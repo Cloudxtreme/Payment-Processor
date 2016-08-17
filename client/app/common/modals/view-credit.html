@@ -3,13 +3,13 @@
   <div class="view-modal-header">
         <div class="view-modal-info">
       <div>
-        <div class="view-modal-company-name">{{viewCreditCtrl.user.companyName}}</div>
+        <div class="view-modal-company-name">{{viewCreditCtrl.credit.companyName}}</div>
         <div class="view-modal-payment-number">PAYMENT APPLICATION #{{viewCreditCtrl.credit.formattedPaymentNumber()}}</div>
       </div>
       <div style="padding-bottom: 38px">
         <div class="view-modal-project-name">{{viewCreditCtrl.credit.projectName}}</div>
         <div class="view-modal-transaction-date">{{viewCreditCtrl.credit.formattedCreatedDateTwo()}}</div>
-        <div class="view-modal-amount-total">{{viewCreditCtrl.credit.amount | currency}}</div>
+        <div class="view-modal-amount-total">{{viewCreditCtrl.credit.amount() | currency}}</div>
       </div>
     </div>
   </div>
@@ -24,7 +24,7 @@
     </div>
     <div class="view-modal-subtotal">
       <span style="padding-right: 80px">TOTAL DUE: </span>
-      <span>$890,000.00</span>
+      <span>{{viewCreditCtrl.credit.amount() | currency}}</span>
     </div>
   </div>
 </div>

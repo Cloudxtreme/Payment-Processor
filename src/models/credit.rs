@@ -15,8 +15,8 @@ pub struct Credit {
     pub id: i32,
     pub user_id: Option<i32>,
     pub project_name: String,
+    pub company_name: String,
     pub payment_number: i32,
-    pub amount: Option<i32>,
     pub paid_date: Option<PgTimestamp>,
     pub created_date: PgTimestamp,
 }
@@ -25,16 +25,16 @@ pub struct Credit {
 pub struct Createable {
     pub user_id: i32,
     pub project_name: String,
+    pub company_name: String,
     pub payment_number: i32,
-    pub amount: Option<i32>,
     pub paid_date: Option<PgTimestamp>,
     pub created_date: PgTimestamp
 }
 
 pub struct Alterable {
     pub project_name: String,
+    pub company_name: String,
     pub payment_number: i32,
-    pub amount: Option<i32>,
     pub paid_date: Option<PgTimestamp>,
 }
 
@@ -44,8 +44,8 @@ impl ToJson for Credit {
         tree.insert("id".to_owned(), self.id.to_json());
         tree.insert("userId".to_owned(), self.user_id.to_json());
         tree.insert("projectName".to_owned(), self.project_name.to_json());
+        tree.insert("companyName".to_owned(), self.company_name.to_json());
         tree.insert("paymentNumber".to_owned(), self.payment_number.to_json());
-        tree.insert("amount".to_owned(), self.amount.to_json());
         
         if let Some(date) = self.paid_date {
             tree.insert("paidDate".to_owned(), from_postgres_to_unix_datetime(date.0).to_json());
@@ -67,8 +67,8 @@ impl Orm<Credit, Createable, Alterable> for Credit {
                 credits::id,
                 credits::user_id, 
                 credits::project_name,
+                credits::company_name,
                 credits::payment_number,
-                credits::amount,
                 credits::paid_date, 
                 credits::created_date
             )
@@ -88,8 +88,8 @@ impl Orm<Credit, Createable, Alterable> for Credit {
                 credits::id,
                 credits::user_id, 
                 credits::project_name,
+                credits::company_name,
                 credits::payment_number,
-                credits::amount,
                 credits::paid_date, 
                 credits::created_date
             )
@@ -108,8 +108,8 @@ impl Orm<Credit, Createable, Alterable> for Credit {
             .set(
                 (
                     credits::project_name.eq(obj.project_name),
+                    credits::company_name.eq(obj.company_name),
                     credits::payment_number.eq(obj.payment_number),
-                    credits::amount.eq(obj.amount),
                     credits::paid_date.eq(obj.paid_date)
                 )
                 ).get_result::<Credit>(&conn)

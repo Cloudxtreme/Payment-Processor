@@ -21,7 +21,7 @@ impl Handler for Delete {
 }
 fn get_params(req: &mut Request) -> (i32, i32, i32) {
     let line_item_id = get_route_id(req, "id");
-    let credit_id = get_route_id(req, "credit_id");
+    let transaction_id = get_route_id(req, "transaction_id");
     let user_id = get_user_id(req);
-    (line_item_id, user_id, credit_id) 
+    (line_item_id, user_id, transaction_id) 
 }

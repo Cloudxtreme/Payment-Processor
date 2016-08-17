@@ -3,7 +3,6 @@ CREATE TABLE IF NOT EXISTS users (
   id serial PRIMARY KEY,
   admin BOOL NOT NULL DEFAULT 'f',
   email VARCHAR NOT NULL,
-  company_name VARCHAR NOT NULL,
   first_name VARCHAR NOT NULL,
   last_name VARCHAR NOT NULL,
   password_hash VARCHAR NOT NULL,

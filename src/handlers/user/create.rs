@@ -24,7 +24,6 @@ impl Handler for Create {
 fn build_new_user(req: &mut Request) -> Createable {
     let admin = get_key_from_body::<bool>(req, "admin");
     let email = get_key_from_body::<String>(req, "email");
-    let company_name = get_key_from_body::<String>(req, "companyName");
     let first_name = get_key_from_body::<String>(req, "firstName");
     let last_name = get_key_from_body::<String>(req, "lastName");
     let password = get_key_from_body::<String>(req,"password").unwrap();
@@ -35,7 +34,6 @@ fn build_new_user(req: &mut Request) -> Createable {
     Createable {
         admin: admin.unwrap(),
         email: email.unwrap().replace("\"", ""),
-        company_name: company_name.unwrap().replace("\"", ""),
         first_name: first_name.unwrap().replace("\"", ""),
         last_name: last_name.unwrap().replace("\"", ""),
         password_hash: password_hash,

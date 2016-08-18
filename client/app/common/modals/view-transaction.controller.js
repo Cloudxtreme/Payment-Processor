@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('paymentProcessor')
-  .controller('ViewCreditCtrl', viewCreditCtrl);
+  .controller('ViewTransactionCtrl', viewTransactionCtrl);
 
-function viewCreditCtrl (creditObj, userObj) {
+function viewTransactionCtrl (transactionObj, userObj) {
   const viewModel = this;
 
   /** Modal Variables **/
-  viewModel.credit = creditObj;
+  viewModel.transaction = transactionObj;
   viewModel.user = userObj;
 
 

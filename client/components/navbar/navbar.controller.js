@@ -27,7 +27,7 @@ function navbarController (loginManager) {
       'state': 'dashboard.summary'
     }, {
       'title': 'INCOME',
-      'state': 'dashboard.credits'
+      'state': 'dashboard.transactions'
     }, {
       'title': 'EXPENDITURE',
       'state': 'dashboard.debts'

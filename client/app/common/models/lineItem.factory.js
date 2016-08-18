@@ -6,7 +6,7 @@ const MILLISECONDS_IN_MICROSECONDS = 1000;
 const DEFAULT_LINE_ITEM = {
   id: null,
   userId: null,
-  creditId: null,
+  transactionId: null,
   amount: 0,
   description: '',
   createdDate: new Date()
@@ -22,7 +22,7 @@ function lineItem () {
       {
         id: lineItemData.id,
         userId: lineItemData.userId,
-        creditId: lineItemData.creditId,
+        transactionId: lineItemData.transactionId,
         amount: lineItemData.amount,
         description: lineItemData.description,
         createdDate: new Date(lineItemData.createdDate * MILLISECONDS_IN_MICROSECONDS)

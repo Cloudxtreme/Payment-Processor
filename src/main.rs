@@ -45,17 +45,17 @@ fn main() {
 
     router
         .get("/", redirect_home)
-        .get("/api/credits/", handlers::credit::Index)
-        .get("/api/credits/:id", handlers::credit::Show)
-        .put("/api/credits/:id", handlers::credit::Update)
-        .post("api/credits/", handlers::credit::Create)
-        .delete("api/credits/:id", handlers::credit::Delete)
+        .get("/api/transactions/", handlers::transaction::Index)
+        .get("/api/transactions/:id", handlers::transaction::Show)
+        .put("/api/transactions/:id", handlers::transaction::Update)
+        .post("api/transactions/", handlers::transaction::Create)
+        .delete("api/transactions/:id", handlers::transaction::Delete)
         
-        .get("/api/credits/:credit_id/line_items/", handlers::line_item::Index)
-        .get("/api/credits/:credit_id/line_items/:id", handlers::line_item::Show)
-        .put("/api/credits/:credit_id/line_items/:id", handlers::line_item::Update)
-        .post("api/credits/:credit_id/line_items/", handlers::line_item::Create)
-        .delete("api/credits/:credit_id/line_items/:id", handlers::line_item::Delete)
+        .get("/api/transactions/:transaction_id/line_items/", handlers::line_item::Index)
+        .get("/api/transactions/:transaction_id/line_items/:id", handlers::line_item::Show)
+        .put("/api/transactions/:transaction_id/line_items/:id", handlers::line_item::Update)
+        .post("api/transactions/:transaction_id/line_items/", handlers::line_item::Create)
+        .delete("api/transactions/:transaction_id/line_items/:id", handlers::line_item::Delete)
 
         .get("api/user", handlers::user::Show)
         .post("api/users/", handlers::user::Create)

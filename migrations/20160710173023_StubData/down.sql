@@ -1,1 +1,1 @@
-DELETE FROM credits;
+DELETE FROM transactions;

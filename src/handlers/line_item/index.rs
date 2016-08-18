@@ -10,9 +10,9 @@ pub struct Index;
 impl Handler for Index {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         let user_id = get_user_id(req);
-        let credit_id = get_route_id(req, "credit_id");
+        let transaction_id = get_route_id(req, "transaction_id");
 
-        let line_items = LineItem::all(user_id, credit_id);
+        let line_items = LineItem::all(user_id, transaction_id);
 
         let mut response = Response::new().set(((status::Ok), line_items.to_json().to_string()));
         response.headers.set(headers::ContentType::json());

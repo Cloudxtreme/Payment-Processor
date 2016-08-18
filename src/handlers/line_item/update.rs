@@ -27,7 +27,7 @@ impl Handler for Update {
 }
 fn get_params(req: &mut Request) -> (i32, i32, i32, Alterable) {
     let line_item_id = get_route_id(req, "id");
-    let credit_id = get_route_id(req, "credit_id");
+    let transaction_id = get_route_id(req, "transaction_id");
     let user_id = get_user_id(req);
 
     let amount = round_monetary(get_key_from_body::<f64>(req, "amount").unwrap());
@@ -38,6 +38,6 @@ fn get_params(req: &mut Request) -> (i32, i32, i32, Alterable) {
         description: description.replace("\"", ""),
     };
 
-    (line_item_id, user_id, credit_id, updated_line)
+    (line_item_id, user_id, transaction_id, updated_line)
 }
 

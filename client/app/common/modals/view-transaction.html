@@ -3,13 +3,13 @@
   <div class="view-modal-header">
         <div class="view-modal-info">
       <div>
-        <div class="view-modal-company-name">{{viewCreditCtrl.credit.companyName}}</div>
-        <div class="view-modal-payment-number">PAYMENT APPLICATION #{{viewCreditCtrl.credit.formattedPaymentNumber()}}</div>
+        <div class="view-modal-company-name">{{viewTransactionCtrl.transaction.companyName}}</div>
+        <div class="view-modal-payment-number">PAYMENT APPLICATION #{{viewTransactionCtrl.transaction.formattedPaymentNumber()}}</div>
       </div>
       <div style="padding-bottom: 38px">
-        <div class="view-modal-project-name">{{viewCreditCtrl.credit.projectName}}</div>
-        <div class="view-modal-transaction-date">{{viewCreditCtrl.credit.formattedCreatedDateTwo()}}</div>
-        <div class="view-modal-amount-total">{{viewCreditCtrl.credit.amount() | currency}}</div>
+        <div class="view-modal-project-name">{{viewTransactionCtrl.transaction.projectName}}</div>
+        <div class="view-modal-transaction-date">{{viewTransactionCtrl.transaction.formattedCreatedDateTwo()}}</div>
+        <div class="view-modal-amount-total">{{viewTransactionCtrl.transaction.amount() | currency}}</div>
       </div>
     </div>
   </div>
@@ -17,14 +17,14 @@
 <div class="view-modal-body-wrapper">
   <div class="view-modal-body">
     <div class="view-modal-line-items">
-      <div class="view-modal-line-item" ng-repeat="lineItem in viewCreditCtrl.credit.lineItems">
+      <div class="view-modal-line-item" ng-repeat="lineItem in viewTransactionCtrl.transaction.lineItems">
         <span class="line-description">{{lineItem.description}}</span>
         <span class="line-amount">{{lineItem.amount | currency}}<span>
       </div>
     </div>
     <div class="view-modal-subtotal">
       <span style="padding-right: 80px">TOTAL DUE: </span>
-      <span>{{viewCreditCtrl.credit.amount() | currency}}</span>
+      <span>{{viewTransactionCtrl.transaction.amount() | currency}}</span>
     </div>
   </div>
 </div>

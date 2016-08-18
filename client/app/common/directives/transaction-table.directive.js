@@ -12,6 +12,7 @@ function transactionTableCtrl ($scope, $modal, transactionsManager, loginManager
 
   /** Directive Functions **/
   viewModel.getStatusClass = _getStatusClass;
+  viewModel.getStatusText = _getStatusText;
   viewModel.openModal = _openModal;
 
 
@@ -22,13 +23,28 @@ function transactionTableCtrl ($scope, $modal, transactionsManager, loginManager
   $scope.$watch('transactions', () => {
     viewModel.transactions = $scope.transactions;
   });
+  $scope.$watch('user', () => {
+    viewModel.user = $scope.user;
+  });
 
   function _initController () {
     loginManager.getUser().then(user => viewModel.user = user);
   }
 
-  function _getStatusClass (isPaid) {
-    return isPaid ? 'status-received' : 'status-owed';
+  function _getStatusClass (transaction) {
+    if (transaction.isAnIncome(viewModel.user.id)) {
+      return transaction.isPaid() ? 'status-received' : 'status-owed';
+    } else {
+      return transaction.isPaid() ? 'status-paid' : 'status-unpaid';
+    }
+  }
+
+  function _getStatusText (transaction) {
+    if (transaction.isAnIncome(viewModel.user.id)) {
+      return transaction.isPaid() ? 'RECEIVED' : 'OWED';
+    } else {
+      return transaction.isPaid() ? 'PAID' : 'UNPAID';
+    }
   }
 
   function _openModal (transaction) {
@@ -49,7 +65,8 @@ function transactionTableDirective () {
   return {
     restrict: 'E',
     scope: {
-      transactions: '='
+      transactions: '=',
+      user: '='
     },
     templateUrl: 'app/common/partials/transaction-table.partial.html',
     controller: 'transactionTableCtrl',

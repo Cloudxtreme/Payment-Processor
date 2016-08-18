@@ -17,7 +17,7 @@
       <td>{{transaction.projectName}}</td>
       <td>{{transaction.formattedCreatedDate()}}</td>
       <td class="status-cell">
-        <div class="status-container" ng-class="transactionTableCtrl.getStatusClass(transaction.isPaid())">{{transaction.isPaid() ? 'RECEIVED' : 'OWED'}}</div>
+        <div class="status-container" ng-class="transactionTableCtrl.getStatusClass(transaction)">{{transactionTableCtrl.getStatusText(transaction)}}</div>
       </td>
       <td class="amount-cell">{{transaction.amount() | currency}}</td>
       <td class="action-button-cell"><i class="fa fa-ellipsis-v"></td>

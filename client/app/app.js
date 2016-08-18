@@ -31,8 +31,13 @@ const initializeConfiguration = ($urlRouterProvider, $locationProvider, $statePr
       templateUrl: 'app/dashboard/incomes/incomes.html',
       controller: 'IncomesCtrl',
       controllerAs: 'incomesCtrl'
+    })
+    .state('dashboard.expenditures', {
+      url: '/expenditures',
+      templateUrl: 'app/dashboard/expenditures/expenditures.html',
+      controller: 'ExpendituresCtrl',
+      controllerAs: 'expendituresCtrl'
     });
-
 };
 
 angular.module('paymentProcessor', [
@@ -45,5 +50,3 @@ angular.module('paymentProcessor', [
   'ui.bootstrap'
 ])
 .config(initializeConfiguration);
-
-

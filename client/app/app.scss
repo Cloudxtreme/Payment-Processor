@@ -32,6 +32,7 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 // Component styles are injected through grunt
 // injector
 @import 'dashboard/dashboard.scss';
+@import 'dashboard/expenditures/expenditures.scss';
 @import 'dashboard/incomes/incomes.scss';
 @import 'dashboard/summary/summary.scss';
 @import 'login/login.scss';
@@ -214,6 +215,15 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
   background: rgb(46, 204, 113);
   color: rgb(252, 253, 253);
 }
+.status-paid {
+  background: rgb(41, 128, 185);
+  color: rgb(228, 238, 245);
+}
+.status-unpaid {
+  background: rgb(242, 155, 18);
+  color: rgb(250, 238, 226);
+}
+
 
 .amount-header {
   padding-left: 95px;

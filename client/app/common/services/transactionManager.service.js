@@ -12,6 +12,7 @@ function transactionsManager ($q, $http, loginManager, Transaction) {
 	/** Service Functions **/
   service.getAll = _getAll;
   service.thatAreIncomes = _thatAreIncomes;
+  service.thatAreExpenditures = _thatAreExpenditures;
 
 
 	/****** Implementation ******/
@@ -23,13 +24,10 @@ function transactionsManager ($q, $http, loginManager, Transaction) {
       deferred.resolve(service.transactions);
     } else {
       $http.get('api/transactions', {headers: {'X-Auth': loginManager.getToken()}})
-        .success(transactions => deferred.resolve(_.map(transactions, (transaction) => {
-          const newTransaction = new Transaction(transaction);
-
-          newTransaction.fetch();
-
-          return newTransaction;
-        })))
+        .success(transactions => {
+          service.transactions = _.map(transactions, (transaction) => _buildTransaction(transaction));
+          deferred.resolve(service.transactions);
+        })
         .error(status => deferred.reject(status));
     }
 
@@ -37,6 +35,21 @@ function transactionsManager ($q, $http, loginManager, Transaction) {
   }
 
   function _thatAreIncomes (userId, transactions) {
-    return _.filter(transactions, (transaction) => transaction.isACredit(userId));
+    return _.filter(transactions, (transaction) => transaction.isAnIncome(userId));
+  }
+
+  function _thatAreExpenditures (userId, transactions) {
+    return _.filter(transactions, (transaction) => transaction.isAnExpenditure(userId));
+  }
+
+
+  /****** Helpers ******/
+
+  function _buildTransaction (transaction) {
+    const newTransaction = new Transaction(transaction);
+
+    newTransaction.fetch();
+
+    return newTransaction;
   }
 }

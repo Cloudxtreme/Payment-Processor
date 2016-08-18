@@ -25,6 +25,7 @@ impl Handler for Update {
 fn get_params(req: &mut Request) -> (i32, i32, Alterable) {
     let income_id = get_route_id(req, "id");
     let user_id = get_user_id(req);
+    let creditor_id = get_key_from_body::<i32>(req, "creditorId");
     let debtor_id = get_key_from_body::<i32>(req, "debtorId");
     let project_name = get_key_from_body::<String>(req, "projectName");
     let company_name = get_key_from_body::<String>(req, "companyName");
@@ -36,8 +37,11 @@ fn get_params(req: &mut Request) -> (i32, i32, Alterable) {
         _ => Some(PgTimestamp(from_unix_to_postgres_datetime(paid_date)))
     };
 
+    // TODO: validate creditor_id & debtor_id are not equal
+    // TODO: validate (creditor_id || debtor_id) == user_id
+
     let updated_transaction = Alterable {
-        creditor_id: user_id,
+        creditor_id: creditor_id.unwrap(),
         debtor_id: debtor_id.unwrap(),
         project_name: project_name.unwrap().replace("\"", ""),
         company_name: company_name.unwrap().replace("\"", ""),

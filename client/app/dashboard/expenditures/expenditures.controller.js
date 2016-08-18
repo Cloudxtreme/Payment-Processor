@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('paymentProcessor')
-  .controller('IncomesCtrl', incomesCtrl);
+  .controller('ExpendituresCtrl', expendituresCtrl);
 
-function incomesCtrl ($q, loginManager, transactionsManager) {
+function expendituresCtrl ($q, loginManager, transactionsManager) {
   const viewModel = this;
 
   /** Controller Variables **/
@@ -18,14 +18,14 @@ function incomesCtrl ($q, loginManager, transactionsManager) {
   /******** Implementation *******/
 
   function _initController () {
-    const _setIncomes = (values) => {
+    const _setExpenditures = (values) => {
       viewModel.user = values[0];
-      viewModel.transactions = transactionsManager.thatAreIncomes(values[0].id, values[1]);
+      viewModel.transactions = transactionsManager.thatAreExpenditures(values[0].id, values[1]);
     };
 
     $q.all([
       loginManager.getUser(),
       transactionsManager.getAll()
-    ]).then(_setIncomes);
+    ]).then(_setExpenditures);
   }
 }

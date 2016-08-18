@@ -27,10 +27,10 @@ function navbarController (loginManager) {
       'state': 'dashboard.summary'
     }, {
       'title': 'INCOME',
-      'state': 'dashboard.transactions'
+      'state': 'dashboard.incomes'
     }, {
       'title': 'EXPENDITURE',
-      'state': 'dashboard.debts'
+      'state': 'dashboard.expenditures'
     }];
   }
 }

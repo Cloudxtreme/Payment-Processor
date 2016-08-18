@@ -7,9 +7,11 @@ function transactionsManager ($q, $http, loginManager, Transaction) {
 	const service = this;
 
 	/** Service Variables **/
+  service.transactions = null;
 
 	/** Service Functions **/
   service.getAll = _getAll;
+  service.thatAreIncomes = _thatAreIncomes;
 
 
 	/****** Implementation ******/
@@ -17,16 +19,24 @@ function transactionsManager ($q, $http, loginManager, Transaction) {
   function _getAll () {
     const deferred = $q.defer();
 
-    $http.get('api/transactions', {headers: {'X-Auth': loginManager.getToken()}})
-      .success(transactions => deferred.resolve(_.map(transactions, (transaction) => {
-        const newTransaction = new Transaction(transaction);
+    if (service.transactions) {
+      deferred.resolve(service.transactions);
+    } else {
+      $http.get('api/transactions', {headers: {'X-Auth': loginManager.getToken()}})
+        .success(transactions => deferred.resolve(_.map(transactions, (transaction) => {
+          const newTransaction = new Transaction(transaction);
 
-        newTransaction.fetch();
+          newTransaction.fetch();
 
-        return newTransaction;
-      })))
-      .error(status => deferred.reject(status));
+          return newTransaction;
+        })))
+        .error(status => deferred.reject(status));
+    }
 
     return deferred.promise;
+  }
+
+  function _thatAreIncomes (userId, transactions) {
+    return _.filter(transactions, (transaction) => transaction.isACredit(userId));
   }
 }

@@ -10,7 +10,6 @@ function transactionTableCtrl ($scope, $modal, transactionsManager, loginManager
   viewModel.transactions = [];
   viewModel.user = null;
 
-
   /** Directive Functions **/
   viewModel.getStatusClass = _getStatusClass;
   viewModel.openModal = _openModal;
@@ -20,8 +19,11 @@ function transactionTableCtrl ($scope, $modal, transactionsManager, loginManager
 
   /****** Implementation ******/
 
+  $scope.$watch('transactions', () => {
+    viewModel.transactions = $scope.transactions;
+  });
+
   function _initController () {
-    transactionsManager.getAll().then(transactions => viewModel.transactions = transactions);
     loginManager.getUser().then(user => viewModel.user = user);
   }
 
@@ -47,7 +49,7 @@ function transactionTableDirective () {
   return {
     restrict: 'E',
     scope: {
-      transaction: '=transaction'
+      transactions: '='
     },
     templateUrl: 'app/common/partials/transaction-table.partial.html',
     controller: 'transactionTableCtrl',

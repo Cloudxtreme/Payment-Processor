@@ -81,6 +81,12 @@ function transaction (lineItemManager) {
     formattedPaymentNumber: function () {
 
       return this.paymentNumber < TEN ? `0${this.paymentNumber}` : this.paymentNumber;
+    },
+    isACredit: function (userId) {
+      return this.creditorId === userId;
+    },
+    isAnCredit: function (userId) {
+      return this.debtorId === userId;
     }
 
   };

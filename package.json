@@ -73,6 +73,7 @@
     "grunt-rust": "^1.0.0",
     "grunt-usemin": "^3.0.0",
     "grunt-wiredep": "^2.0.0",
+    "highcharts-ng": "0.0.12",
     "istanbul": "~0.4.1",
     "jasmine-core": "^2.3.4",
     "jasmine-spec-reporter": "^2.4.0",

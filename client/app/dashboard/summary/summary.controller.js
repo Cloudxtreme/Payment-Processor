@@ -3,16 +3,15 @@
 angular.module('paymentProcessor')
   .controller('SummaryCtrl', summaryCtrl);
 
-function summaryCtrl ($q, loginManager, transactionsManager) {
+function summaryCtrl ($scope, $q, loginManager, transactionsManager, chartBuilder) {
   const viewModel = this;
 
   /** Controller Variables **/
   viewModel.transactions = [];
   viewModel.user = null;
+  viewModel.chartConfig = null;
 
   /** Controller Functions **/
-
-
   _initController();
 
   /******** Implementation *******/
@@ -27,5 +26,9 @@ function summaryCtrl ($q, loginManager, transactionsManager) {
       loginManager.getUser(),
       transactionsManager.getAll()
     ]).then(_setExpenditures);
+
+    viewModel.barGraph = chartBuilder.buildHorizontalBarGraph({});
+    viewModel.incomeGraph = chartBuilder.buildIncomeDonutGraph({});
+    viewModel.expenditureGraph = chartBuilder.buildExpenditureDonutGraph({});
   }
 }

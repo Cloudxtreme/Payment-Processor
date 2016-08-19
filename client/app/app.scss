@@ -349,3 +349,17 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
     font-size: 28px;
   }
 }
+
+.bar-graph-container {
+  display: inline-block;
+}
+
+.income-donut {
+  display: inline-block;
+  float: right;
+}
+
+.expenditure-donut {
+  display: inline-block;
+  float: right;
+}

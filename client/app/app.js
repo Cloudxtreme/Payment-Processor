@@ -47,6 +47,7 @@ angular.module('paymentProcessor', [
   'ngSanitize',
   'btford.socket-io',
   'ui.router',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  "highcharts-ng"
 ])
 .config(initializeConfiguration);

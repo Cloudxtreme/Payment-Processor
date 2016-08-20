@@ -150,7 +150,7 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
     color: rgb(71, 71, 71);
   }
   .header-row {
-    height: 46px;
+    height: 41px;
     vertical-align: top;
   }
   tbody {
@@ -158,11 +158,12 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
       border-bottom: solid;
       border-width: 1px;
       border-color: rgb(234, 234, 234);
-      height: 64px;
+      height: 90px;
       vertical-align: middle;
     }
   }
   td {
+    padding-top: 11px;
     font-family: khuluLight;
     font-weight: bold;
     font-size: 19px;
@@ -198,11 +199,11 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
   padding-bottom: 5px;
 }
 .status-container {
-  height: 38px;
-  width: 97%;
+  height: 36px;
+  width: 90%;
   margin: 0 auto;
   text-align: center;
-  padding-top: 9px;
+  padding-top: 7px;
   font-family: khuluLight;
   border-radius: 2px;
 }

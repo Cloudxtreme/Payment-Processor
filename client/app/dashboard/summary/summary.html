@@ -5,9 +5,9 @@
           <div style="display: inline-block; float: left;">
             <highchart id="chart1" config="summaryCtrl.barGraph"></highchart>
           </div>
-          <div style="display: inline-block; padding-top: 32px; font-family: khuluBold; font-size: 20px; color: rgb(85, 85, 85); position: relative; right: 40px; text-align: right;">
-            <div style="padding-bottom: 37px;"> $1,500,000.00</div>
-            <div> $750,000.00</div>
+          <div style="display: inline-block; padding-top: 32px; padding-left: 10px; font-family: khuluBold; font-size: 20px; color: rgb(85, 85, 85); position: relative; right: 40px; text-align: right;">
+            <div style="padding-bottom: 37px;">{{summaryCtrl.receivedIncomes | currency}}</div>
+            <div>{{summaryCtrl.paidExpenditures | currency}}</div>
           </div>
         </div>
         <div class="expenditure-donut" style="padding-right: 83px">

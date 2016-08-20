@@ -7,17 +7,16 @@ function chartBuilder () {
 	const service = this;
 
 	/** Service Variables **/
+
+	/** Service Functions **/
   service.buildHorizontalBarGraph = _buildHorizontalBarGraph;
   service.buildIncomeDonutGraph = _buildIncomeDonutGraph;
   service.buildExpenditureDonutGraph = _buildExpenditureDonutGraph;
 
-	/** Service Functions **/
-
 
 	/****** Implementation ******/
 
-  function _buildHorizontalBarGraph (transactions) {
-    console.log(transactions);
+  function _buildHorizontalBarGraph (receivedIncomesAmount, paidExpendituresAmount) {
 
     return {
         options: {
@@ -55,7 +54,15 @@ function chartBuilder () {
             showInLegend: false,
             pointPadding: 0,
             groupPadding: 0.1,
-            data: [{y: 1500000, color: 'rgb(46, 204, 113)'}, {y: 750000, color: 'rgb(41, 128, 185)'}]
+            data: [
+              {
+                y: receivedIncomesAmount,
+                color: 'rgb(46, 204, 113)'
+              }, {
+                y: paidExpendituresAmount,
+                color: 'rgb(41, 128, 185)'
+              }
+            ]
         }],
         title: {
           text: null
@@ -68,8 +75,7 @@ function chartBuilder () {
     };
   }
 
-  function _buildIncomeDonutGraph (incomes) {
-    console.log(incomes);
+  function _buildIncomeDonutGraph (receivedIncomesAmount, owedIncomesAmount) {
 
     return {
       options: {
@@ -95,7 +101,17 @@ function chartBuilder () {
       },
       series: [{
         name: 'Cash Flow',
-        data: [{name: "Cash In", y: 1500000, color: 'rgb(46, 204, 113)'}, {name: "Cash Out", y: 750000, color: 'rgb(231, 76, 60)'}],
+        data: [
+          {
+            name: "Cash In",
+            y: receivedIncomesAmount,
+            color: 'rgb(46, 204, 113)'
+          }, {
+            name: "Cash Out",
+            y: owedIncomesAmount,
+            color: 'rgb(231, 76, 60)'
+          }
+        ],
         size: '110%',
         innerSize: '67%',
         showInLegend: false,
@@ -105,8 +121,7 @@ function chartBuilder () {
       }]
     };
   }
-  function _buildExpenditureDonutGraph (expenditures) {
-    console.log(expenditures);
+  function _buildExpenditureDonutGraph (paidExpendituresAmount, unpaidExpendituresAmount) {
 
     return {
       options: {
@@ -132,7 +147,16 @@ function chartBuilder () {
       },
       series: [{
         name: 'Browsers',
-        data: [{name: "Cash In", y: 1500000, color: 'rgb(41, 128, 185)'}, {name: "Cash Out", y: 750000, color: 'rgb(242, 155, 18)'}],
+        data: [
+          {
+            name: "Cash In",
+            y: paidExpendituresAmount,
+            color: 'rgb(41, 128, 185)'
+          }, {
+            name: "Cash Out",
+            y: unpaidExpendituresAmount,
+            color: 'rgb(242, 155, 18)'}
+        ],
         size: '110%',
         innerSize: '67%',
         showInLegend: false,
@@ -142,6 +166,4 @@ function chartBuilder () {
       }]
     };
   }
-
-
 }

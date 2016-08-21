@@ -39,7 +39,81 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 @import '../components/footer/footer.scss';
 // endinjector
 
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+::-webkit-input-placeholder {
+  color: rgb(245, 128, 31);
+  font-family: khuluBold;
+}
 
+.login-box {
+  height: 700px;
+  .login-container {
+    :focus {
+      outline: white auto 1px;
+    }
+    
+    width: 60%;
+    padding-top: 236px;
+    margin: 0 auto;
+
+    .login-logo {
+      height: 200px;
+      width: 50%;
+      margin: 0 auto;
+
+      .big-word {
+        font-family: khuluBold;
+        font-size: 74px;
+        letter-spacing: -5px
+      }
+      .little-word {
+        font-family: khulu;
+        font-size: 51px;
+        position: relative;
+        bottom: 39px;
+      }
+    }
+    .login-form {
+      width: 50%;
+      margin: 0 auto;
+
+      .username-container, .password-container {
+        width: 100%;
+        margin: 0 auto;
+      }
+    }
+  }
+}
+.logo-1, .logo-2 {
+ position: relative; 
+}
+.logo-1 {
+  font-size: 57px;
+  padding-bottom: 10px;
+  bottom: 11px;
+  color: rgb(245, 128, 31);
+}
+.logo-2 {
+  font-size: 32px;
+  bottom: 66px;
+  color: white;
+}
+.flat-textbox {
+  width: 100%;
+  text-align: left;
+  font-size: 17px;
+  letter-spacing: .5px;
+  padding-bottom: 5px;
+  padding-left: 25px;
+  color: rgb(245, 128, 31);
+  font-family: khuluBold;
+  border-top: 1px solid white;
+  border-right: 1px solid white;
+  border-left: 1px solid white;
+  border-bottom: 1px solid rgb(239, 239, 239);
+}
 
 .navbar-background-color {
   background: white;
@@ -76,7 +150,7 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
   .selected {
     border-bottom-width: thick;
     border-bottom: solid;
-    border-color: rgb(46, 204, 113);   
+    border-color: rgb(245, 128, 31);   
   }
   .user-info {
     .user {

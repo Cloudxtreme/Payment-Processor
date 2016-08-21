@@ -7,7 +7,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a href="/" class="navbar-brand navbar-logo-wrapper" ><img class="navbar-logo" src="assets/images/payment_processor.png"></a>
+      <a href="/" class="navbar-brand navbar-logo-wrapper" ><i class="logo-1 fa fa-circle fa-stack-2x"><i class="logo-2 fa fa-credit-card fa-stack-1x"></a>
     </div>
     <div collapse="nav.isCollapsed" class="navbar-collapse collapse" id="navbar-main">
       <ul class="nav navbar-nav">
@@ -16,7 +16,7 @@
         </li>
       </ul>
       <ul class="nav">
-        <li class="user-info">
+        <li class="user-info" ng-if="nav.username != ''">
           <a>{{nav.username}} <i class="user fa fa-user"></i><i class="arrow fa fa-chevron-down"></i></a>
         </li>
       </ul>

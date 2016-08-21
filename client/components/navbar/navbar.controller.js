@@ -5,6 +5,7 @@ function navbarController (loginManager) {
 
   /** Controller Variables **/
   viewModel.isCollapsed = null;
+  viewModel.menu = [];
   viewModel.loginError = [];
   viewModel.username = '';
 
@@ -16,22 +17,23 @@ function navbarController (loginManager) {
 
   function _initController () {
     const _setUserName = user => {
-      viewModel.username = user.firstName;
+      if (user) {
+        viewModel.username = user.firstName;
+        viewModel.menu = [{
+          'title': 'HOME',
+          'state': 'dashboard.summary'
+        }, {
+          'title': 'INCOME',
+          'state': 'dashboard.incomes'
+        }, {
+          'title': 'EXPENDITURE',
+          'state': 'dashboard.expenditures'
+        }];
+      }
     };
 
     loginManager.getUser().then(_setUserName);
-
     viewModel.isCollapsed = false;
-    viewModel.menu = [{
-      'title': 'HOME',
-      'state': 'dashboard.summary'
-    }, {
-      'title': 'INCOME',
-      'state': 'dashboard.transactions'
-    }, {
-      'title': 'EXPENDITURE',
-      'state': 'dashboard.debts'
-    }];
   }
 }
 

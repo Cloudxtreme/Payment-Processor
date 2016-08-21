@@ -82,10 +82,10 @@ function transaction (lineItemManager) {
 
       return this.paymentNumber < TEN ? `0${this.paymentNumber}` : this.paymentNumber;
     },
-    isACredit: function (userId) {
+    isAnIncome: function (userId) {
       return this.creditorId === userId;
     },
-    isAnCredit: function (userId) {
+    isAnExpenditure: function (userId) {
       return this.debtorId === userId;
     }
 

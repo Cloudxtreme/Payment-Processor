@@ -63,6 +63,7 @@
       <script src="bower_components/angular-animate/angular-animate.js"></script>
       <!-- endbower -->
       <script src="socket.io-client/socket.io.js"></script>
+
     <!-- endbuild -->
 
     <!-- build:js({.tmp,client}) app/app.js -->
@@ -76,10 +77,12 @@
       <script src="app/common/models/lineItem.factory.js"></script>
       <script src="app/common/models/transaction.factory.js"></script>
       <script src="app/common/models/user.factory.js"></script>
+      <script src="app/common/services/chartBuilder.service.js"></script>
       <script src="app/common/services/lineItemManager.service.js"></script>
       <script src="app/common/directives/transaction-table.directive.js"></script>
       <script src="app/common/services/transactionManager.service.js"></script>
       <script src="app/dashboard/dashboard.controller.js"></script>
+      <script src="app/dashboard/expenditures/expenditures.controller.js"></script>
       <script src="app/dashboard/incomes/incomes.controller.js"></script>
       <script src="app/dashboard/summary/summary.controller.js"></script>
       <script src="app/login/login.controller.js"></script>
@@ -92,6 +95,9 @@
 
     <!-- IMPORTANT: You only want bootstraps js, not the css -->
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://rawgit.com/pablojim/highcharts-ng/master/dist/highcharts-ng.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+
 
   </body>
 </html>

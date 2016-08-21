@@ -1,31 +1,48 @@
-.clickable {
-  cursor: pointer;
+.box-wrapper {
+  background: $outer-background;
+  padding-bottom: 60px;
+}
+.outer-box {
+  background: $outer-background;
+  width: 92.5%;
+  margin: 0 auto;
 }
 
-.thing-form {
-  margin: 20px 0;
+.page-content {
+  padding-top: 40px;
 }
 
-#banner {
-  border-bottom: none;
-  margin-top: -20px;
+.inner-box {
+  background: rgb(255, 255, 255);
+  border: solid;
+  border-width: 1px;
+  border-color: rgb(226, 224, 226);
 }
 
-#banner h1 {
-  font-size: 60px;
-  line-height: 1;
-  letter-spacing: -1px;
+.page-title {
+  p {
+    font-family: khuluBold;
+    font-size: 26px;
+    color: rgb(70, 70, 70);
+  }
 }
 
-.hero-unit {
-  position: relative;
-  padding: 30px 15px;
-  color: #F5F5F5;
-  text-align: center;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-  background: #4393B9;
+.transactions-container {
+  padding-top: 46px;
+  width: 95%;
+  margin: 0 auto;
 }
 
-.navbar-text {
-  margin-left: 15px;
+.bar-graph-container {
+  display: inline-block;
+}
+
+.income-donut {
+  display: inline-block;
+  float: right;
+}
+
+.expenditure-donut {
+  display: inline-block;
+  float: right;
 }

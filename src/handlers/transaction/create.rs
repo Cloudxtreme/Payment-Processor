@@ -4,7 +4,7 @@ use iron::{Handler, headers, status};
 use diesel::types::structs::data_types::PgTimestamp;
 use rustc_serialize::json::{ToJson};
 use models::transaction::{Transaction, Createable};
-use services::{get_user_id, get_key_from_body, from_unix_to_postgres_datetime};
+use services::{get_key_from_body, from_unix_to_postgres_datetime};
 use util::Orm;
 
 
@@ -24,7 +24,7 @@ impl Handler for Create {
     }
 }
 fn build_new_income(req: &mut Request) -> Createable {
-    let user_id = get_user_id(req);
+    let creditor_id = get_key_from_body::<i32>(req, "creditorId");
     let debtor_id = get_key_from_body::<i32>(req, "debtorId");
     let project_name = get_key_from_body::<String>(req, "projectName");
     let company_name = get_key_from_body::<String>(req, "companyName");
@@ -37,8 +37,11 @@ fn build_new_income(req: &mut Request) -> Createable {
         _ => Some(PgTimestamp(from_unix_to_postgres_datetime(paid_date)))
     };
 
+    // TODO: validate creditor_id & debtor_id are not equal
+    // TODO: validate (creditor_id || debtor_id) == user_id
+
     Createable {
-        creditor_id: user_id,
+        creditor_id: creditor_id.unwrap(),
         debtor_id: debtor_id.unwrap(),
         project_name: project_name.unwrap().replace("\"", ""),
         company_name: company_name.unwrap().replace("\"", ""),

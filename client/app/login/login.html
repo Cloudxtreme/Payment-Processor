@@ -1,19 +1,17 @@
+<navbar></navbar>
 <div class="hold-transition login-page">
 <div class="login-box">
-  <div class="login-logo">
-   Login as an existing user
-  </div>
-  <!-- /.login-logo -->
-  <div class="login-box-body">
-
-    <form>
-      <div class="form-group has-feedback">
-        <input type="text" ng-model="loginCtrl.username" class="form-control" placeholder="User">
-        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+  <div class="login-container">
+    <div class="login-logo">
+      <span class="big-word">PAYMENT</span>
+      <span class="little-word">processor</span>
+    </div>
+    <form class="login-form">
+      <div class="username-container" style="padding-bottom: 37px;">
+        <input ng-model="loginCtrl.username" class="flat-textbox" placeholder="username">
       </div>
-      <div class="form-group has-feedback">
-        <input type="password" ng-model="loginCtrl.password" class="form-control" placeholder="Password">
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      <div class="password-container">
+        <input ng-model="loginCtrl.password" ng-keypress="($event.which === 13) ? loginCtrl.login() : 0" class="flat-textbox" placeholder="password">
       </div>
       <div class="row text-center" style="margin-bottom: 10px">
         <div ng-show="loginCtrl.loginError">
@@ -22,7 +20,7 @@
       </div>
       <div class="row text-center">
         <div class="col-xs-12 text-center">
-          <button ng-click="loginCtrl.login()" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <!-- <button ng-click="loginCtrl.login()" class="btn btn-primary btn-block btn-flat">Sign In</button> -->
         </div>
 
       </div>

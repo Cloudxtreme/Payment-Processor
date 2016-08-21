@@ -1,4 +1,31 @@
+<div class="page-content">
+  <div class="inner-box" style="border: none; height: 310px;">
+    <div class="transactions-container">
+        <div class="bar-graph-container" style="display: inline-block; padding-top: 51px; padding-left: 8px;"> 
+          <div style="display: inline-block; float: left;">
+            <highchart id="chart1" config="summaryCtrl.barGraph"></highchart>
+          </div>
+          <div style="display: inline-block; padding-top: 32px; padding-left: 10px; font-family: khuluBold; font-size: 20px; color: rgb(85, 85, 85); position: relative; right: 40px; text-align: right;">
+            <div style="padding-bottom: 37px;">{{summaryCtrl.receivedIncomes | currency}}</div>
+            <div>{{summaryCtrl.paidExpenditures | currency}}</div>
+          </div>
+        </div>
+        <div class="expenditure-donut" style="padding-right: 83px">
+          <highchart id="chart1" config="summaryCtrl.expenditureGraph"></highchart>
+        </div>
+        <div class="income-donut" style="padding-right: 111px">
+          <highchart id="chart1" config="summaryCtrl.incomeGraph"></highchart>
+        </div>
+    </div>
+  </div>
 
-<b> Summary View </b>
+  <div class="page-title" style="padding-top: 44px">
+    <p> TRANSACTIONS </p>
+  </div>
 
-
+  <div class="inner-box">
+    <div class="transactions-container">
+      <transaction-table transactions="summaryCtrl.transactions" user="summaryCtrl.user"></transaction-table>
+    </div>
+  </div>
+</div>

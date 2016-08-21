@@ -1,27 +1,75 @@
-.thing-form {
-  margin: 20px 0;
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+::-webkit-input-placeholder {
+  color: $procore-orange;
+  font-family: khuluBold;
 }
 
-#banner {
-  border-bottom: none;
-  margin-top: -20px;
-}
+.login-box {
+  height: 700px;
+  .login-container {
+    :focus {
+      outline: white auto 1px;
+    }
 
-#banner h1 {
-  font-size: 60px;
-  line-height: 1;
-  letter-spacing: -1px;
-}
+    width: 60%;
+    padding-top: 236px;
+    margin: 0 auto;
 
-.hero-unit {
-  position: relative;
-  padding: 30px 15px;
-  color: #F5F5F5;
-  text-align: center;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-  background: #4393B9;
-}
+    .login-logo {
+      height: 200px;
+      width: 50%;
+      margin: 0 auto;
 
-.navbar-text {
-  margin-left: 15px;
+      .big-word {
+        font-family: khuluBold;
+        font-size: 74px;
+        letter-spacing: -5px
+      }
+      .little-word {
+        font-family: khulu;
+        font-size: 51px;
+        position: relative;
+        bottom: 39px;
+      }
+    }
+    .login-form {
+      width: 50%;
+      margin: 0 auto;
+
+      .username-container, .password-container {
+        width: 100%;
+        margin: 0 auto;
+      }
+    }
+  }
+}
+.logo-1, .logo-2 {
+  position: relative; 
+}
+.logo-1 {
+  font-size: 57px;
+  padding-bottom: 10px;
+  bottom: 11px;
+  color: $procore-orange;
+}
+.logo-2 {
+  font-size: 32px;
+  bottom: 66px;
+  color: white;
+}
+.flat-textbox {
+  width: 100%;
+  text-align: left;
+  font-size: 17px;
+  letter-spacing: .5px;
+  padding-bottom: 5px;
+  padding-left: 25px;
+  color: $procore-orange;
+  font-family: khuluBold;
+  border-top: 1px solid white;
+  border-right: 1px solid white;
+  border-left: 1px solid white;
+  border-bottom: 1px solid rgb(239, 239, 239);
 }

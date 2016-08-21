@@ -1,0 +1,106 @@
+.modal-lg {
+  width: 1169px;
+}
+.modal-dialog {
+  margin: 131px auto;
+}
+
+.view-modal-header-wrapper {
+  .exit-button {
+    float: right;
+    color: white;
+    position: relative;
+    bottom: 52px;
+    font-size: 30px; 
+  }
+  background: rgb(244, 245, 249);
+  .view-modal-header {
+    width: 93%;
+    margin: 0px auto;
+    padding-top: 37px;
+
+    .view-modal-info {
+      .view-modal-company-name {
+        font-family: khuluBold;
+        font-size: 32px;
+        display: inline-block;
+      }
+      .view-modal-project-name {
+        font-size: 25px;
+        color: rgb(104, 104, 104);
+      }
+      .view-modal-transaction-date {
+        display: inline-block;
+        color: rgb(104, 104, 104);
+        font-size: 20px;
+        padding-top: 30px
+      }
+      .view-modal-payment-number {
+        font-size: 21px;
+        float: right;
+        font-family: khuluBold;
+      }
+      .view-modal-amount-total {
+        float: right;
+        font-size: 56px;
+        font-family: khuluLight;
+        padding-top:10px;
+        color: rgb(90, 90, 90);
+      }
+    }
+  }
+}
+
+.view-modal-body-wrapper {
+  overflow: auto;
+  padding-bottom: 72px;
+
+  .view-modal-body {
+    padding-top: 48px;
+    width: 92%;
+    margin: 0px auto;
+    .view-modal-line-items {
+
+      .view-modal-line-item {
+        padding-bottom: 18px;
+
+        .line-description {
+          font-size: 21px;
+          font-family: khuluLight;
+          font-weight: bolder;
+          color: rgb(121, 120, 120);
+          letter-spacing: .5px;
+        }
+
+        .line-amount {
+          float: right;
+          font-size: 22px;
+          color: rgb(111, 110, 110);
+          font-family: khuluLight;
+          font-weight: bolder;
+        }
+      }
+    }
+    .view-modal-subtotal {
+      float: right;
+      padding-top: 37px;
+      font-family: khuluBold;
+      font-size: 26px;
+    }
+  }
+}
+.view-modal-button-wrapper {
+  height: 72px;
+  .view-modal-button {
+    background: rgb(41, 128, 185);
+    width: 100%;
+    height: 100%;
+    line-height: 77px;
+    color: white;
+    text-align: center;
+    font-family: khulu;
+    font-size: 28px;
+  }
+}
+
+

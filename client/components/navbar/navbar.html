@@ -11,7 +11,7 @@
     </div>
     <div collapse="nav.isCollapsed" class="navbar-collapse collapse" id="navbar-main">
       <ul class="nav navbar-nav">
-        <li ng-repeat="item in nav.menu" ui-sref-active="selected">
+        <li ng-repeat="item in nav.menu" ui-sref-active="selected" ng-class="'menu-' + item.title">
             <a ui-sref="{{item.state}}">{{item.title}}</a>
         </li>
       </ul>

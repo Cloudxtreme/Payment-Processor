@@ -13,7 +13,7 @@ const DEFAULT_USER = {
   createdDate: new Date()
 };
 
-function user () {
+function user (stripeInfoManager) {
 
   // Constructor
   function User (userData) {
@@ -27,7 +27,8 @@ function user () {
         companyName: userData.companyName,
         firstName: userData.firstName,
         lastName: userData.lastName,
-        createdDate: new Date(userData.createdDate * MILLISECONDS_IN_MICROSECONDS)
+        createdDate: new Date(userData.createdDate * MILLISECONDS_IN_MICROSECONDS),
+        stripeInfo: new StripeInfo()
       }
     );
   }
@@ -35,7 +36,7 @@ function user () {
   // Member Functions
   User.prototype = {
     fetch: function () {
-
+      stripeInfoManager.getInfo(this.id).then(stripeInfo => this.stripInfo = stripInfo);      
     }
   };
 

@@ -23,10 +23,11 @@ function viewTransactionCtrl ($modalInstance, transactionObj, userObj) {
   }
 
   function _pay () {
-    $modalInstance.dismiss();
+    $modalInstance.close();
   }
 
   function _requestPayment () {
+    // TODO: Send email or something
     $modalInstance.dismiss();
   }
 }

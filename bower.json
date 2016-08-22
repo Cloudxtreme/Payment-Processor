@@ -16,7 +16,8 @@
     "angular-socket-io": "~0.7.0",
     "angular-ui-router": "~0.2.15",
     "jquery": "^2.2.3",
-    "angular-animate": "^1.5.*"
+    "angular-animate": "^1.5.*",
+    "oauth-js": "oauthio-web#^0.5.2"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.0"

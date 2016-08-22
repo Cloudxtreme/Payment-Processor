@@ -8,7 +8,8 @@
     "angular":true,
     "console":true,
     "$":true,
-    "_":true
+    "_":true,
+    "OAuth": true
   },
   "rules":{
     "no-alert":"error",

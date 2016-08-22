@@ -3,7 +3,7 @@
 angular.module('paymentProcessor')
   .service('transactionsManager', transactionsManager);
 
-function transactionsManager ($q, $http, loginManager, Transaction) {
+function transactionsManager ($q, $http, loginManager, Transaction, Destination) {
 	const service = this;
 
 	/** Service Variables **/
@@ -11,6 +11,7 @@ function transactionsManager ($q, $http, loginManager, Transaction) {
 
 	/** Service Functions **/
   service.getAll = _getAll;
+  service.getDestination = _getDestination;
   service.thatAreIncomes = _thatAreIncomes;
   service.thatAreExpenditures = _thatAreExpenditures;
 
@@ -34,6 +35,34 @@ function transactionsManager ($q, $http, loginManager, Transaction) {
     return deferred.promise;
   }
 
+  function _update(transaction) {
+    const deferred = $q.defer();
+ 
+    $http.get(`api/transactions/${transaction.id}`, {headers: {'X-Auth': loginManager.getToken()}}, transaction)
+      .success(transaction => {
+        const transaction = new Transaction(transaction);
+        deferred.resolve(transaction);
+      })
+      .error(status => deferred.reject(status));
+
+    return deferred.promise;
+  }
+
+
+
+  function _getDestination(transaction) {
+    const deferred = $q.defer();
+ 
+    $http.get(`api/transactions/${transaction.id}/destination`, {headers: {'X-Auth': loginManager.getToken()}})
+      .success(destination => {
+        const destination = new Destination(destination);
+        deferred.resolve(destination);
+      })
+      .error(status => deferred.reject(status));
+
+    return deferred.promise;
+  }
+
   function _thatAreIncomes (userId, transactions) {
     return _.filter(transactions, (transaction) => transaction.isAnIncome(userId));
   }
@@ -41,6 +70,7 @@ function transactionsManager ($q, $http, loginManager, Transaction) {
   function _thatAreExpenditures (userId, transactions) {
     return _.filter(transactions, (transaction) => transaction.isAnExpenditure(userId));
   }
+
 
 
   /****** Helpers ******/

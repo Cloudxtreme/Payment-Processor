@@ -6,6 +6,7 @@ const HTML5_MODE = true;
 const initializeConfiguration = ($urlRouterProvider, $locationProvider, $stateProvider) => {
   $urlRouterProvider.otherwise(DEFAULT_ROUTE);
   $locationProvider.html5Mode(HTML5_MODE);
+
   // TODO: Put in .env
   OAuth.initialize('VvUJNm5L-9iRpMstQQbzBgv1qcE');
 

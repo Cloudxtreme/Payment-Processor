@@ -3,7 +3,7 @@ angular.module('paymentProcessor')
   .factory('Source', source);
 
 const DEFAULT_SOURCE = {
-  // TODO: Some attrs  
+  token: ''
 };
 
 function source () {
@@ -14,7 +14,7 @@ function source () {
       this,
       DEFAULT_SOURCE,
       {
-        // some attrs   
+        token: sourceData.token
       }
     );
   }

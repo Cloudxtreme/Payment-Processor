@@ -4,9 +4,10 @@ angular.module('paymentProcessor')
 
 const DEFAULT_STRIPE_INFO = {
   id: null,
+  userId: null,
   accessToken: null,
   publishableKey: null,
-  userID: null 
+  stripeUserId: null
 };
 
 function stripeInfo () {
@@ -18,9 +19,10 @@ function stripeInfo () {
       DEFAULT_STRIPE_INFO,
       {
         id: stripeInfoData.id,
+        userId: stripeInfoData.userId,
         accessToken: stripeInfoData.accessToken,
         publishableKey: stripeInfoData.publishableKey,
-        userID: stripeInfoData.userId
+        stripeUserId: stripeInfoData.stripeUserId
       }
     );
   }

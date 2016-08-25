@@ -3,7 +3,7 @@
 angular.module('paymentProcessor')
   .service('loginManager', loginManager);
 
-function loginManager ($q, $http, $state, User) {
+function loginManager ($q, $http, $state, User, stripeInfoManager) {
 	const service = this;
 
 	/** Service Variables **/
@@ -29,8 +29,12 @@ function loginManager ($q, $http, $state, User) {
       $http.get('api/user', {headers: {'X-Auth': service._token}})
         .success(user => {
           service._user = new User(user);
-          service._user.fetch();
-          deferred.resolve(service._user);
+          stripeInfoManager.getInfo(service._user.id, service._token).then(stripeInfo => {
+            service._user.stripeInfo = stripeInfo;
+            deferred.resolve(service._user);
+          }, () => {
+            deferred.resolve(service._user);
+          });
         })
         .error((data, status) => deferred.reject(status));
     }

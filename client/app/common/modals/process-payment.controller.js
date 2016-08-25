@@ -4,25 +4,27 @@ angular.module('paymentProcessor')
   .controller('ProcessPaymentCtrl', processPaymentCtrl);
 
 const MILLISECONDS_IN_MICROSECONDS = 1000;
+const BUTTON_TEXT = ['Review Order', 'Review Order', 'Review Order', 'Confirm Payment'];
 
-function processPaymentCtrl ($modalInstance, transactionObj, userObj, stripeInfoManager, transactionManager, paymentManager) {
+function processPaymentCtrl ($q, $modalInstance, transactionObj, userObj, stripeInfoManager, loginManager, transactionsManager, paymentManager, Card, Source, Destination, Charge) {
   const viewModel = this;
 
   /** Modal Variables **/
   viewModel.transaction = transactionObj;
   viewModel.user = userObj;
   viewModel.step = 1;
-  
+  viewModel.buttonText = 'Review Charge';
+
   // Absolutly imperitive that we wipe these out on open
   viewModel.accessToken = null;         // Step 1
-  viewModel.source = null;              // Step 2 
-  viewModel.existingSources = null;
-  viewModel.newSource = null;
+  viewModel.source = null;              // Step 2
+  viewModel.card = {};
   viewModel.destination = null;         // Step 3
   viewModel.charge = null;              // Step 4
 
   /** Modal Functions **/
   viewModel.exit = _exit;
+  viewModel.nextButtonClick = _nextButtonClick;
 
   // TODO: Move all server stuff that we can do before hand into an initialize to reduce latency
   _executeStep1();
@@ -30,11 +32,6 @@ function processPaymentCtrl ($modalInstance, transactionObj, userObj, stripeInfo
   /****** Implementation ******/
 
   function _executeStep1 () {
-    const accessToken,
-          destination,
-          source,
-          charge;
-
     _getStripeAccessToken(viewModel.user).then(accessToken => {
         viewModel.accessToken = accessToken;
         _incrementStep();
@@ -43,35 +40,27 @@ function processPaymentCtrl ($modalInstance, transactionObj, userObj, stripeInfo
   }
 
   function _initStep2 () {
-    const _setExistingSources = (sources) => {
-      viewModel.existingSources = sources; 
-    }
+    // TODO: Someday, Hit Stripe API for Payment Sources
+    // paymentManager.getExistingSources(user.stripeInfo);
 
-    // Hit Stripe API for Payment Sources
-    paymentManager.getExistingSources(user.stripeInfo);
-
-    // TODO: Build Blank Model for new payment method
-    const newSource = {};
+    viewModel.card = {};
   }
 
-  function _executeStep2(source) {
-    const _setSourceAndNextStep = (paymentSource) => {
+  function _executeStep2 () {
+    const _setSourceAndNextStep = (tokenObj) => {
       // TODO: Make handler to handle failure case, which might be a common occurance
-      viewModel.source = paymentSource;
+      viewModel.source = new Source(tokenObj);
       _incrementStep();
       _executeStep3();
     };
 
-    if (source.isNewSource()) {
-      paymentManager.saveNewSource(source).then(_setSourceAndNextStep);
-    } else {
-      _setSourceAndNextStep();
-    }
+    console.log(viewModel.card);
+    paymentManager.createToken(new Card(viewModel.card)).then(_setSourceAndNextStep);
   }
 
-  function _executeStep3() {
+  function _executeStep3 () {
 
-    const _handleDoesHaveDestination = destination => { 
+    const _handleDoesHaveDestination = destination => {
       viewModel.destination = destination;
       _incrementStep();
       _initStep4();
@@ -79,39 +68,42 @@ function processPaymentCtrl ($modalInstance, transactionObj, userObj, stripeInfo
 
     const _handleDoesNotHaveDestination = () => {
       // TODO: Show small pop up, on click, close small pop up and this pop up
-    }
+    };
 
-    transactionManager.getDestination(viewModel.transaction).then(_handleDoesHaveDestination).fail(_handleDoesNotHaveDestination);
+    transactionsManager.getDestination(viewModel.transaction)
+      .then(_handleDoesHaveDestination, _handleDoesNotHaveDestination);
   }
 
-  function _initStep4() {
+  function _initStep4 () {
     viewModel.charge = new Charge({
       amount: viewModel.transaction.amount(),
       source: viewModel.source,
-      destination: viewModel.destination
-      // TODO: attrs here
+      destination: viewModel.destination,
+      description: `Payment #${viewModel.transaction.formattedPaymentNumber()} for ${viewModel.transaction.projectName}`
     });
   }
 
-  function _executeStep4() {
+  function _executeStep4 () {
 
-    const handleChargeSuccess = data => {
-      const _updateModelTransaction(transaction) => {
+    const _handleChargeSuccess = () => {
+      const _updateModelTransaction = transaction => {
         viewModel.transaction = transaction;
         _incrementStep();
       };
 
       // TODO: Show small pop up, on click close small pop up and this pop up
+      // TODO: Do something backendy witht the charge object we get back from stripe. idk
 
-      viewModel.transaction.paid_date = new Date() / MILLISECONDS_IN_MICROSECONDS; // TODO: Revist Algorithm
-      transactionManager.update(transaction).then(_updateModelTransaction);
+      viewModel.transaction.paidDate = new Date() / MILLISECONDS_IN_MICROSECONDS; // TODO: Revist Algorithm
+      transactionsManager.update(viewModel.transaction).then(_updateModelTransaction);
     };
 
-    const handleChargeFailure = data {
+    const _handleChargeFailure = () => {
       // TODO: Show small pop up, on click close small pop up and this pop up
     };
 
-    paymentManager.createCharge(viewModel.charge).then(_handleChargeSuccess).fail(handleChargeFailure);
+    paymentManager.createCharge(viewModel.charge)
+      .then(_handleChargeSuccess, _handleChargeFailure);
   }
 
   function _exit () {
@@ -124,29 +116,42 @@ function processPaymentCtrl ($modalInstance, transactionObj, userObj, stripeInfo
     if (viewModel.step > 4) {
       // TODO: Close Modal & return transaction
     }
+
+    viewModel.buttonText = BUTTON_TEXT[viewModel.step - 1];
+  }
+
+  function _nextButtonClick () {
+    // TODO: Disable button after click
+    if (viewModel.step === 4) {
+      _executeStep4();
+    } else {
+      _executeStep2();
+    }
   }
 
   /****** Helpers ******/
 
-  const _getStripeAccessToken = user => {
+  function _getStripeAccessToken (user) {
     const deferred = $q.defer();
 
     const _handleIntegrationSuccess = (result) => {
       // Setup user's stripe data
       _.assign(
-        user.stripeInfo, 
+        user.stripeInfo,
         {
-          accessToken: result.accessToken,
-          publishableKey: result.publishableKey,
-          userID: result.userID
+          accessToken: result.access_token,
+          publishableKey: result.stripe_publishable_key,
+          stripeUserId: result.stripe_user_id
         }
       );
 
       // Send stripe data to server
-      stripeInfoManager.create(user.id, user.stripeInfo);
-      
+      stripeInfoManager.createInfo(user.id, user.stripeInfo, loginManager.getToken());
+
       // Return Accesss Token
       deferred.resolve(result.accessToken);
+
+      // TODO: Kill Spinner
     };
 
     const _handleIntegrationFailure = (err) => {
@@ -154,42 +159,24 @@ function processPaymentCtrl ($modalInstance, transactionObj, userObj, stripeInfo
       // TODO: Open small pop up saying authentication failed. then close small pop up and current
       //        pop up
       deferred.reject('Unable to authenticate user via stripe');
+
+      // TODO: Kill Spinner
     };
-    
+
     if (user.stripeInfo.accessToken) { // return the existing access token we stored
-      return user.stripeInfo.accessToken;  
+      deferred.resolve(user.stripeInfo.accessToken);
     } else { // user has not yet integrated with stripe
       // TODO: Open small pop up saying that they will be direct to stripe for authentication. When
       //        they close the pop up, the stripe pop up will appear
-      
+
+      // TODO: Load Spinner
+
       // Send then to stripe's website
-      OAuth.popup('stripe').done(_handleIntegrationSuccess).fail(_handleIntegrationFailure);
+      OAuth.popup('stripe')
+        .done(_handleIntegrationSuccess)
+        .fail(_handleIntegrationFailure);
     }
 
     return deferred.promise;
-  };
-    
+  }
 }
-  // AM I STILL DOING THIS
-
-  // 1.) If user doesn't have a client id set
-  //  First kill first modal, pop up new one. Then if they don't have client id, then do pop up.
-  //  Get data from oath, put in a new Account model. Before you so anything else, save Account model
-  //  to server for this user. That way we will have it already in the future
-  //  1.a) use Oauth to get it
-  //  1.b) send post to server, saving stripe data 
-  // 2.) Get pre-requisite info from the user
-  //  This experience might take some time to build. We want to hit stripe's API, get all payment 
-  //  methods, and allow them to select an existing one, or enter a new one. After this, we will 
-  //  get the reciever's acount info and put that in a model too.
-  //  2.a) Make user select source for charge (show existing payment methods, let them enter custom) 
-  //  2.b) Lookup receiver's stripe account id
-  // 3.) Hit stripe's API to complete payment
-  //  Make a model for the charge. build it with the objects we have just set up before. send
-  //  post to the charge api of stripe, and check for success. Set payment date of the transaction,
-  //  send post to server with the new transaction info. kill modal.
-  //  3.a) Find 'source' info
-  //  3.b) Find 'destination' account id
-  //  3.c) Find 'amount' of charge'
-  //  3.d) Send post to 'Charge' endpoint of stripe, with the above data filled
-

@@ -10,10 +10,11 @@ const DEFAULT_USER = {
   companyName: '',
   firstName: '',
   lastName: '',
-  createdDate: new Date()
+  createdDate: new Date(),
+  stripeInfo: {}
 };
 
-function user (stripeInfoManager) {
+function user () {
 
   // Constructor
   function User (userData) {
@@ -28,16 +29,14 @@ function user (stripeInfoManager) {
         firstName: userData.firstName,
         lastName: userData.lastName,
         createdDate: new Date(userData.createdDate * MILLISECONDS_IN_MICROSECONDS),
-        stripeInfo: new StripeInfo()
+        stripeInfo: userData.stripeInfo || {}
       }
     );
   }
 
   // Member Functions
   User.prototype = {
-    fetch: function () {
-      stripeInfoManager.getInfo(this.id).then(stripeInfo => this.stripInfo = stripInfo);      
-    }
+
   };
 
   return User;

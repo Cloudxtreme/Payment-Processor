@@ -59,8 +59,7 @@ function transactionTableCtrl ($scope, $modal, transactionsManager, loginManager
       }
     });
 
-    modalInstance.result.then(result => {
-      console.log(result);
+    modalInstance.result.then(() => {
       $modal.open({
         controller: 'ProcessPaymentCtrl',
         controllerAs: 'processPaymentCtrl',

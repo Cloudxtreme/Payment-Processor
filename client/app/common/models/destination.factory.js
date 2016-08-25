@@ -15,7 +15,7 @@ function destination () {
       this,
       DEFAULT_DESTINATION,
       {
-        accountId: destinationData.accountId   
+        accountId: destinationData.accountId
       }
     );
   }

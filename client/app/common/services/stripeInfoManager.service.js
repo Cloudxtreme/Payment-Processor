@@ -3,7 +3,7 @@
 angular.module('paymentProcessor')
   .service('stripeInfoManager', stripeInfoManager);
 
-function stripeInfoManager ($q, $http, $state, StripeInfo, loginManager) {
+function stripeInfoManager ($q, $http, $state, StripeInfo) {
 	const service = this;
 
 	/** Service Variables **/
@@ -14,12 +14,13 @@ function stripeInfoManager ($q, $http, $state, StripeInfo, loginManager) {
 
 	/****** Implementation ******/
 
-	function _getInfo (userId) {
+	function _getInfo (userId, token) {
 		const deferred = $q.defer();
 
-    $http.get(`api/user/${userId}/stripe_info`, {headers: {'X-Auth': loginManager.getToken()}})
-      .success(stripe_info_data => {
-        const info = new StripeInfo(stripe_info_data);
+    $http.get(`api/users/${userId}/stripe_info`, {headers: {'X-Auth': token}})
+      .success(stripeInfoData => {
+        const info = new StripeInfo(stripeInfoData);
+
         info.fetch();
         deferred.resolve(info);
       })
@@ -28,12 +29,17 @@ function stripeInfoManager ($q, $http, $state, StripeInfo, loginManager) {
 		return deferred.promise;
   }
 
-  function _createInfo (userId, stripeInfo) {
+  function _createInfo (userId, stripeInfo, token) {
     const deferred = $q.defer();
 
-    $http.post(`api/user/${userId}/stripe_info`, {headers: {'X-Auth': loginManager.getToken()}}, stripeInfo)
-      .success(stripe_info_data => {
-        const info = new StripeInfo(stripe_info_data);
+    $http({
+      url: `api/users/${userId}/stripe_info`,
+      method: "POST",
+      data: stripeInfo,
+      headers: {'X-Auth': token}
+    }).success(stripeInfoData => {
+        const info = new StripeInfo(stripeInfoData);
+
         info.fetch();
         deferred.resolve(info);
       })

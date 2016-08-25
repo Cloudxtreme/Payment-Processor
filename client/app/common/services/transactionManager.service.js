@@ -11,6 +11,7 @@ function transactionsManager ($q, $http, loginManager, Transaction, Destination)
 
 	/** Service Functions **/
   service.getAll = _getAll;
+  service.update = _update;
   service.getDestination = _getDestination;
   service.thatAreIncomes = _thatAreIncomes;
   service.thatAreExpenditures = _thatAreExpenditures;
@@ -35,13 +36,16 @@ function transactionsManager ($q, $http, loginManager, Transaction, Destination)
     return deferred.promise;
   }
 
-  function _update(transaction) {
+  function _update (transaction) {
     const deferred = $q.defer();
- 
+
     $http.get(`api/transactions/${transaction.id}`, {headers: {'X-Auth': loginManager.getToken()}}, transaction)
-      .success(transaction => {
-        const transaction = new Transaction(transaction);
-        deferred.resolve(transaction);
+      .success(transactionData => {
+        const updatedTransaction = new Transaction(transactionData);
+        const index = _.indexOf(service.transactions, _.find(service.transactions, {id: 1}));
+
+        service.transactions[index] = updatedTransaction;
+        deferred.resolve(updatedTransaction);
       })
       .error(status => deferred.reject(status));
 
@@ -49,13 +53,13 @@ function transactionsManager ($q, $http, loginManager, Transaction, Destination)
   }
 
 
-
-  function _getDestination(transaction) {
+  function _getDestination (transaction) {
     const deferred = $q.defer();
- 
+
     $http.get(`api/transactions/${transaction.id}/destination`, {headers: {'X-Auth': loginManager.getToken()}})
-      .success(destination => {
-        const destination = new Destination(destination);
+      .success(destinationData => {
+        const destination = new Destination({accountId: destinationData.destination_id});
+
         deferred.resolve(destination);
       })
       .error(status => deferred.reject(status));
@@ -70,7 +74,6 @@ function transactionsManager ($q, $http, loginManager, Transaction, Destination)
   function _thatAreExpenditures (userId, transactions) {
     return _.filter(transactions, (transaction) => transaction.isAnExpenditure(userId));
   }
-
 
 
   /****** Helpers ******/

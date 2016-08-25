@@ -4,7 +4,7 @@ angular.module('paymentProcessor')
   .controller('ProcessPaymentCtrl', processPaymentCtrl);
 
 const MILLISECONDS_IN_MICROSECONDS = 1000;
-const BUTTON_TEXT = ['Review Order', 'Review Order', 'Review Order', 'Confirm Payment'];
+const BUTTON_TEXT = ['Review Order', 'Review Order', 'Review Payment', 'Confirm Payment', 'Exit'];
 
 function processPaymentCtrl ($q, $modalInstance, transactionObj, userObj, stripeInfoManager, loginManager, transactionsManager, paymentManager, Card, Source, Destination, Charge) {
   const viewModel = this;
@@ -25,6 +25,7 @@ function processPaymentCtrl ($q, $modalInstance, transactionObj, userObj, stripe
   /** Modal Functions **/
   viewModel.exit = _exit;
   viewModel.nextButtonClick = _nextButtonClick;
+  viewModel.editCardInfo = _editCardInfo;
 
   // TODO: Move all server stuff that we can do before hand into an initialize to reduce latency
   _executeStep1();
@@ -93,7 +94,7 @@ function processPaymentCtrl ($q, $modalInstance, transactionObj, userObj, stripe
       // TODO: Show small pop up, on click close small pop up and this pop up
       // TODO: Do something backendy witht the charge object we get back from stripe. idk
 
-      viewModel.transaction.paidDate = new Date() / MILLISECONDS_IN_MICROSECONDS; // TODO: Revist Algorithm
+      viewModel.transaction.paidDate = parseInt(new Date() / MILLISECONDS_IN_MICROSECONDS, 10);
       transactionsManager.update(viewModel.transaction).then(_updateModelTransaction);
     };
 
@@ -127,6 +128,12 @@ function processPaymentCtrl ($q, $modalInstance, transactionObj, userObj, stripe
       _executeStep2();
     }
   }
+
+  function _editCardInfo () {
+    viewModel.step = 2;
+    viewModel.buttonText = BUTTON_TEXT[viewModel.step - 1];
+  }
+
 
   /****** Helpers ******/
 

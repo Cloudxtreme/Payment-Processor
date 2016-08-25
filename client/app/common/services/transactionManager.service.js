@@ -39,8 +39,12 @@ function transactionsManager ($q, $http, loginManager, Transaction, Destination)
   function _update (transaction) {
     const deferred = $q.defer();
 
-    $http.get(`api/transactions/${transaction.id}`, {headers: {'X-Auth': loginManager.getToken()}}, transaction)
-      .success(transactionData => {
+    $http({
+      url: `api/transactions/${transaction.id}`,
+      method: "PUT",
+      data: transaction.forServer(),
+      headers: {'X-Auth': loginManager.getToken()}
+    }).success(transactionData => {
         const updatedTransaction = new Transaction(transactionData);
         const index = _.indexOf(service.transactions, _.find(service.transactions, {id: 1}));
 

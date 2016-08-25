@@ -1,34 +1,65 @@
+<div class="view-modal-header-wrapper">
+  <div class="exit-button" ng-click="$dismiss()">X</div>
+  <div class="view-modal-header">
+        <div class="view-modal-info">
+      <div>
+        <div class="view-modal-company-name">{{processPaymentCtrl.transaction.companyName}}</div>
+        <div class="view-modal-payment-number">PAYMENT APPLICATION #{{processPaymentCtrl.transaction.formattedPaymentNumber()}}</div>
+      </div>
+      <div style="padding-bottom: 38px">
+        <div class="view-modal-project-name">{{processPaymentCtrl.transaction.projectName}}</div>
+        <div class="view-modal-transaction-date">{{processPaymentCtrl.transaction.formattedCreatedDateTwo()}}</div>
+        <div class="view-modal-amount-total">{{processPaymentCtrl.transaction.amount() | currency}}</div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="view-modal-body-wrapper">
   <div class="view-modal-body">
-    <!-- Step 1 -->
-    <div ng-if="processPaymentCtrl.step == 1">
+    <div class="process-payment-info" ng-class="{'process-payment-info-width-override': processPaymentCtrl.step == 5}">
+      <!-- Step 1 -->
+      <div ng-if="processPaymentCtrl.step == 1">
 
-    </div>
-
-    <!-- Step 2 -->
-    <div ng-if="processPaymentCtrl.step == 2">
-      <div>
-        Number: <input ng-model="processPaymentCtrl.card.number">
       </div>
-      <div>
-        Exp Month: <input ng-model="processPaymentCtrl.card.expMonth">
-      </div>
-      <div>
-        Exp Year: <input ng-model="processPaymentCtrl.card.expYear">
-      </div>
-      <div>
-        CVC: <input ng-model="processPaymentCtrl.card.cvc">
-      </div>
-    </div>
 
-    <!-- Step 3 -->
-    <div ng-if="processPaymentCtrl.step == 3">
+      <!-- Step 2 -->
+      <div ng-if="processPaymentCtrl.step == 2">
+        <div>
+          <input ng-model="processPaymentCtrl.card.number" class="card-textbox card-number" placeholder="Card #">
+        </div>
+        <div>
+          <input ng-model="processPaymentCtrl.card.expMonth" class="card-textbox card-exp" placeholder="Month">
+          <input ng-model="processPaymentCtrl.card.expYear"class="card-textbox card-exp" placeholder="Year">
+        </div>
+        <div>
+          <input ng-model="processPaymentCtrl.card.cvc"class="card-textbox card-cvc" placeholder="CVC">
+        </div>
+      </div>
 
-    </div>
+      <!-- Step 3 -->
+      <div ng-if="processPaymentCtrl.step == 3">
+      </div>
 
-    <!-- Step 4 -->
-    <div ng-if="processPaymentCtrl.step == 4">
-      Proceed with Charge of {{processPaymentCtrl.charge.amount | currency}}?
+      <!-- Step 4 -->
+      <div ng-if="processPaymentCtrl.step == 4">
+        <div class="payment-review-card">
+          <p>Card Number: {{processPaymentCtrl.card.number}}</p>
+          <p>Expiration Date: {{processPaymentCtrl.card.expMonth}}/{{processPaymentCtrl.card.expYear}}</p>
+          <p>CVC: {{processPaymentCtrl.card.cvc}}</p>
+          <div style="color: rgb(41, 128, 185); font-size: 13px" ng-click="processPaymentCtrl.editCardInfo()">
+            Edit
+          </div>
+        </div>
+        <div class="payment-review-total">
+          <p>Total: {{processPaymentCtrl.charge.amount | currency}}</p>
+          <span style="padding-right: 29px">To:</span><span>{{processPaymentCtrl.transaction.companyName}}</span>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div ng-if="processPaymentCtrl.step == 5">
+        <span style="font-size: 25px;"><i class="fa fa-check-circle-o" style="color: rgb(46, 204, 113); padding-right: 10px; font-size: 45px; vertical-align: middle;"></i>Your Payment has been Processed Successfully!</span>
+      </div>
     </div>
 
   </div>

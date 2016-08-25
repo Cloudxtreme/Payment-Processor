@@ -1,0 +1,47 @@
+.process-payment-info {
+  font-family: khulu;
+  width: 27%;
+  margin: 0 auto;
+  :focus {
+    outline: white auto 1px;
+  }
+}
+.process-payment-info-width-override {
+  width: 56%;
+}
+
+
+.card-textbox {
+  width: 81%;
+  text-align: left;
+  font-size: 24px;
+  letter-spacing: .5px;
+  color: $procore-orange;
+  font-family: khuluBold;
+  border-top: 1px solid white;
+  border-right: 1px solid white;
+  border-left: 1px solid white;
+  border-bottom: 1px solid rgb(239, 239, 239);
+  margin-bottom: 10px;
+}
+
+.card-number {
+
+}
+.card-exp {
+  display: inline-block;
+  width: 29%;
+  margin-right: 15px;
+}
+.card-cvc {
+  width: 35%;
+}
+
+.payment-review-card {
+  font-size: 19px;
+  padding-bottom: 37px;
+}
+.payment-review-total {
+  font-family: khuluBold;
+  font-size: 19px
+}

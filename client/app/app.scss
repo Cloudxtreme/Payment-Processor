@@ -19,6 +19,7 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 }
 
 $procore-orange: rgb(245, 128, 31); 
+$procore-orange-transparent: rgba(245, 128, 31, 0.2); 
 $outer-background: rgb(249, 249, 249);
 $received-color: rgb(252, 253, 253);
 $owed-color: rgb(251, 229, 225);
@@ -38,6 +39,8 @@ $unpaid-color: rgb(250, 238, 226);
 
 // Component styles are injected through grunt
 // injector
+@import 'common/modals/notification.scss';
+@import 'common/modals/process-payment.scss';
 @import 'common/modals/view-transaction.scss';
 @import 'common/partials/transaction-table.scss';
 @import 'dashboard/dashboard.scss';

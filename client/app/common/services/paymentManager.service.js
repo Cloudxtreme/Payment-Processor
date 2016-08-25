@@ -3,11 +3,10 @@
 angular.module('paymentProcessor')
   .service('paymentManager', paymentManager);
 
-// TODO: Move to .env
-const CLIENT_ID = 'sk_test_6Kf4KR8zODs92rC4LNX5DXNn';
-
-function paymentManager ($q, $http) {
+function paymentManager ($q, $http, STRIPE_API_CLIENT_ID) {
 	const service = this;
+
+  console.log();
 
 	/** Service Variables **/
 
@@ -25,7 +24,7 @@ function paymentManager ($q, $http) {
       url: `https://api.stripe.com/v1/tokens`,
       method: "POST",
       params: card.forStripeServer(),
-      headers: {'Authorization': `Bearer ${CLIENT_ID}`}
+      headers: {'Authorization': `Bearer ${STRIPE_API_CLIENT_ID}`}
     }).success(tokenObj => {
         deferred.resolve({token: tokenObj.id});
       })
@@ -41,7 +40,7 @@ function paymentManager ($q, $http) {
       url: `https://api.stripe.com/v1/charges`,
       method: "POST",
       params: charge.forStripeServer(),
-      headers: {'Authorization': `Bearer ${CLIENT_ID}`}
+      headers: {'Authorization': `Bearer ${STRIPE_API_CLIENT_ID}`}
     }).success(chargeObj => {
         deferred.resolve(chargeObj);
       })

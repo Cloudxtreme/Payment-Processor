@@ -2,12 +2,7 @@
 angular.module('paymentProcessor')
   .factory('Charge', charge);
 
-// TODO: Move to .env
-const APPLICATION_FEE = 15;
-const CURRENCY = 'usd';
-const STATEMENT_DESCRIPTOR = 'Payment Processor';
-
-function charge (Source, Destination) {
+function charge (Source, Destination, STRIPE_APPLICATION_FEE, STRIPE_API_CURRENCY, STRIPE_API_STATEMENT_DESCRIPTOR) {
   const DEFAULT_CHARGE = {
     amount: 0,
     source: new Source({}),
@@ -39,12 +34,12 @@ function charge (Source, Destination) {
 
       return {
         "amount": this.amount,
-        "currency": CURRENCY,
+        "currency": STRIPE_API_CURRENCY,
         "source": this.source.token,
         "destination": this.destination.accountId,
         "description": this.description,
-        "application_fee": APPLICATION_FEE,
-        "statement_descriptor": STATEMENT_DESCRIPTOR
+        "application_fee": STRIPE_APPLICATION_FEE,
+        "statement_descriptor": STRIPE_API_STATEMENT_DESCRIPTOR
       };
     }
   };

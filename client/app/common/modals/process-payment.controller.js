@@ -54,7 +54,6 @@ function processPaymentCtrl ($q, $modalInstance, transactionObj, userObj, stripe
       _executeStep3();
     };
 
-    console.log(viewModel.card);
     paymentManager.createToken(new Card(viewModel.card)).then(_setSourceAndNextStep);
   }
 
@@ -154,8 +153,7 @@ function processPaymentCtrl ($q, $modalInstance, transactionObj, userObj, stripe
       // TODO: Kill Spinner
     };
 
-    const _handleIntegrationFailure = (err) => {
-      console.log(err);
+    const _handleIntegrationFailure = () => {
       // TODO: Open small pop up saying authentication failed. then close small pop up and current
       //        pop up
       deferred.reject('Unable to authenticate user via stripe');

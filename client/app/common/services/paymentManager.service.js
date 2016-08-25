@@ -6,8 +6,6 @@ angular.module('paymentProcessor')
 function paymentManager ($q, $http, STRIPE_API_CLIENT_ID) {
 	const service = this;
 
-  console.log();
-
 	/** Service Variables **/
 
 	/** Service Functions **/
@@ -19,7 +17,6 @@ function paymentManager ($q, $http, STRIPE_API_CLIENT_ID) {
   function _createToken (card) {
     const deferred = $q.defer();
 
-    console.log(card);
     $http({
       url: `https://api.stripe.com/v1/tokens`,
       method: "POST",

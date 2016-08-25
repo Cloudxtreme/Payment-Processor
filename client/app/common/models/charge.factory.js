@@ -30,8 +30,6 @@ function charge (Source, Destination, STRIPE_APPLICATION_FEE, STRIPE_API_CURRENC
 
     },
     forStripeServer: function () {
-      console.log(this);
-
       return {
         "amount": this.amount,
         "currency": STRIPE_API_CURRENCY,

@@ -4,7 +4,6 @@ angular.module('paymentProcessor')
 
 const DEFAULT_DESTINATION = {
   accountId: null
-  // TODO: other attrs, only if needed
 };
 
 function destination () {

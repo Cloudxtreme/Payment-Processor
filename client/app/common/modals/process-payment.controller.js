@@ -4,9 +4,17 @@ angular.module('paymentProcessor')
   .controller('ProcessPaymentCtrl', processPaymentCtrl);
 
 const MILLISECONDS_IN_MICROSECONDS = 1000;
-const BUTTON_TEXT = ['Review Order', 'Review Order', 'Review Payment', 'Confirm Payment', 'Exit'];
+const BUTTON_TEXT = ['Review Order', 'Review Payment', 'Confirm Payment', 'Exit'];
 
-function processPaymentCtrl ($q, $modalInstance, transactionObj, userObj, stripeInfoManager, loginManager, transactionsManager, paymentManager, Card, Source, Destination, Charge) {
+// TODO: Make cursor a hand for button hovering, also try to simulate a button click
+// TODO: Form validations, add fancy check boxes for valid input, and restrict length
+// TODO: Make button in navbar to allow user to connect to stripe
+// TODO: Make logout in navbar
+// TODO: payment successful step shows amount of $0.00
+// TODO: Cannot click pay / request payment if paid / received payment
+// TODO: add font awesome icons to all text fields in the app
+
+function processPaymentCtrl ($q, $modal, $modalInstance, transactionObj, userObj, stripeInfoManager, loginManager, transactionsManager, paymentManager, Card, Source, Destination, Charge) {
   const viewModel = this;
 
   /** Modal Variables **/
@@ -14,6 +22,7 @@ function processPaymentCtrl ($q, $modalInstance, transactionObj, userObj, stripe
   viewModel.user = userObj;
   viewModel.step = 1;
   viewModel.buttonText = 'Review Charge';
+  viewModel.proceessingCharge = false;
 
   // Absolutly imperitive that we wipe these out on open
   viewModel.accessToken = null;         // Step 1
@@ -26,55 +35,58 @@ function processPaymentCtrl ($q, $modalInstance, transactionObj, userObj, stripe
   viewModel.exit = _exit;
   viewModel.nextButtonClick = _nextButtonClick;
   viewModel.editCardInfo = _editCardInfo;
+  viewModel.shouldDisableNextButton = _shouldDisableNextButton;
 
-  // TODO: Move all server stuff that we can do before hand into an initialize to reduce latency
-  _executeStep1();
+
+  _initController();
 
   /****** Implementation ******/
 
-  function _executeStep1 () {
-    _getStripeAccessToken(viewModel.user).then(accessToken => {
-        viewModel.accessToken = accessToken;
-        _incrementStep();
-        _initStep2();
-    });
-  }
-
-  function _initStep2 () {
-    // TODO: Someday, Hit Stripe API for Payment Sources
-    // paymentManager.getExistingSources(user.stripeInfo);
-
-    viewModel.card = {};
-  }
-
-  function _executeStep2 () {
-    const _setSourceAndNextStep = (tokenObj) => {
-      // TODO: Make handler to handle failure case, which might be a common occurance
-      viewModel.source = new Source(tokenObj);
-      _incrementStep();
-      _executeStep3();
-    };
-
-    paymentManager.createToken(new Card(viewModel.card)).then(_setSourceAndNextStep);
-  }
-
-  function _executeStep3 () {
-
+  function _initController () {
     const _handleDoesHaveDestination = destination => {
       viewModel.destination = destination;
-      _incrementStep();
-      _initStep4();
+      _executeStep1();
     };
 
     const _handleDoesNotHaveDestination = () => {
-      // TODO: Show small pop up, on click, close small pop up and this pop up
+      _loadNoDestinationStripeAccountModal().result.then(_exit);
     };
 
     transactionsManager.getDestination(viewModel.transaction)
       .then(_handleDoesHaveDestination, _handleDoesNotHaveDestination);
   }
 
-  function _initStep4 () {
+  function _executeStep1 () {
+    _getStripeAccessToken(viewModel.user).then(accessToken => {
+        viewModel.accessToken = accessToken;
+        _incrementStep();
+        _initStep2();
+    }, () => _exit());
+  }
+
+  function _initStep2 () {
+    // TODO: Someday, Hit Stripe API for Payment Sources
+
+    viewModel.card = {};
+  }
+
+  function _executeStep2 () {
+    const _setSourceAndNextStep = (tokenObj) => {
+      viewModel.source = new Source(tokenObj);
+      _incrementStep();
+      _initStep3();
+    };
+
+    const _handleInvalidSource = () => {
+      _loadInvalidCardInfoModal();
+    };
+
+    if (_hasValidCardInfo()) {
+      paymentManager.createToken(new Card(viewModel.card)).then(_setSourceAndNextStep, _handleInvalidSource);
+    }
+  }
+
+  function _initStep3 () {
     viewModel.charge = new Charge({
       amount: viewModel.transaction.amount(),
       source: viewModel.source,
@@ -83,23 +95,23 @@ function processPaymentCtrl ($q, $modalInstance, transactionObj, userObj, stripe
     });
   }
 
-  function _executeStep4 () {
+  function _executeStep3 () {
 
     const _handleChargeSuccess = () => {
       const _updateModelTransaction = transaction => {
         viewModel.transaction = transaction;
         _incrementStep();
+        viewModel.processingCharge = false;
       };
 
-      // TODO: Show small pop up, on click close small pop up and this pop up
-      // TODO: Do something backendy witht the charge object we get back from stripe. idk
+      // TODO: Do something backendy with the charge object we get back from stripe. idk
 
       viewModel.transaction.paidDate = parseInt(new Date() / MILLISECONDS_IN_MICROSECONDS, 10);
       transactionsManager.update(viewModel.transaction).then(_updateModelTransaction);
     };
 
     const _handleChargeFailure = () => {
-      // TODO: Show small pop up, on click close small pop up and this pop up
+      _loadChargeUnsuccessfulModal().result.then(() => viewModel.processingCharge = false);
     };
 
     paymentManager.createCharge(viewModel.charge)
@@ -114,24 +126,64 @@ function processPaymentCtrl ($q, $modalInstance, transactionObj, userObj, stripe
     viewModel.step += 1;
 
     if (viewModel.step > 4) {
-      // TODO: Close Modal & return transaction
+      _exit();
     }
 
     viewModel.buttonText = BUTTON_TEXT[viewModel.step - 1];
   }
 
   function _nextButtonClick () {
-    // TODO: Disable button after click
-    if (viewModel.step === 4) {
-      _executeStep4();
-    } else {
+    if (viewModel.step === 2) {
       _executeStep2();
+    } else if (viewModel.step === 3) {
+      viewModel.processingCharge = true;
+      _executeStep3();
+    } else {
+      _exit();
     }
   }
 
   function _editCardInfo () {
     viewModel.step = 2;
     viewModel.buttonText = BUTTON_TEXT[viewModel.step - 1];
+  }
+
+  function _shouldDisableNextButton () {
+    if (viewModel.step === 2 && !_hasValidCardInfo()) {
+      return true;
+    } else if (viewModel.processingCharge === true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function _hasValidCardInfo () {
+    let valid = true;
+
+    const {
+      number,
+      expMonth,
+      expYear,
+      cvc
+    } = viewModel.card;
+
+    console.log(viewModel.card);
+    console.log(number);
+    if (isNaN(parseFloat(number)) || !(number && number.length === 16)) {
+      valid = false;
+    }
+    if (isNaN(parseFloat(expMonth)) || !(expMonth && expMonth.length === 2)) {
+      valid = false;
+    }
+    if (isNaN(parseFloat(expYear)) || !(expYear && expYear.length === 4)) {
+      valid = false;
+    }
+    if (isNaN(parseFloat(cvc)) || !(cvc && cvc.length === 3)) {
+      valid = false;
+    }
+
+    return valid;
   }
 
 
@@ -161,27 +213,91 @@ function processPaymentCtrl ($q, $modalInstance, transactionObj, userObj, stripe
     };
 
     const _handleIntegrationFailure = () => {
-      // TODO: Open small pop up saying authentication failed. then close small pop up and current
-      //        pop up
-      deferred.reject('Unable to authenticate user via stripe');
-
+       _loadIntegrationFailureModal().result.then(() => deferred.reject('Unable to authenticate user via stripe'));
       // TODO: Kill Spinner
+    };
+
+    const _loadOAuth = () => {
+      // TODO: Load Spinner
+
+     // Send then to stripe's website
+      OAuth.popup('stripe')
+        .done(_handleIntegrationSuccess)
+        .fail(_handleIntegrationFailure);
     };
 
     if (user.stripeInfo.accessToken) { // return the existing access token we stored
       deferred.resolve(user.stripeInfo.accessToken);
     } else { // user has not yet integrated with stripe
-      // TODO: Open small pop up saying that they will be direct to stripe for authentication. When
-      //        they close the pop up, the stripe pop up will appear
-
-      // TODO: Load Spinner
-
-      // Send then to stripe's website
-      OAuth.popup('stripe')
-        .done(_handleIntegrationSuccess)
-        .fail(_handleIntegrationFailure);
+      _loadIntegrationNoticeModal().result.then(_loadOAuth);
     }
 
     return deferred.promise;
+  }
+
+  function _loadIntegrationNoticeModal () {
+    return $modal.open({
+      controller: 'NotificationCtrl',
+      controllerAs: 'notificationCtrl',
+      templateUrl: 'app/common/modals/notification.html',
+      size: 'sm',
+      resolve: {
+        type: () => 'info',
+        message: () => 'Login with Stripe',
+        details: () => 'You have not yet logged into stripe. You are now being redirected to stripe. Once you login, you will be returned to this site.'
+      }
+    });
+  }
+  function _loadIntegrationFailureModal () {
+    return $modal.open({
+      controller: 'NotificationCtrl',
+      controllerAs: 'notificationCtrl',
+      templateUrl: 'app/common/modals/notification.html',
+      size: 'sm',
+      resolve: {
+        type: () => 'error',
+        message: () => 'Integration Failed',
+        details: () => 'Our attempt to integrate your stripe account into our system failed. This most likely occured because of an invalid login attempt on stripe\'s website'
+      }
+    });
+  }
+  function _loadInvalidCardInfoModal () {
+    return $modal.open({
+      controller: 'NotificationCtrl',
+      controllerAs: 'notificationCtrl',
+      templateUrl: 'app/common/modals/notification.html',
+      size: 'sm',
+      resolve: {
+        type: () => 'error',
+        message: () => 'Card Not Valid',
+        details: () => 'The credit card information that was entered is not valid. Please double check numbers, and correct it.'
+      }
+    });
+  }
+  function _loadChargeUnsuccessfulModal () {
+    return $modal.open({
+      controller: 'NotificationCtrl',
+      controllerAs: 'notificationCtrl',
+      templateUrl: 'app/common/modals/notification.html',
+      size: 'sm',
+      resolve: {
+        type: () => 'error',
+        message: () => 'Charge Unsuccessful',
+        details: () => 'We were unable to transfer money from your card to the company. Feel free to try again. Sorry for the inconvience.'
+      }
+    });
+  }
+  function _loadNoDestinationStripeAccountModal () {
+    return $modal.open({
+      controller: 'NotificationCtrl',
+      controllerAs: 'notificationCtrl',
+      templateUrl: 'app/common/modals/notification.html',
+      size: 'sm',
+      resolve: {
+        type: () => 'warning',
+        message: () => 'No Payment Info',
+        details: () => 'The user you are trying to pay has not yet imported their stripe account information into the payment processing system. Once they have done this you will be able to pay them'
+      }
+    });
   }
 }

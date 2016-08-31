@@ -43,6 +43,11 @@ input:-webkit-autofill {
         margin: 0 auto;
       }
     }
+    .login-error {
+      padding-top: 30px;
+      font-family: khuluBold;
+      color: red;
+    }
   }
 }
 .logo-1, .logo-2 {

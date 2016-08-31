@@ -16,7 +16,7 @@
 </div>
 <div class="view-modal-body-wrapper">
   <div class="view-modal-body">
-    <div class="process-payment-info" ng-class="{'process-payment-info-width-override': processPaymentCtrl.step == 5}">
+    <div class="process-payment-info" ng-class="{'process-payment-info-width-override': processPaymentCtrl.step == 4}">
       <!-- Step 1 -->
       <div ng-if="processPaymentCtrl.step == 1">
 
@@ -35,13 +35,8 @@
           <input ng-model="processPaymentCtrl.card.cvc"class="card-textbox card-cvc" placeholder="CVC">
         </div>
       </div>
-
       <!-- Step 3 -->
       <div ng-if="processPaymentCtrl.step == 3">
-      </div>
-
-      <!-- Step 4 -->
-      <div ng-if="processPaymentCtrl.step == 4">
         <div class="payment-review-card">
           <p>Card Number: {{processPaymentCtrl.card.number}}</p>
           <p>Expiration Date: {{processPaymentCtrl.card.expMonth}}/{{processPaymentCtrl.card.expYear}}</p>
@@ -57,7 +52,7 @@
       </div>
 
       <!-- Step 4 -->
-      <div ng-if="processPaymentCtrl.step == 5">
+      <div ng-if="processPaymentCtrl.step == 4">
         <span style="font-size: 25px;"><i class="fa fa-check-circle-o" style="color: rgb(46, 204, 113); padding-right: 10px; font-size: 45px; vertical-align: middle;"></i>Your Payment has been Processed Successfully!</span>
       </div>
     </div>
@@ -65,6 +60,6 @@
   </div>
 </div>
 <div class="view-modal-button-wrapper">
-  <div class="view-modal-button" ng-click="processPaymentCtrl.nextButtonClick()">{{processPaymentCtrl.buttonText}}</div>
+  <div class="view-modal-button" ng-click="processPaymentCtrl.nextButtonClick()" ng-class="{'button-disabled': processPaymentCtrl.shouldDisableNextButton()}">{{processPaymentCtrl.buttonText}}</div>
 </div>
 

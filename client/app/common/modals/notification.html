@@ -1,35 +1,19 @@
-<div class="view-modal-header-wrapper">
-  <div class="exit-button" ng-click="$dismiss()">X</div>
-  <div class="view-modal-header">
-        <div class="view-modal-info">
-      <div>
-        <div class="view-modal-company-name">{{viewTransactionCtrl.transaction.companyName}}</div>
-        <div class="view-modal-payment-number">PAYMENT APPLICATION #{{viewTransactionCtrl.transaction.formattedPaymentNumber()}}</div>
-      </div>
-      <div style="padding-bottom: 38px">
-        <div class="view-modal-project-name">{{viewTransactionCtrl.transaction.projectName}}</div>
-        <div class="view-modal-transaction-date">{{viewTransactionCtrl.transaction.formattedCreatedDateTwo()}}</div>
-        <div class="view-modal-amount-total">{{viewTransactionCtrl.transaction.amount() | currency}}</div>
-      </div>
+<div class="view-modal-body-wrapper" style="padding-bottom: 0px;">
+  <i class="notification-cancel fa fa-times-circle" ng-click="$close()"></i>
+  <div class="view-modal-body notification-body">
+    <div class="notification-icon" ng-class="'notification-' + notificationCtrl.type">
+      <i class="fa" ng-class="notificationCtrl.iconClass">
     </div>
-  </div>
-</div>
-<div class="view-modal-body-wrapper">
-  <div class="view-modal-body">
-    <div class="view-modal-line-items">
-      <div class="view-modal-line-item" ng-repeat="lineItem in viewTransactionCtrl.transaction.lineItems">
-        <span class="line-description">{{lineItem.description}}</span>
-        <span class="line-amount">{{lineItem.amount | currency}}<span>
-      </div>
+    <div class="notification-message" ng-class="'notification-' + notificationCtrl.type">
+      <p>{{notificationCtrl.message}}</p>
     </div>
-    <div class="view-modal-subtotal">
-      <span style="padding-right: 80px">TOTAL DUE: </span>
-      <span>{{viewTransactionCtrl.transaction.amount() | currency}}</span>
+    <div class="notification-details">
+      <p> {{notificationCtrl.details}}</p>
     </div>
+
+    <div>
   </div>
 </div>
 <div class="view-modal-button-wrapper">
-  <div ng-if="viewTransactionCtrl.transaction.isAnIncome(viewTransactionCtrl.user.id)" class="view-modal-button" ng-click="viewTransactionCtrl.requestPayment()">Request Payment</div>
-  <div ng-if="viewTransactionCtrl.transaction.isAnExpenditure(viewTransactionCtrl.user.id)" class="view-modal-button" ng-click="viewTransactionCtrl.pay()">Pay Now</div>
+  <div class="notification-button"  ng-click="$close()">OK</div>
 </div>
-

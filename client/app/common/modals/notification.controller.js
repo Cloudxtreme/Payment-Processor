@@ -3,11 +3,14 @@
 angular.module('paymentProcessor')
   .controller('NotificationCtrl', notificationCtrl);
 
-function notificationCtrl ($modalInstance, message) {
+function notificationCtrl ($modalInstance, type, message, details) {
   const viewModel = this;
 
   /** Modal Variables **/
-  viewModel.message = message;
+  viewModel.type = type || 'info';
+  viewModel.message = message || '';
+  viewModel.details = details || '';
+  viewModel.iconClass = "";
 
   /** Modal Functions **/
 
@@ -16,7 +19,23 @@ function notificationCtrl ($modalInstance, message) {
   /****** Implementation ******/
 
   function _initController () {
-
+    viewModel.iconClass = _getIconClass(viewModel.type);
   }
+
+  /****** Implementation ******/
+
+  function _getIconClass (notificationType) {
+    switch (notificationType) {
+      case 'info':
+        return 'fa-info';
+      case 'warning':
+        return 'fa-exclamation';
+      case 'error':
+        return 'fa-times';
+      default:
+        return 'fa-info';
+    }
+  }
+
 }
 

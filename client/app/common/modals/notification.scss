@@ -1,1 +1,65 @@
+.modal-sm {
+  margin-top: 200px;
+}
 
+.fa-info {
+  color: #2980b9;
+}
+
+.notification-info {
+  color: #2980b9; 
+}
+.notification-warning {
+  color: #f0ad4e;
+}
+.notification-error {
+  color: rgb(221, 76, 60);
+}
+
+.notification-body {
+  font-family: khulu;
+  padding-top: 13px;
+}
+
+.notification-cancel {
+  width: 100%;
+  text-align: right;
+  padding-right: 10px;
+  padding-top: 10px;
+}
+
+.notification-icon {
+  text-align: center;
+  padding-right: 10px; 
+  font-size: 107px; 
+  vertical-align: middle;
+  height: 123px;
+}
+
+.notification-message {
+  font-size: 18px;
+  text-align: center;
+  padding-top: 13px;
+}
+
+.notification-details {
+  padding-top: 28px;
+  padding-bottom: 24px;
+  padding-right: 18px;
+  padding-left: 10px;
+  font-size: 14px;
+  font-family: khuluLight;
+}
+
+.notification-button {
+  background: #2980b9;
+  line-height: 43px;
+  color: white;
+  text-align: center;
+  font-family: khulu;
+  font-size: 21px;
+  border-radius: 3px;
+  margin: 0 auto;
+  height: 50%;
+  width: 50%;
+}

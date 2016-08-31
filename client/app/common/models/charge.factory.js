@@ -31,7 +31,7 @@ function charge (Source, Destination, STRIPE_APPLICATION_FEE, STRIPE_API_CURRENC
     },
     forStripeServer: function () {
       return {
-        "amount": this.amount,
+        "amount": parseFloat(this.amount) * 100,
         "currency": STRIPE_API_CURRENCY,
         "source": this.source.token,
         "destination": this.destination.accountId,

@@ -13,7 +13,7 @@
       <div class="password-container">
         <input ng-model="loginCtrl.password" ng-keypress="($event.which === 13) ? loginCtrl.login() : 0" class="flat-textbox" placeholder="password">
       </div>
-      <div class="row text-center" style="margin-bottom: 10px">
+      <div class="login-error row text-center" style="margin-bottom: 10px">
         <div ng-show="loginCtrl.loginError">
           Invalid Username/Password
         </div>

@@ -29,7 +29,7 @@
   </div>
 </div>
 <div class="view-modal-button-wrapper">
-  <div ng-if="viewTransactionCtrl.transaction.isAnIncome(viewTransactionCtrl.user.id)" class="view-modal-button" ng-click="viewTransactionCtrl.requestPayment()">Request Payment</div>
-  <div ng-if="viewTransactionCtrl.transaction.isAnExpenditure(viewTransactionCtrl.user.id)" class="view-modal-button" ng-click="viewTransactionCtrl.pay()">Pay Now</div>
+  <div ng-if="viewTransactionCtrl.transaction.isAnIncome(viewTransactionCtrl.user.id)" class="view-modal-button button-hover" ng-class="{'button-disabled': viewTransactionCtrl.shouldDisableButton()}" ng-click="viewTransactionCtrl.requestPayment()">Request Payment</div>
+  <div ng-if="viewTransactionCtrl.transaction.isAnExpenditure(viewTransactionCtrl.user.id)" class="view-modal-button button-hover" ng-class="{'button-disabled': viewTransactionCtrl.shouldDisableButton()}" ng-click="viewTransactionCtrl.pay()">Pay Now</div>
 </div>
 

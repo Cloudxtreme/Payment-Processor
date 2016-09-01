@@ -6,13 +6,8 @@ angular.module('paymentProcessor')
 const MILLISECONDS_IN_MICROSECONDS = 1000;
 const BUTTON_TEXT = ['Review Order', 'Review Payment', 'Confirm Payment', 'Exit'];
 
-// TODO: Make cursor a hand for button hovering, also try to simulate a button click
-// TODO: Form validations, add fancy check boxes for valid input, and restrict length
 // TODO: Make button in navbar to allow user to connect to stripe
 // TODO: Make logout in navbar
-// TODO: payment successful step shows amount of $0.00
-// TODO: Cannot click pay / request payment if paid / received payment
-// TODO: add font awesome icons to all text fields in the app
 
 function processPaymentCtrl ($q, $modal, $modalInstance, transactionObj, userObj, stripeInfoManager, loginManager, transactionsManager, paymentManager, Card, Source, Destination, Charge) {
   const viewModel = this;
@@ -22,7 +17,7 @@ function processPaymentCtrl ($q, $modal, $modalInstance, transactionObj, userObj
   viewModel.user = userObj;
   viewModel.step = 1;
   viewModel.buttonText = 'Review Charge';
-  viewModel.proceessingCharge = false;
+  viewModel.waitingOnAPI = false;
 
   // Absolutly imperitive that we wipe these out on open
   viewModel.accessToken = null;         // Step 1
@@ -36,6 +31,10 @@ function processPaymentCtrl ($q, $modal, $modalInstance, transactionObj, userObj
   viewModel.nextButtonClick = _nextButtonClick;
   viewModel.editCardInfo = _editCardInfo;
   viewModel.shouldDisableNextButton = _shouldDisableNextButton;
+  viewModel.hasInvalidCardNumber = _hasInvalidCardNumber;
+  viewModel.hasInvalidCardExpMonth = _hasInvalidCardExpMonth;
+  viewModel.hasInvalidCardExpYear = _hasInvalidCardExpYear;
+  viewModel.hasInvalidCardCvc = _hasInvalidCardCvc;
 
 
   _initController();
@@ -75,10 +74,11 @@ function processPaymentCtrl ($q, $modal, $modalInstance, transactionObj, userObj
       viewModel.source = new Source(tokenObj);
       _incrementStep();
       _initStep3();
+      viewModel.waitingOnAPI = false;
     };
 
     const _handleInvalidSource = () => {
-      _loadInvalidCardInfoModal();
+      _loadInvalidCardInfoModal().result.then(() => viewModel.waitingOnAPI = false);
     };
 
     if (_hasValidCardInfo()) {
@@ -99,9 +99,9 @@ function processPaymentCtrl ($q, $modal, $modalInstance, transactionObj, userObj
 
     const _handleChargeSuccess = () => {
       const _updateModelTransaction = transaction => {
-        viewModel.transaction = transaction;
+        viewModel.transaction.paidDate = transaction.paidDate;
         _incrementStep();
-        viewModel.processingCharge = false;
+        viewModel.waitingOnAPI = false;
       };
 
       // TODO: Do something backendy with the charge object we get back from stripe. idk
@@ -111,7 +111,7 @@ function processPaymentCtrl ($q, $modal, $modalInstance, transactionObj, userObj
     };
 
     const _handleChargeFailure = () => {
-      _loadChargeUnsuccessfulModal().result.then(() => viewModel.processingCharge = false);
+      _loadChargeUnsuccessfulModal().result.then(() => viewModel.waitingOnAPI = false);
     };
 
     paymentManager.createCharge(viewModel.charge)
@@ -133,10 +133,14 @@ function processPaymentCtrl ($q, $modal, $modalInstance, transactionObj, userObj
   }
 
   function _nextButtonClick () {
+    if (_shouldDisableNextButton()) {
+      return;
+    }
+
+    viewModel.waitingOnAPI = true;
     if (viewModel.step === 2) {
       _executeStep2();
     } else if (viewModel.step === 3) {
-      viewModel.processingCharge = true;
       _executeStep3();
     } else {
       _exit();
@@ -149,9 +153,49 @@ function processPaymentCtrl ($q, $modal, $modalInstance, transactionObj, userObj
   }
 
   function _shouldDisableNextButton () {
-    if (viewModel.step === 2 && !_hasValidCardInfo()) {
+    if (viewModel.waitingOnAPI === true) {
       return true;
-    } else if (viewModel.processingCharge === true) {
+    } else if (viewModel.step === 2 && !_hasValidCardInfo()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function _hasInvalidCardNumber () {
+    const {number} = viewModel.card;
+
+    if (isNaN(parseFloat(number)) || !(number && number.length === 16)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function _hasInvalidCardExpMonth () {
+    const {expMonth} = viewModel.card;
+
+    if (isNaN(parseFloat(expMonth)) || !(expMonth && expMonth.length === 2)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function _hasInvalidCardExpYear () {
+    const {expYear} = viewModel.card;
+
+    if (isNaN(parseFloat(expYear)) || !(expYear && expYear.length === 4)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function _hasInvalidCardCvc () {
+    const {cvc} = viewModel.card;
+
+    if (isNaN(parseFloat(cvc)) || !(cvc && cvc.length === 3)) {
       return true;
     } else {
       return false;
@@ -159,31 +203,10 @@ function processPaymentCtrl ($q, $modal, $modalInstance, transactionObj, userObj
   }
 
   function _hasValidCardInfo () {
-    let valid = true;
-
-    const {
-      number,
-      expMonth,
-      expYear,
-      cvc
-    } = viewModel.card;
-
-    console.log(viewModel.card);
-    console.log(number);
-    if (isNaN(parseFloat(number)) || !(number && number.length === 16)) {
-      valid = false;
-    }
-    if (isNaN(parseFloat(expMonth)) || !(expMonth && expMonth.length === 2)) {
-      valid = false;
-    }
-    if (isNaN(parseFloat(expYear)) || !(expYear && expYear.length === 4)) {
-      valid = false;
-    }
-    if (isNaN(parseFloat(cvc)) || !(cvc && cvc.length === 3)) {
-      valid = false;
-    }
-
-    return valid;
+    return !_hasInvalidCardNumber()
+      && !_hasInvalidCardExpMonth()
+      && !_hasInvalidCardExpYear()
+      && !_hasInvalidCardCvc();
   }
 
 
@@ -209,16 +232,16 @@ function processPaymentCtrl ($q, $modal, $modalInstance, transactionObj, userObj
       // Return Accesss Token
       deferred.resolve(result.accessToken);
 
-      // TODO: Kill Spinner
+      viewModel.waitingOnAPI = false;
     };
 
     const _handleIntegrationFailure = () => {
        _loadIntegrationFailureModal().result.then(() => deferred.reject('Unable to authenticate user via stripe'));
-      // TODO: Kill Spinner
+      viewModel.waitingOnAPI = false;
     };
 
     const _loadOAuth = () => {
-      // TODO: Load Spinner
+     viewModel.waitingOnAPI = true;
 
      // Send then to stripe's website
       OAuth.popup('stripe')

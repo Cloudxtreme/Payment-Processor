@@ -7,11 +7,13 @@
       <span class="little-word">processor</span>
     </div>
     <form class="login-form">
-      <div class="username-container" style="padding-bottom: 37px;">
+      <div class="username-container" style="padding-bottom: 30px;">
         <input ng-model="loginCtrl.username" class="flat-textbox" placeholder="username">
+        <i class="fa fa-user login-user-icon"></i>
       </div>
       <div class="password-container">
         <input ng-model="loginCtrl.password" ng-keypress="($event.which === 13) ? loginCtrl.login() : 0" class="flat-textbox" placeholder="password">
+        <i class="fa fa-lock login-password-icon"></i>
       </div>
       <div class="login-error row text-center" style="margin-bottom: 10px">
         <div ng-show="loginCtrl.loginError">

@@ -37,6 +37,34 @@ $unpaid-color: rgb(250, 238, 226);
   padding: 0.2em 0;
 }
 
+.button-disabled {
+  background: #92bbd6!important;
+  cursor: default!important;
+}
+.button-hover {
+  cursor: pointer;
+}
+@-webkit-keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
 // Component styles are injected through grunt
 // injector
 @import 'common/modals/notification.scss';

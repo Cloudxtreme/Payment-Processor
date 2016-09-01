@@ -16,23 +16,22 @@
 </div>
 <div class="view-modal-body-wrapper">
   <div class="view-modal-body">
+    <div ng-class="{'payment-loader': processPaymentCtrl.waitingOnAPI}"></div>
     <div class="process-payment-info" ng-class="{'process-payment-info-width-override': processPaymentCtrl.step == 4}">
       <!-- Step 1 -->
-      <div ng-if="processPaymentCtrl.step == 1">
-
-      </div>
-
+            
       <!-- Step 2 -->
-      <div ng-if="processPaymentCtrl.step == 2">
+      <div ng-if="processPaymentCtrl.step <= 2">
         <div>
-          <input ng-model="processPaymentCtrl.card.number" class="card-textbox card-number" placeholder="Card #">
+          <i class="fa fa-check-circle process-payment-valid-field" ng-class="{'payments-hidden': processPaymentCtrl.hasInvalidCardNumber()}"></i><input ng-model="processPaymentCtrl.card.number" class="card-textbox card-number" placeholder="Card #" >
         </div>
         <div>
-          <input ng-model="processPaymentCtrl.card.expMonth" class="card-textbox card-exp" placeholder="Month">
+          <i class="fa fa-check-circle process-payment-valid-field" ng-class="{'payments-hidden': processPaymentCtrl.hasInvalidCardExpMonth() || processPaymentCtrl.hasInvalidCardExpYear()}"></i>
+          <input ng-model="processPaymentCtrl.card.expMonth" class="card-textbox card-exp" placeholder="Month" style="position: relative; right: 3px;" >
           <input ng-model="processPaymentCtrl.card.expYear"class="card-textbox card-exp" placeholder="Year">
         </div>
         <div>
-          <input ng-model="processPaymentCtrl.card.cvc"class="card-textbox card-cvc" placeholder="CVC">
+          <i class="fa fa-check-circle process-payment-valid-field" ng-class="{'payments-hidden': processPaymentCtrl.hasInvalidCardCvc()}"></i><input ng-model="processPaymentCtrl.card.cvc"class="card-textbox card-cvc" placeholder="CVC">
         </div>
       </div>
       <!-- Step 3 -->
@@ -42,7 +41,7 @@
           <p>Expiration Date: {{processPaymentCtrl.card.expMonth}}/{{processPaymentCtrl.card.expYear}}</p>
           <p>CVC: {{processPaymentCtrl.card.cvc}}</p>
           <div style="color: rgb(41, 128, 185); font-size: 13px" ng-click="processPaymentCtrl.editCardInfo()">
-            Edit
+            <p class="button-hover">Edit</p>
           </div>
         </div>
         <div class="payment-review-total">
@@ -60,6 +59,6 @@
   </div>
 </div>
 <div class="view-modal-button-wrapper">
-  <div class="view-modal-button" ng-click="processPaymentCtrl.nextButtonClick()" ng-class="{'button-disabled': processPaymentCtrl.shouldDisableNextButton()}">{{processPaymentCtrl.buttonText}}</div>
+  <div class="view-modal-button button-hover" ng-click="processPaymentCtrl.nextButtonClick()" ng-class="{'button-disabled': processPaymentCtrl.shouldDisableNextButton()}">{{processPaymentCtrl.buttonText}}</div>
 </div>
 

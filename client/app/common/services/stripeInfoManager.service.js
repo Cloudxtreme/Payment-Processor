@@ -11,6 +11,7 @@ function stripeInfoManager ($q, $http, $state, StripeInfo) {
 	/** Service Functions **/
   service.getInfo = _getInfo;
   service.createInfo = _createInfo;
+  service.deleteInfo = _deleteInfo;
 
 	/****** Implementation ******/
 
@@ -42,6 +43,21 @@ function stripeInfoManager ($q, $http, $state, StripeInfo) {
 
         info.fetch();
         deferred.resolve(info);
+      })
+      .error((data, status) => deferred.reject(status));
+
+		return deferred.promise;
+  }
+
+  function _deleteInfo (userId, token) {
+    const deferred = $q.defer();
+
+    $http({
+      url: `api/users/${userId}/stripe_info`,
+      method: "DELETE",
+      headers: {'X-Auth': token}
+    }).success(() => {
+        deferred.resolve();
       })
       .error((data, status) => deferred.reject(status));
 

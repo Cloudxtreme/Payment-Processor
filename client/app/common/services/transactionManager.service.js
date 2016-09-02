@@ -15,6 +15,7 @@ function transactionsManager ($q, $http, loginManager, Transaction, Destination)
   service.getDestination = _getDestination;
   service.thatAreIncomes = _thatAreIncomes;
   service.thatAreExpenditures = _thatAreExpenditures;
+  service.flush = _flush;
 
 
 	/****** Implementation ******/
@@ -79,6 +80,9 @@ function transactionsManager ($q, $http, loginManager, Transaction, Destination)
     return _.filter(transactions, (transaction) => transaction.isAnExpenditure(userId));
   }
 
+  function _flush () {
+    service.transactions = null;
+  }
 
   /****** Helpers ******/
 

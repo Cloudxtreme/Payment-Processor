@@ -57,6 +57,7 @@ function loginManager ($q, $http, $state, User, stripeInfoManager) {
 
 	function _logout () {
 		service._token = '';
+    service._user = null;
 	}
 
 	function _getToken () {

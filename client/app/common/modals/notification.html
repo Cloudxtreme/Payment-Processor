@@ -1,0 +1,19 @@
+<div class="view-modal-body-wrapper" style="padding-bottom: 0px;">
+  <i class="notification-cancel fa fa-times-circle" ng-click="$close()"></i>
+  <div class="view-modal-body notification-body">
+    <div class="notification-icon" ng-class="'notification-' + notificationCtrl.type">
+      <i class="fa" ng-class="notificationCtrl.iconClass">
+    </div>
+    <div class="notification-message" ng-class="'notification-' + notificationCtrl.type">
+      <p>{{notificationCtrl.message}}</p>
+    </div>
+    <div class="notification-details">
+      <p> {{notificationCtrl.details}}</p>
+    </div>
+
+    <div>
+  </div>
+</div>
+<div class="view-modal-button-wrapper">
+  <div class="notification-button"  ng-click="$close()">OK</div>
+</div>

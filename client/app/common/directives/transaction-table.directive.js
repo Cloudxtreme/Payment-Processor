@@ -48,7 +48,7 @@ function transactionTableCtrl ($scope, $modal, transactionsManager, loginManager
   }
 
   function _openModal (transaction) {
-    $modal.open({
+    const modalInstance = $modal.open({
       controller: 'ViewTransactionCtrl',
       controllerAs: 'viewTransactionCtrl',
       templateUrl: 'app/common/modals/view-transaction.html',
@@ -57,6 +57,19 @@ function transactionTableCtrl ($scope, $modal, transactionsManager, loginManager
         transactionObj: () => transaction,
         userObj: () => viewModel.user
       }
+    });
+
+    modalInstance.result.then(() => {
+      $modal.open({
+        controller: 'ProcessPaymentCtrl',
+        controllerAs: 'processPaymentCtrl',
+        templateUrl: 'app/common/modals/process-payment.html',
+        size: 'lg',
+        resolve: {
+          transactionObj: () => transaction,
+          userObj: () => viewModel.user
+        }
+      });
     });
   }
 }

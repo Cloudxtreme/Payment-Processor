@@ -1,0 +1,85 @@
+.process-payment-info {
+  font-family: khulu;
+  width: 30%;
+  margin: 0 auto;
+  :focus {
+    outline: white auto 1px;
+  }
+}
+.process-payment-info-width-override {
+  width: 56%;
+}
+
+.process-payment-valid-field {
+  color: rgb(71, 229, 138);
+  padding-right: 10px;
+  font-size: 20px;
+}
+.payments-hidden {
+  visibility: hidden;
+}
+
+.card-textbox {
+  width: 81%;
+  text-align: left;
+  font-size: 24px;
+  letter-spacing: .5px;
+  color: $procore-orange;
+  font-family: khuluBold;
+  border-top: 1px solid white;
+  border-right: 1px solid white;
+  border-left: 1px solid white;
+  border-bottom: 1px solid rgb(239, 239, 239);
+  margin-bottom: 10px;
+}
+
+.card-number {
+
+}
+.card-exp {
+  display: inline-block;
+  width: 25%;
+  margin-right: 15px;
+}
+.card-cvc {
+  width: 35%;
+}
+
+.payment-review-card {
+  font-size: 19px;
+  padding-bottom: 37px;
+}
+.payment-review-total {
+  font-family: khuluBold;
+  font-size: 19px
+}
+
+
+.payment-loader {
+  margin: 60px auto;
+  font-size: 10px;
+  position: fixed;
+  overflow: show;
+  margin: auto;
+  left: 0;
+  top: 82px;
+  bottom: 0;
+  right: 0;
+  text-indent: -9999em;
+  border-top: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-right: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-left: 1.1em solid #2980b9;;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: load8 1.1s infinite linear;
+  animation: load8 1.1s infinite linear;
+}
+.payment-loader,
+.payment-loader:after {
+  border-radius: 50%;
+  width: 10em;
+  height: 10em;
+}
+

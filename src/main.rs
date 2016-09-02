@@ -51,6 +51,8 @@ fn main() {
         .post("api/transactions/", handlers::transaction::Create)
         .delete("api/transactions/:id", handlers::transaction::Delete)
         
+        .get("api/transactions/:id/destination", handlers::transaction::ShowDestination)
+        
         .get("/api/transactions/:transaction_id/line_items/", handlers::line_item::Index)
         .get("/api/transactions/:transaction_id/line_items/:id", handlers::line_item::Show)
         .put("/api/transactions/:transaction_id/line_items/:id", handlers::line_item::Update)
@@ -59,7 +61,12 @@ fn main() {
 
         .get("api/user", handlers::user::Show)
         .post("api/users/", handlers::user::Create)
-        .post("api/login", handlers::session::Login);
+        .post("api/login", handlers::session::Login)
+        .get("/api/users/:user_id/stripe_info", handlers::stripe_info::Show)
+        .put("/api/users/:user_id/stripe_info", handlers::stripe_info::Update)
+        .post("/api/users/:user_id/stripe_info", handlers::stripe_info::Create)
+        .delete("/api/users/:user_id/stripe_info", handlers::stripe_info::Delete);
+
 
     chain = Chain::new(router);
     chain

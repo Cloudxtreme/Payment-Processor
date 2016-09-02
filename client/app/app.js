@@ -3,9 +3,12 @@
 const DEFAULT_ROUTE = '/login';
 const HTML5_MODE = true;
 
-const initializeConfiguration = ($urlRouterProvider, $locationProvider, $stateProvider) => {
+const initializeConfiguration = ($urlRouterProvider, $locationProvider, $stateProvider, OAUTH_IO_CLIENT_ID) => {
   $urlRouterProvider.otherwise(DEFAULT_ROUTE);
   $locationProvider.html5Mode(HTML5_MODE);
+
+  // For use with Oauth.io service, and their embedded js in our app
+  OAuth.initialize(OAUTH_IO_CLIENT_ID);
 
   $stateProvider
     .state('login', {
@@ -41,6 +44,7 @@ const initializeConfiguration = ($urlRouterProvider, $locationProvider, $statePr
 };
 
 angular.module('paymentProcessor', [
+  'config',
   'ngAnimate',
   'ngCookies',
   'ngResource',

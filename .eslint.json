@@ -8,7 +8,8 @@
     "angular":true,
     "console":true,
     "$":true,
-    "_":true
+    "_":true,
+    "OAuth": true
   },
   "rules":{
     "no-alert":"error",
@@ -183,7 +184,7 @@
     "max-nested-callbacks":"error",
     "max-params":"off",
     "max-statements":"off",
-    "max-statements-per-line":"error",
+    "max-statements-per-line":"off",
     "multiline-ternary":"off",
     "new-cap":"off",
     "new-parens":"error",
@@ -200,7 +201,7 @@
     "one-var":"off",
     "one-var-declaration-per-line":"error",
     "operator-assignment":"error",
-    "operator-linebreak":"error",
+    "operator-linebreak":"off",
     "padded-blocks":"off",
     "prefer-arrow-callback":"error",
     "prefer-const":"error",

@@ -10,7 +10,8 @@ const DEFAULT_USER = {
   companyName: '',
   firstName: '',
   lastName: '',
-  createdDate: new Date()
+  createdDate: new Date(),
+  stripeInfo: {}
 };
 
 function user () {
@@ -27,16 +28,15 @@ function user () {
         companyName: userData.companyName,
         firstName: userData.firstName,
         lastName: userData.lastName,
-        createdDate: new Date(userData.createdDate * MILLISECONDS_IN_MICROSECONDS)
+        createdDate: new Date(userData.createdDate * MILLISECONDS_IN_MICROSECONDS),
+        stripeInfo: userData.stripeInfo || {}
       }
     );
   }
 
   // Member Functions
   User.prototype = {
-    fetch: function () {
 
-    }
   };
 
   return User;

@@ -15,9 +15,13 @@
             <a ui-sref="{{item.state}}">{{item.title}}</a>
         </li>
       </ul>
-      <ul class="nav">
-        <li class="user-info" ng-if="nav.username != ''">
-          <a>{{nav.username}} <i class="user fa fa-user"></i><i class="arrow fa fa-chevron-down"></i></a>
+      <ul class="nav navbar-nav navbar-right" style="padding-right: 75px;">
+        <li class="dropdown" ng-if="nav.username">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{nav.username}}<i class="user fa fa-user" style="padding-left: 10px;"></i></a>
+          <ul class="dropdown-menu" style="padding: 0 0;">
+            <li><a ng-click="nav.syncUser()" style="margin-left: 0px;" ng-class="{'nav-link-pad': nav.synced, 'nav-link-no-pad': !nav.synced}"><i class="user fa fa-exchange" ng-class="{'nav-not-integrated': !nav.synced, 'nav-integrated': nav.synced}" style="padding-right: 10px;"></i>{{ !nav.synced ? 'Sync' : 'Unsync'}}</a></li>
+            <li><a ng-click="nav.logout()"><i class="user fa fa-power-off" style="padding-right: 10px;"></i>Logout</a></li>
+          </ul>
         </li>
       </ul>
       </ul>

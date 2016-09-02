@@ -1,4 +1,6 @@
 'use strict';
+var fs = require('fs')
+  , ini = require('ini')
 
 module.exports = function (grunt) {
 
@@ -6,6 +8,7 @@ module.exports = function (grunt) {
   require('jit-grunt')(grunt, {
     useminPrepare: 'grunt-usemin',
     ngtemplates: 'grunt-angular-templates',
+    ngconstant: 'grunt-ng-constant',
     cdnify: 'grunt-google-cdn',
     protractor: 'grunt-protractor-runner',
     buildcontrol: 'grunt-build-control',
@@ -14,6 +17,9 @@ module.exports = function (grunt) {
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
+
+  var debug = !!grunt.option('debug')
+  var config = ini.parse(fs.readFileSync('.env', 'utf-8'));
 
   // Define the configuration for all the tasks
   grunt.initConfig({
@@ -186,6 +192,26 @@ module.exports = function (grunt) {
       }
     },
 
+    // Adds constants to angular
+    ngconstant: {
+      options: {
+        name: 'config',
+        dest: '.tmp/app/config.js',
+        constants: {
+          STRIPE_API_CLIENT_ID: config.STRIPE_API_CLIENT_ID,
+          STRIPE_APPLICATION_FEE: config.STRIPE_APPLICATION_FEE,
+          STRIPE_API_CURRENCY: config.STRIPE_API_CURRENCY,
+          STRIPE_API_STATEMENT_DESCRIPTOR: config.STRIPE_API_STATEMENT_DESCRIPTOR,
+          OAUTH_IO_CLIENT_ID: config.OAUTH_IO_CLIENT_ID
+        },
+        values: {
+          debug: true
+        }
+      },
+      build: {
+      }
+    },
+
     // Allow the use of non-minsafe AngularJS files. Automatically makes it
     // minsafe compatible so Uglify does not destroy the ng references
     ngAnnotate: {
@@ -223,7 +249,7 @@ module.exports = function (grunt) {
     },
     uglify: {
       options: {
-        mangle: true 
+        mangle: !debug 
       }, dist: {
         files: [
           {
@@ -422,6 +448,7 @@ module.exports = function (grunt) {
     'useminPrepare',
     'postcss',
     'ngtemplates:dist',
+    'ngconstant',
     'ngAnnotate',
     'concat:dist',
     'concat:generated',
@@ -444,6 +471,7 @@ module.exports = function (grunt) {
     'useminPrepare',
     'postcss',
     'ngtemplates:dist',
+    'ngconstant',
     'ngAnnotate',
     'concat:dist',
     'concat:generated',

@@ -1,6 +1,7 @@
 use rustc_serialize::json::{ToJson, Json};
 use std::collections::BTreeMap;
 
+#[derive(Clone)]
 pub struct AuthToken {
     pub token: String
 }

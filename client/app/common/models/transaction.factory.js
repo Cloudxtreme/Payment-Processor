@@ -7,7 +7,8 @@ const MILLISECONDS_IN_MICROSECONDS = 1000;
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const DEFAULT_TRANSACTION = {
   id: null,
-  userId: null,
+  creditorId: null,
+  debtorId: null,
   projectName: '',
   companyName: '',
   paymentNumber: 0,
@@ -40,10 +41,13 @@ function transaction (lineItemManager) {
   // Member Functions
   Transaction.prototype = {
     // All Business Logic Functions
-    formatForServer: function () {
+    forServer: function () {
       return {
+        creditorId: this.creditorId,
+        debtorId: this.debtorId,
         projectName: this.projectName,
         companyName: this.companyName,
+        paymentNumber: this.paymentNumber,
         paidDate: this.paidDate
       };
     },

@@ -2,7 +2,7 @@ input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
 ::-webkit-input-placeholder {
-  color: $procore-orange;
+  color: $procore-orange-transparent;
   font-family: khuluBold;
 }
 
@@ -42,6 +42,26 @@ input:-webkit-autofill {
         width: 100%;
         margin: 0 auto;
       }
+
+      .login-user-icon {
+        bottom: 32px;
+        float: right;
+        padding-right: 15px;
+        font-size: 26px;
+        position: relative;
+      }
+      .login-password-icon {
+        bottom: 32px;
+        float: right;
+        padding-right: 15px;
+        font-size: 26px;
+        position: relative;
+      }
+    }
+    .login-error {
+      padding-top: 30px;
+      font-family: khuluBold;
+      color: red;
     }
   }
 }

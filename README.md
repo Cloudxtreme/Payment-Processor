@@ -4,27 +4,49 @@ purpose to allow users to pay and be paid via a payment processing integration.
 
 
 ### Setup
-First Step is to install rust nightly
+#### Install rust nightly
 ```bash
 curl -s https://static.rust-lang.org/rustup.sh | sh -s -- --channel=nightly
 ```
 
-Get npm and node
+#### Install Cargo Packages 
+```bash
+cargo install
+```
+
+#### Install Diesel CLI
+```bash
+cargo install diesel_cli
+```
+
+#### Get NPM and Node
 ```bash
 brew install npm
 ```
 
-Next we need to globally install grunt and bower
+#### Globally install Grunt and Bower
 ```bash
 npm install -g grunt bower
 ```
 
-Install submodules
+#### Install submodules
 ```bash
 bower install
 npm install
 ```
 
+#### Prepare Database
+```bash
+~/.cargo/bin/diesel database reset
+```
+
+#### Seed Database (optional)
+```
+  1.) Import seed script to PostMan by navigating to:
+      https://www.getpostman.com/collections/75eae9df8adc59106f07
+  
+  2.) Then Run entire collection in order
+```
 
 ### Run Server
 To get the server running:

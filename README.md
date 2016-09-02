@@ -27,14 +27,9 @@ npm install
 
 
 ### Run Server
-To get the server running, first compile the client:
+To get the server running:
 ```bash
-grunt build
-```
-
-Now start the server:
-```bash
-cargo run
+grunt serve
 ```
 
 Navigate to Web Page:

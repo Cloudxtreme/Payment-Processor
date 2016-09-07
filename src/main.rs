@@ -25,9 +25,6 @@ include!("main.rs.in");
 include!(concat!(env!("OUT_DIR"), "/main.rs"));
 
 use iron::prelude::*;
-use iron::status;
-use iron::Url;
-use iron::modifiers::Redirect;
 use router::Router;
 use staticfile::Static;
 use mount::Mount;
@@ -44,7 +41,6 @@ fn main() {
     let mut mount = Mount::new();   // Static File Server (for Index page)
 
     router
-        .get("/", redirect_home)
         .get("/api/transactions/", handlers::transaction::Index)
         .get("/api/transactions/:id", handlers::transaction::Show)
         .put("/api/transactions/:id", handlers::transaction::Update)
@@ -82,12 +78,7 @@ fn main() {
         .mount("/home", Static::new(get_index_file_path()));
 
 
-    Iron::new(mount).http("localhost:3000").unwrap();
-}
-
-fn redirect_home(_: &mut Request) -> IronResult<Response> {
-    Ok(Response::with((status::Found,
-                       Redirect(Url::parse("http://localhost:3000/home").unwrap()))))
+    Iron::new(mount).http(dotenv!("SERVER_ADDR")).unwrap();
 }
 
 fn get_index_file_path<'a>() -> &'a Path {

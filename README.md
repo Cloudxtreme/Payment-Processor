@@ -40,14 +40,6 @@ npm install
 ~/.cargo/bin/diesel database reset
 ```
 
-#### Seed Database (optional)
-```
-  1.) Import seed script to PostMan by navigating to:
-      https://www.getpostman.com/collections/75eae9df8adc59106f07
-  
-  2.) Then Run entire collection in order
-```
-
 ### Run Server
 To get the server running:
 ```bash
@@ -58,4 +50,13 @@ Navigate to Web Page:
 ```
 localhost:3000/home
 ```
+
+#### Seed Database (optional)
+```
+  1.) Import seed script to PostMan by navigating to:
+      https://www.getpostman.com/collections/75eae9df8adc59106f07
+  2.) Start server
+  3.) Then Run entire collection in order
+```
+
 

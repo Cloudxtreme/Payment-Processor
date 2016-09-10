@@ -44,6 +44,15 @@ $unpaid-color: rgb(250, 238, 226);
 .button-hover {
   cursor: pointer;
 }
+.container-box-shadow {
+  margin: 0px 7px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.box-shadow-pad-bottom {
+  margin-bottom: 20px;
+}
+
 @-webkit-keyframes load8 {
   0% {
     -webkit-transform: rotate(0deg);

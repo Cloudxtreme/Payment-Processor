@@ -40,4 +40,3 @@ function viewTransactionCtrl ($modalInstance, transactionObj, userObj) {
     return viewModel.transaction.isPaid();
   }
 }
-

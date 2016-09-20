@@ -1,0 +1,28 @@
+<table class="transactions-table">
+  <thead>
+    <tr class="header-row">
+      <th class="number-header">#</th>
+      <th class="name-header">TITLE</th>
+      <th class="project-header">REQUESTER</th>
+      <th class="status-header">STATUS</th>
+      <th class="date-header">SIGNED DATE</th>
+      <th class="amount-header">SIGNED BY</th>
+      <th class="action-button-header"></th>
+    </tr>
+  </thead>
+  <tbody >
+    <tr class="transaction-row button-hover" ng-repeat="signature in signatureTableCtrl.signatureRequests | orderBy:'paid_date':true" ng-click="signatureTableCtrl.openModal(signatureRequest)">
+      <td>{{$index+1}}</td>
+      <td>{{signature.title}}</td>
+      <td>{{signature.requester_email_address}}</td>
+      <td class="status-cell">
+        <div class="status-container" ng-class="signatureTableCtrl.getStatusClass(signature)">{{signatureTableCtrl.getStatusText(signature)}}</div>
+      </td>
+      <td class="amount-cell">{{signatureTableCtrl.getSignedAt(signature) | date:'MM/dd/yyyy'}}</td>
+      <td>{{signature.is_complete ? signature.signatures[0].signer_name : ''}}</td>
+      <td class="action-button-cell"><i class="fa fa-ellipsis-v"></td>
+      <div class="row-border"></div>
+    </tr>
+  </tbody>
+</table>
+

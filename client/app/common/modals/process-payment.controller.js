@@ -6,9 +6,6 @@ angular.module('paymentProcessor')
 const MILLISECONDS_IN_MICROSECONDS = 1000;
 const BUTTON_TEXT = ['Review Order', 'Review Payment', 'Confirm Payment', 'Exit'];
 
-// TODO: Make button in navbar to allow user to connect to stripe
-// TODO: Make logout in navbar
-
 function processPaymentCtrl ($q, $modal, $modalInstance, transactionObj, userObj, stripeInfoManager, loginManager, transactionsManager, paymentManager, Card, Source, Destination, Charge) {
   const viewModel = this;
 

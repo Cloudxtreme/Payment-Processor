@@ -1,0 +1,67 @@
+# Create embedded signature request
+Request:
+curl 'https://api.hellosign.com/v3/signature_request/create_embedded' \                                                                                              e-signature
+-u '37ae83ca985ec0a297cdf1bb2482f4db078634d8a69da5b48629172b61a4e4cc:' \
+    -F 'client_id=b03d1fce1eabf3d0906523817135acbd' \
+    -F 'subject=My First embedded signature request' \
+    -F 'message=Awesome, right?' \
+    -F 'signers[0][email_address]=gabeharms@gmail.com' \
+    -F 'signers[0][name]=Gabe Harms' \
+    -F 'file[0]=@NDA.pdf' \
+    -F 'test_mode=1'
+
+Response:
+    "signature_request":{
+      "signature_request_id":"d956c9f721948cf0b4ab2712c56c1e718ac25b39",
+        "test_mode":true,
+        "title":"My First embedded signature request",
+        "original_title":"My First embedded signature request",
+        "subject":"My First embedded signature request",
+        "message":"Awesome, right?",
+        "metadata":{
+        },
+        "is_complete":false,
+        "has_error":false,
+        "custom_fields":{
+        },
+        "response_data":{
+        },
+        "signing_url":null,
+        "signing_redirect_url":null,
+        "final_copy_uri":"/v3/signature_request/final_copy/d956c9f721948cf0b4ab2712c56c1e718ac25b39",
+        "files_url":"https://api.hellosign.com/v3/signature_request/files/d956c9f721948cf0b4ab2712c56c1e718ac25b39",
+        "details_url":"https://www.hellosign.com/home/manage?guid=d956c9f721948cf0b4ab2712c56c1e718ac25b39",
+        "requester_email_address":"gabeharms@gmail.com",
+        "signatures":[
+        {
+          "signature_id":"497a1e81e523587a140762eefe40b980",
+          "has_pin":false,
+          "signer_email_address":"gabeharms@gmail.com",
+          "signer_name":"Gabe Harms",
+          "order":null,
+          "status_code":"awaiting_signature",
+          "signed_at":null,
+          "last_viewed_at":null,
+          "last_reminded_at":null,
+          "error":null
+        }
+        ],
+        "cc_email_addresses":{
+        }
+    }
+}
+
+# Get signing url  (where id in url is "signature_id" of the last requests response)
+Request:
+curl 'https://api.hellosign.com/v3/embedded/sign_url/c811c10ed9bf5c5dc2d2a288a10ad1ba' \                                                                             e-signature
+    -u '37ae83ca985ec0a297cdf1bb2482f4db078634d8a69da5b48629172b61a4e4cc:'
+
+Response:
+{
+  "embedded":{
+    "sign_url":"https://www.hellosign.com/editor/embeddedSign?signature_id=497a1e81e523587a140762eefe40b980&token=67aa4f31e0a2781ff67801a275d364ca",
+    "expires_at":1473892542
+  }
+}
+
+# Use "sign_url" of last request's response in the hello sign javascript library

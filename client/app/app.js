@@ -10,6 +10,9 @@ const initializeConfiguration = ($urlRouterProvider, $locationProvider, $statePr
   // For use with Oauth.io service, and their embedded js in our app
   OAuth.initialize(OAUTH_IO_CLIENT_ID);
 
+  // For use with HelloSign API
+  HelloSign.init("b03d1fce1eabf3d0906523817135acbd");
+
   $stateProvider
     .state('login', {
       url: '/login',
@@ -40,6 +43,12 @@ const initializeConfiguration = ($urlRouterProvider, $locationProvider, $statePr
       templateUrl: 'app/dashboard/expenditures/expenditures.html',
       controller: 'ExpendituresCtrl',
       controllerAs: 'expendituresCtrl'
+    })
+    .state('dashboard.signatures', {
+      url: '/signatures',
+      templateUrl: 'app/dashboard/signatures/signatures.html',
+      controller: 'SignaturesCtrl',
+      controllerAs: 'signaturesCtrl'
     });
 };
 

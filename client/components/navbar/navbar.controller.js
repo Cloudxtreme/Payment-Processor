@@ -33,6 +33,9 @@ function navbarController (loginManager, transactionsManager, $state, $modal, st
         }, {
           'title': 'EXPENDITURE',
           'state': 'dashboard.expenditures'
+        }, {
+          'title': 'SIGNATURE',
+          'state': 'dashboard.signatures'
         }];
       }
     };
@@ -90,6 +93,18 @@ function navbarController (loginManager, transactionsManager, $state, $modal, st
       .done(_handleIntegrationSuccess)
       .fail(_handleIntegrationFailure);
   }
+
+  /*
+  function _esign () {
+    return $modal.open({
+      controller: 'ElectronicSignatureCtrl',
+      controllerAs: 'electronicSignatureCtrl',
+      templateUrl: 'app/common/modals/electronic-signature.html',
+      size: 'md',
+      resolve: {}
+    });
+  }
+  */
 
   function _loadIntegrationFailureModal () {
     return $modal.open({

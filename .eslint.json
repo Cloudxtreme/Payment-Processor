@@ -9,7 +9,8 @@
     "console":true,
     "$":true,
     "_":true,
-    "OAuth": true
+    "OAuth": true,
+    "HelloSign": true
   },
   "rules":{
     "no-alert":"error",

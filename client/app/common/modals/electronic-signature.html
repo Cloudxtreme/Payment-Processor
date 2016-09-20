@@ -1,0 +1,13 @@
+<div class="view-modal-header-wrapper">
+  <div class="exit-button" ng-click="$dismiss()">X</div>
+</div>
+<div class="view-modal-body-wrapper">
+  <div class="view-modal-body">
+    <div ng-repeat="request in electronicSignatureCtrl.signatureRequests">
+      {{request.title}}
+    </div>
+  </div>
+</div>
+<div class="view-modal-button-wrapper">
+</div>
+

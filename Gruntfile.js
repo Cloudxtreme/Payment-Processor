@@ -202,7 +202,10 @@ module.exports = function (grunt) {
           STRIPE_APPLICATION_FEE: config.STRIPE_APPLICATION_FEE,
           STRIPE_API_CURRENCY: config.STRIPE_API_CURRENCY,
           STRIPE_API_STATEMENT_DESCRIPTOR: config.STRIPE_API_STATEMENT_DESCRIPTOR,
-          OAUTH_IO_CLIENT_ID: config.OAUTH_IO_CLIENT_ID
+          OAUTH_IO_CLIENT_ID: config.OAUTH_IO_CLIENT_ID,
+          HELLO_SIGN_API_CLIENT_ID: config.HELLO_SIGN_API_CLIENT_ID,
+          HELLO_SIGN_API_KEY: config.HELLO_SIGN_API_KEY,
+          HELLO_SIGN_API_KEY_BASE_64: config.HELLO_SIGN_API_KEY_BASE_64
         },
         values: {
           debug: true

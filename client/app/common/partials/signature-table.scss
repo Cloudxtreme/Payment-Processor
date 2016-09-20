@@ -26,79 +26,44 @@
     color: rgb(131, 131, 131);
   }
 } 
-.name-header {
+.signature-name-header {
   padding-right: 305px;
 }
 
-.number-header {
-  padding-right: 93px;
+.signature-number-header {
+  padding-right: 54px;
   padding-left: 3px
 }
 
-.project-header {
-  padding-right: 254px;
+.signature-requester-header {
+  padding-right: 191px;
+  padding-left: 25px;
 }
 
-.date-header {
-  padding-right: 85px;
-  padding-left: 26px;
+.signature-requester-cell {
+  padding-left: 25px;
+}
+
+.signature-signed-date-header {
+  padding-right: 44px;
+  padding-left: 39px;
   text-align: center;
 }
 
-.status-header {
-  padding-right: 31px;
-  padding-left: 26px;
+
+.signature-signed-by-header {
   text-align: center;
 }
-.status-cell {
+
+
+.signature-status-header {
+  padding-right: 51px;
+  padding-left: 47px;
+  text-align: center;
+}
+.signature-status-cell {
   padding-bottom: 5px;
 }
-.status-container {
-  height: 36px;
-  width: 90%;
-  margin: 0 auto;
+.signature-signed-date-cell {
   text-align: center;
-  padding-top: 7px;
-  font-family: khuluLight;
-  border-radius: 2px;
 }
-
-.status-owed {
-  background: rgb(231, 76, 60);
-  color: $owed-color;
-}
-.status-received {
-  background: rgb(46, 204, 113);
-  color: $received-color;
-}
-.status-paid {
-  background: rgb(41, 128, 185);
-  color: $paid-color;
-}
-.status-unpaid {
-  background: rgb(242, 155, 18);
-  color: $unpaid-color;
-}
-
-
-.amount-header {
-  padding-left: 95px;
-}
-
-.amount-cell {
-  text-align: right;
-}
-.action-button-header {
-  padding-left: 48px;
-}
-.action-button-cell {
-  text-align: right;
-  font-size: 30px!important;
-  padding-top: 6px;
-  color: rgb(196, 193, 197)!important;
-  border-bottom: solid;
-  border-color: white;
-  border-width: 1px;
-}
-
-

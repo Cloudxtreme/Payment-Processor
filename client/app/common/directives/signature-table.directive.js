@@ -14,7 +14,7 @@ function signatureTableCtrl ($scope, $modal) {
   viewModel.getSignedAt = _getSignedAt;
   viewModel.getStatusClass = _getStatusClass;
   viewModel.getStatusText = _getStatusText;
-  viewModel.openModal = _openModal;
+  viewModel.openSignature = _openSignature;
 
 
   _initController();
@@ -32,7 +32,7 @@ function signatureTableCtrl ($scope, $modal) {
   }
 
   function _getSignedAt (signatureRequest) {
-    return signatureRequest.is_complete ? new Date(signatureRequest.signatures[0].signed_at*1000) : '';
+    return signatureRequest.is_complete ? new Date(signatureRequest.signatures[0].signed_at * 1000) : '';
   }
 
   function _getStatusClass (signatureRequest) {
@@ -43,17 +43,22 @@ function signatureTableCtrl ($scope, $modal) {
     return signatureRequest.is_complete ? 'SIGNED' : 'UNSIGNED';
   }
 
-  function _openModal (signatureRequest) {
-    $modal.open({
-      controller: 'ViewSignatureCtrl',
-      controllerAs: 'viewSignatureCtrl',
-      templateUrl: 'app/common/modals/view-signature.html',
-      size: 'lg',
-       resolve: {
-        signatureRequestObj: () => signatureRequest,
-        userObj: () => viewModel.user
-      }
-    });
+  function _openSignature (signatureRequest) {
+    if (signatureRequest.is_complete) {
+      $modal.open({
+        controller: 'ViewSignatureCtrl',
+        controllerAs: 'viewSignatureCtrl',
+        templateUrl: 'app/common/modals/view-signature.html',
+        size: 'lg',
+        resolve: {
+          signatureObj: () => signatureRequest,
+          userObj: () => viewModel.user
+        }
+      });
+    } else {
+      // Open Hello Sign  
+      // Then update signatures
+    }
   }
 }
 

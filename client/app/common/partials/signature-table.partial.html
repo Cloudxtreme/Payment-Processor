@@ -4,23 +4,23 @@
       <th class="signature-number-header">#</th>
       <th class="signature-name-header">TITLE</th>
       <th class="signature-requester-header">REQUESTER</th>
+      <th class="signature-signer-header">SIGNER</th>
       <th class="signature-status-header">STATUS</th>
       <th class="signature-signed-date-header">SIGNED DATE</th>
-      <th class="signature-signed-by-header">SIGNED BY</th>
       <th class="action-button-header"></th>
     </tr>
   </thead>
   <tbody >
-    <tr class="transaction-row button-hover" ng-repeat="signature in signatureTableCtrl.signatureRequests | orderBy:'paid_date':true" ng-click="signatureTableCtrl.openModal(signatureRequest)">
+    <tr class="transaction-row button-hover" ng-repeat="signature in signatureTableCtrl.signatureRequests track by $index" ng-click="signatureTableCtrl.openSignature(signature)">
       <td>{{$index+1}}</td>
       <td>{{signature.title}}</td>
-      <td class="signature-requester-cell">{{signature.requester_email_address}}</td>
+      <td class="signature-signer-cell">{{signature.metadata.from}}</td>
+      <td>{{signature.signatures[0].signer_name}}</td>
       <td class="signature-status-cell">
         <div class="status-container" ng-class="signatureTableCtrl.getStatusClass(signature)">{{signatureTableCtrl.getStatusText(signature)}}</div>
       </td>
       <td class="signature-signed-date-cell">{{signatureTableCtrl.getSignedAt(signature) | date:'MM/dd/yyyy'}}</td>
-      <td>{{signature.is_complete ? signature.signatures[0].signer_name : ''}}</td>
-      <td class="action-button-cell"><i class="fa fa-ellipsis-v"></td>
+      <td class="action-button-cell"><i class="fa fa-ellipsis-v" /></td>
       <div class="row-border"></div>
     </tr>
   </tbody>

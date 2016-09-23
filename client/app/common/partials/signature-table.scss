@@ -26,8 +26,32 @@
     color: rgb(131, 131, 131);
   }
 } 
+
+.signature-dropdown-container {
+  font-family: khuluBold;
+  padding-bottom: 44px;
+  width: 99.5%;
+}
+
+.signature-dropdown {
+  width: 150px;
+  float: right;
+}
+
+.new-signature-button {
+  width: 150px;
+  float: right;
+  background: rgb(46, 204, 113);
+  color: white;
+  height: 34px;
+  vertical-align: middle;
+  text-align: center;
+  padding-top: 8px;
+  margin-right: 26px;
+}
+
 .signature-name-header {
-  padding-right: 305px;
+  padding-right: 332px;
 }
 
 .signature-number-header {
@@ -37,16 +61,22 @@
 
 .signature-requester-header {
   padding-right: 191px;
-  padding-left: 25px;
+}
+
+.signature-signer-header {
+  padding-right: 141px;
 }
 
 .signature-requester-cell {
   padding-left: 25px;
 }
 
+.signature-signer-cell {
+}
+
 .signature-signed-date-header {
-  padding-right: 44px;
-  padding-left: 39px;
+  padding-right: 33px;
+  padding-left: 46px;
   text-align: center;
 }
 

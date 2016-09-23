@@ -1,12 +1,26 @@
 <div class="page-content">
   <div class="page-title">
     <p> SIGNATURES </p>
+
+    <div class="signature-dropdown-container">
+      <select 
+        name="signature-select" 
+        id="signature-select" 
+        class="form-control signature-dropdown" 
+        ng-options="o as o for o in signaturesCtrl.filterOptions"
+        ng-model="signaturesCtrl.selectedFilter" 
+        ng-change="signaturesCtrl.updateDropdown()">
+        <option selected="selected">Requested Signatures</option>
+        <option>My Signatures</option>
+      </select>
+      <div class="new-signature-button" ng-click="signaturesCtrl.openNewSignatureModal()">New Signature</div>
+    </div>
   </div>
 
   <div class="inner-box container-box-shadow box-shadow-pad-bottom">
     <div class="transactions-container">
       <div ng-class="{'payment-loader': signaturesCtrl.waitingOnAPI}"></div>
-      <signature-table signatures="signaturesCtrl.signatureRequests" user="signatureCtrl.user"></signature-table>
+      <signature-table signatures="signaturesCtrl.filteredSignatures" user="signaturesCtrl.user"></signature-table>
     </div>
   </div>
 </div>

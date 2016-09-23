@@ -1,0 +1,26 @@
+<div class="view-modal-header-wrapper">
+  <div class="exit-button" ng-click="$dismiss()">X</div>
+</div>
+<div class="view-modal-body-wrapper">
+  <div class="view-modal-body">
+    <div class="view-signature-title">Title: {{viewSignatureCtrl.signature.title}}</div>
+    <div class="view-signature-subject">Subject: {{viewSignatureCtrl.signature.subject}}</div>
+    <div class="view-signature-message">Message: {{viewSignatureCtrl.signature.message}}</div>
+    <div class="view-signature-message">Status: {{viewSignatureCtrl.signature.is_complete ? 'Signed' : 'Waiting for Signature'}}</div>
+    <div class="view-signature-signer-email">Signed Date: {{viewSignatureCtrl.getSignedAt() | date:'MM/dd/yyyy'}}</div>
+
+    <div class="view-signature-requestor">Requestor: {{viewSignatureCtrl.signature.metadata.from}}</div>
+
+    Signer Info:
+    <div class="view-signature-signer-name">Name: {{viewSignatureCtrl.signature.signatures[0].signer_name}}</div>
+    <div class="view-signature-signer-email">Email: {{viewSignatureCtrl.signature.signatures[0].signer_email_address}}</div>
+
+    <object data="{{content}}" type="application/pdf">
+      <embed ng-src="{{content}}" type="application/pdf" />
+    </object>
+  </div>
+</div>
+<div class="view-modal-button-wrapper">
+  <div class="view-modal-button button-hover" ng-click="viewSignatureCtrl.close()">Close</div>
+</div>
+

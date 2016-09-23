@@ -94,18 +94,6 @@ function navbarController (loginManager, transactionsManager, $state, $modal, st
       .fail(_handleIntegrationFailure);
   }
 
-  /*
-  function _esign () {
-    return $modal.open({
-      controller: 'ElectronicSignatureCtrl',
-      controllerAs: 'electronicSignatureCtrl',
-      templateUrl: 'app/common/modals/electronic-signature.html',
-      size: 'md',
-      resolve: {}
-    });
-  }
-  */
-
   function _loadIntegrationFailureModal () {
     return $modal.open({
       controller: 'NotificationCtrl',

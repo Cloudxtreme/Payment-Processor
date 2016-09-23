@@ -3,11 +3,29 @@
 </div>
 <div class="view-modal-body-wrapper">
   <div class="view-modal-body">
-    <div ng-repeat="request in electronicSignatureCtrl.signatureRequests">
-      {{request.title}}
+    <div class="signature-file-upload">
+      upload your file
+      <button 
+         type="file" 
+         ngf-select="electronicSignatureCtrl.setUploadFile($files, $invalidFiles)"
+         multiple
+      >
+        Select File
+      </button>
+      <br><br>
+      File:
+      <div style="font:smaller">{{electronicSignatureCtrl.uploadFile.name}}</div>
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
+          <span class="sr-only">70% Complete</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="signature-choose-signer-container">
+      <div class="signature-question"><p>Who would you like to sign this document?</p></div>
+      <div class="signature-choose-self" ng-click="electronicSignatureCtrl.chooseMe()">Me</div>
+      <div class="signature-choose-other" ng-click="electronicSignatureCtrl.chooseSomeoneElse()">Someone Else</div>
     </div>
   </div>
 </div>
-<div class="view-modal-button-wrapper">
-</div>
-

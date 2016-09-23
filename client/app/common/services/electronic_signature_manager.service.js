@@ -3,58 +3,85 @@
 angular.module('paymentProcessor')
   .service('electronicSignatureManager', electronicSignatureManager);
 
-function electronicSignatureManager ($q, $http, loginManager, HELLO_SIGN_API_CLIENT_ID, HELLO_SIGN_API_KEY_BASE_64) {
+function electronicSignatureManager ($q, $http, loginManager, Upload, HELLO_SIGN_API_CLIENT_ID, HELLO_SIGN_API_KEY_BASE_64) {
 	const service = this;
 
 	/** Service Variables **/
 
 	/** Service Functions **/
+  service.createSignatureRequest = _createSignatureRequest;
   service.getSignatureUrl = _getSignatureUrl;
   service.getSignatureRequests = _getSignatureRequests;
+  service.getSignedFile = _getSignedFile;
+
 
 	/****** Implementation ******/
 
-  function _getSignatureUrl (file) {
+  function _createSignatureRequest(file) {
+    return Upload.upload({
+      url: 'https://api.hellosign.com/v3/signature_request/create_embedded',
+      method: "POST",
+      headers: {
+        'Authorization': `Basic ${HELLO_SIGN_API_KEY_BASE_64}`
+      },
+      data: _createSignatureRequestParams(file)            
+    });
+  }
+
+  function _getSignatureUrl (signatureId) {
+    const deferred = $q.defer();
+    $http({
+      url: `https://api.hellosign.com/v3/embedded/sign_url/${signatureId}`,
+      method: "GET",
+      headers: {
+        'Authorization': `Basic ${HELLO_SIGN_API_KEY_BASE_64}`
+      }
+    }).success(({embedded: {sign_url}}) => {
+      deferred.resolve(sign_url);
+    })
+    .error((data, status) => deferred.reject(status));
+
+    return deferred.promise; 
+  }
+
+  function _getSignatureRequests () {
     const deferred = $q.defer();
 
     $http({
-      url: `https://${HELLO_SIGN_API_KEY_BASE_64}:@api.hellosign.com/v3/signature_request/create_embedded`,
-      method: "POST",
-      params: _createEmbeddedParams(file)
-    }).success(({signatures: {signature_id}}) => {
-      $http({
-        url: `https://${HELLO_SIGN_API_KEY_BASE_64}:@api.hellosign.com/v3/embedded/sign_url/${signature_id}`,
-          method: "GET"
-      }).success(({embedded: {sign_url}}) => {
-        deferred.resolve({sign_url: sign_url});
-      })
-      .error((data, status) => deferred.reject(status));
+      url: `https://api.hellosign.com/v3/signature_request/list`,
+      method: "GET",
+      headers: {'Authorization': `Basic ${HELLO_SIGN_API_KEY_BASE_64}`}
+    }).success(({signature_requests}) => {
+      deferred.resolve(signature_requests);
     })
     .error((data, status) => deferred.reject(status));
 
     return deferred.promise;
   }
 
-  function _getSignatureRequests () {
-    const deferred = $q.defer();
-    loginManager.getUser().then((user) => {
-      $http({
-        url: `https://api.hellosign.com/v3/signature_request/list?query=from:${user.email}`,
-          method: "GET",
-          headers: {'Authorization': `Basic ${HELLO_SIGN_API_KEY_BASE_64}`}
-      }).success(({signature_requests}) => {
-        deferred.resolve(signature_requests);
-      })
-      .error((data, status) => deferred.reject(status));
-    });
 
-    return deferred.promise;
+  function _getSignedFile (fileUrl) {
+    const deferred = $q.defer();
+    $http({
+      url: fileUrl,
+      method: "GET",
+      responseType: 'arraybuffer',
+      headers: {
+        'Authorization': `Basic ${HELLO_SIGN_API_KEY_BASE_64}`
+      }
+    }).success((file) => {
+      deferred.resolve(file);
+    })
+    .error((data, status) => deferred.reject(status));
+
+    return deferred.promise; 
   }
 
-  /****** Helpers ******/
 
-  function _createEmbeddedParams (file) {
-    return {
+   /****** Helpers ******/
+
+  function _createSignatureRequestParams (file) {
+    return  {
       client_id: HELLO_SIGN_API_CLIENT_ID,
       subject: "Testin this out for now",
       message: "Does this work?",
@@ -64,23 +91,8 @@ function electronicSignatureManager ($q, $http, loginManager, HELLO_SIGN_API_CLI
           name: 'gabe'
         }
       ],
-      file: [file],
+      file: file,
       test_mode: 1
     };
-  }
-
-  function _notUsedYet () {
-    const _openHelloSignModal = () => {
-      HelloSign.open({
-        url: "https://www.hellosign.com/editor/embeddedSign?signature_id=11fcab576e48516a9a8690bfb2f0af46&token=b90e728ef367c27650e31f041996dca4",
-        allowCancel: true,
-        skipDomainVerification: true,
-        messageListener: function () {
-          console.log("HelloSign event received");
-        }
-      });
-    };
-
-    electronicSignatureManager.getSignatureUrl().then(_openHelloSignModal);
   }
 }

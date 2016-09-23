@@ -61,6 +61,7 @@ angular.module('paymentProcessor', [
   'btford.socket-io',
   'ui.router',
   'ui.bootstrap',
-  "highcharts-ng"
+  "highcharts-ng",
+  'ngFileUpload'
 ])
 .config(initializeConfiguration);

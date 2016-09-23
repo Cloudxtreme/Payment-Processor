@@ -75,8 +75,8 @@ function electronicSignatureCtrl ($modalInstance, allSignaturesObj, userObj, ele
   }
 
   function _waitForSignature (eventData) {
-    if (eventData.event === "signature_request_signed") {
-      $modalInstance.close();
+    if (eventData.event === HelloSign.EVENT_SIGNED) {
+      $modalInstance.close(5000);
     }
   }
 }

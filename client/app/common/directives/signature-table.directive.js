@@ -3,7 +3,7 @@ angular.module('paymentProcessor')
   .directive('signatureTable', signatureTableDirective);
 
 
-function signatureTableCtrl ($scope, $modal) {
+function signatureTableCtrl ($scope, $q, $modal, electronicSignatureManager) {
   const viewModel = this;
 
   /** Directive Variables **/
@@ -15,6 +15,7 @@ function signatureTableCtrl ($scope, $modal) {
   viewModel.getStatusClass = _getStatusClass;
   viewModel.getStatusText = _getStatusText;
   viewModel.openSignature = _openSignature;
+  viewModel.refreshSignatures = $scope.refresh;
 
 
   _initController();
@@ -44,7 +45,7 @@ function signatureTableCtrl ($scope, $modal) {
   }
 
   function _openSignature (signatureRequest) {
-    if (signatureRequest.is_complete) {
+    if (signatureRequest.is_complete || _userIsNotSigner(signatureRequest)) {
       $modal.open({
         controller: 'ViewSignatureCtrl',
         controllerAs: 'viewSignatureCtrl',
@@ -56,9 +57,35 @@ function signatureTableCtrl ($scope, $modal) {
         }
       });
     } else {
-      // Open Hello Sign  
-      // Then update signatures
+      const _openSignModal = (signUrl) => {
+        _openHelloSignModal(signUrl).then(() => viewModel.refreshSignatures({milliseconds: 10000}));
+      };
+
+      electronicSignatureManager.getSignatureUrl(signatureRequest.signatures[0].signature_id).then(_openSignModal);
     }
+  }
+
+  function _openHelloSignModal (signUrl) {
+    const deferred = $q.defer();
+
+    const _waitForSignature = (eventData) => {
+      if (eventData.event === HelloSign.EVENT_SIGNED) {
+        deferred.resolve();
+      }
+    };
+
+    HelloSign.open({
+      url: signUrl,
+      allowCancel: true,
+      skipDomainVerification: true,
+      messageListener: _waitForSignature
+    });
+
+    return deferred.promise;
+  }
+
+  function _userIsNotSigner (signature) {
+    return viewModel.user.email !== signature.signatures[0].signer_email_address; 
   }
 }
 
@@ -67,7 +94,8 @@ function signatureTableDirective () {
     restrict: 'E',
     scope: {
       signatures: '=',
-      user: '='
+      user: '=',
+      refresh: '&'
     },
     templateUrl: 'app/common/partials/signature-table.partial.html',
     controller: 'signatureTableCtrl',

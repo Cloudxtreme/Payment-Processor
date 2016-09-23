@@ -14,13 +14,14 @@
         <option>My Signatures</option>
       </select>
       <div class="new-signature-button" ng-click="signaturesCtrl.openNewSignatureModal()">New Signature</div>
+      <div class="new-signature-button" ng-click="signaturesCtrl.refreshSignatures(0)">Refresh</div>
     </div>
   </div>
 
   <div class="inner-box container-box-shadow box-shadow-pad-bottom">
     <div class="transactions-container">
       <div ng-class="{'payment-loader': signaturesCtrl.waitingOnAPI}"></div>
-      <signature-table signatures="signaturesCtrl.filteredSignatures" user="signaturesCtrl.user"></signature-table>
+      <signature-table signatures="signaturesCtrl.filteredSignatures" user="signaturesCtrl.user" refresh="signaturesCtrl.refreshSignatures(milliseconds)"></signature-table>
     </div>
   </div>
 </div>

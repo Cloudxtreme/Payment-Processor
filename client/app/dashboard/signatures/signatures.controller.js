@@ -5,7 +5,7 @@ angular.module('paymentProcessor')
 
 const FILTER_OPTIONS = ['Requested Signatures', 'My Signatures'];
 
-function signaturesCtrl ($q, $modal, loginManager, electronicSignatureManager) {
+function signaturesCtrl ($q, $modal, $timeout, loginManager, electronicSignatureManager) {
   const viewModel = this;
 
   /** Controller Variables **/
@@ -18,6 +18,7 @@ function signaturesCtrl ($q, $modal, loginManager, electronicSignatureManager) {
   /** Controller Functions **/
   viewModel.updateDropdown = _updateDropdown;
   viewModel.openNewSignatureModal = _openNewSignatureModal;
+  viewModel.refreshSignatures = _refreshSignatures;
 
 
   _initController();
@@ -58,7 +59,7 @@ function signaturesCtrl ($q, $modal, loginManager, electronicSignatureManager) {
         allSignaturesObj: () => viewModel._allSignatures,
         userObj: () => viewModel.user
       }
-    }).result.then(_refreshSignatures);
+    }).result.then(() => _refreshSignatures(10000));
   }
 
   /******** Helpers *******/
@@ -83,7 +84,7 @@ function signaturesCtrl ($q, $modal, loginManager, electronicSignatureManager) {
     return signature.signatures[0].signer_email_address === viewModel.user.email;
   }
 
-  function _refreshSignatures () {
+  function _refreshSignatures (milliseconds) {
     viewModel.waitingOnAPI = true;
 
     const _updateSignatures = (signatures) => {
@@ -91,7 +92,7 @@ function signaturesCtrl ($q, $modal, loginManager, electronicSignatureManager) {
       _updateDropdown();
       viewModel.waitingOnAPI = false;
     };
-    
-    electronicSignatureManager.getSignatureRequests().then(_updateSignatures);
+
+    $timeout(() => electronicSignatureManager.getSignatureRequests().then(_updateSignatures), milliseconds);
   }
 }

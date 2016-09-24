@@ -10,7 +10,9 @@
     "$":true,
     "_":true,
     "OAuth": true,
-    "HelloSign": true
+    "HelloSign": true,
+    "Blob": true,
+    "URL": true
   },
   "rules":{
     "no-alert":"error",

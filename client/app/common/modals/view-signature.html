@@ -15,8 +15,8 @@
     <div class="view-signature-signer-name">Name: {{viewSignatureCtrl.signature.signatures[0].signer_name}}</div>
     <div class="view-signature-signer-email">Email: {{viewSignatureCtrl.signature.signatures[0].signer_email_address}}</div>
 
-    <object data="{{content}}" type="application/pdf">
-      <embed ng-src="{{content}}" type="application/pdf" />
+    <object data="{{viewSignatureCtrl.content}}" type="application/pdf">
+      <embed ng-src="{{viewSignatureCtrl.content}}" type="application/pdf" />
     </object>
   </div>
 </div>

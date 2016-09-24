@@ -17,19 +17,20 @@ function electronicSignatureManager ($q, $http, loginManager, Upload, HELLO_SIGN
 
 	/****** Implementation ******/
 
-  function _createSignatureRequest(file) {
+  function _createSignatureRequest (fromUser, toUser, title, file) {
     return Upload.upload({
       url: 'https://api.hellosign.com/v3/signature_request/create_embedded',
       method: "POST",
       headers: {
         'Authorization': `Basic ${HELLO_SIGN_API_KEY_BASE_64}`
       },
-      data: _createSignatureRequestParams(file)            
+      data: _createSignatureRequestParams(fromUser, toUser, title, file)
     });
   }
 
   function _getSignatureUrl (signatureId) {
     const deferred = $q.defer();
+
     $http({
       url: `https://api.hellosign.com/v3/embedded/sign_url/${signatureId}`,
       method: "GET",
@@ -41,7 +42,7 @@ function electronicSignatureManager ($q, $http, loginManager, Upload, HELLO_SIGN
     })
     .error((data, status) => deferred.reject(status));
 
-    return deferred.promise; 
+    return deferred.promise;
   }
 
   function _getSignatureRequests () {
@@ -62,6 +63,7 @@ function electronicSignatureManager ($q, $http, loginManager, Upload, HELLO_SIGN
 
   function _getSignedFile (fileUrl) {
     const deferred = $q.defer();
+
     $http({
       url: fileUrl,
       method: "GET",
@@ -74,23 +76,27 @@ function electronicSignatureManager ($q, $http, loginManager, Upload, HELLO_SIGN
     })
     .error((data, status) => deferred.reject(status));
 
-    return deferred.promise; 
+    return deferred.promise;
   }
 
 
    /****** Helpers ******/
 
-  function _createSignatureRequestParams (file) {
-    return  {
+  function _createSignatureRequestParams (fromUser, toUser, title, file) {
+    return {
       client_id: HELLO_SIGN_API_CLIENT_ID,
+      title: title,
       subject: "Testin this out for now",
       message: "Does this work?",
       signers: [
         {
-          email_address: 'gabeharms@gmail.com',
-          name: 'gabe'
+          email_address: toUser.email,
+          name: toUser.fullName()
         }
       ],
+      metadata: {
+        from: fromUser.email
+      },
       file: file,
       test_mode: 1
     };

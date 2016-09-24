@@ -3,12 +3,13 @@
 angular.module('paymentProcessor')
   .controller('ViewSignatureCtrl', viewSignatureCtrl);
 
-function viewSignatureCtrl ($scope, $sce, $modalInstance, signatureObj, userObj, electronicSignatureManager) {
+function viewSignatureCtrl ($sce, $modalInstance, signatureObj, userObj, electronicSignatureManager) {
   const viewModel = this;
 
   /** Modal Variables **/
   viewModel.signature = signatureObj;
   viewModel.user = userObj;
+  viewModel.content = null;
 
   /** Modal Functions **/
   viewModel.close = _close;
@@ -20,9 +21,10 @@ function viewSignatureCtrl ($scope, $sce, $modalInstance, signatureObj, userObj,
 
   function _initController () {
     const _setContent = (response) => {
-      var file = new Blob([(response)], {type: 'application/pdf'});
-      var fileURL = URL.createObjectURL(file);
-      $scope.content = $sce.trustAsResourceUrl(fileURL);
+      const file = new Blob([response], {type: 'application/pdf'});
+      const fileURL = URL.createObjectURL(file);
+
+      viewModel.content = $sce.trustAsResourceUrl(fileURL);
     };
 
     electronicSignatureManager.getSignedFile(viewModel.signature.files_url).then(_setContent);
@@ -31,7 +33,7 @@ function viewSignatureCtrl ($scope, $sce, $modalInstance, signatureObj, userObj,
   function _close () {
     $modalInstance.close();
   }
-  
+
   function _getSignedAt () {
     return viewModel.signature.is_complete ? new Date(viewModel.signature.signatures[0].signed_at * 1000) : '';
   }

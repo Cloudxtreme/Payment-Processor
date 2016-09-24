@@ -85,7 +85,7 @@ function signatureTableCtrl ($scope, $q, $modal, electronicSignatureManager) {
   }
 
   function _userIsNotSigner (signature) {
-    return viewModel.user.email !== signature.signatures[0].signer_email_address; 
+    return viewModel.user.email !== signature.signatures[0].signer_email_address;
   }
 }
 

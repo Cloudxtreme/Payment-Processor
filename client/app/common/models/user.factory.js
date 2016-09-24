@@ -36,7 +36,9 @@ function user () {
 
   // Member Functions
   User.prototype = {
-
+    fullName: function () {
+      return `${this.firstName}  ${this.lastName}`;
+    }
   };
 
   return User;

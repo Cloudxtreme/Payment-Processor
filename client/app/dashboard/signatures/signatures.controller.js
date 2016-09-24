@@ -59,7 +59,7 @@ function signaturesCtrl ($q, $modal, $timeout, loginManager, electronicSignature
         allSignaturesObj: () => viewModel._allSignatures,
         userObj: () => viewModel.user
       }
-    }).result.then(() => _refreshSignatures(10000));
+    }).result.then((timeout) => _refreshSignatures(timeout));
   }
 
   /******** Helpers *******/
@@ -77,7 +77,8 @@ function signaturesCtrl ($q, $modal, $timeout, loginManager, electronicSignature
   }
 
   function _from_signatures (signature) {
-    return signature.metadata.from === viewModel.user.email;
+    return signature.metadata.from === viewModel.user.email &&
+      signature.signatures[0].signer_email_address !== viewModel.user.email;
   }
 
   function _to_signatures (signature) {
@@ -93,6 +94,6 @@ function signaturesCtrl ($q, $modal, $timeout, loginManager, electronicSignature
       viewModel.waitingOnAPI = false;
     };
 
-    $timeout(() => electronicSignatureManager.getSignatureRequests().then(_updateSignatures), milliseconds);
+    $timeout(() => electronicSignatureManager.getSignatureRequests().then(_updateSignatures), milliseconds || 0);
   }
 }
